@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="XXLChess.SampleTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-05-03T02:16:24" hostname="LAPTOP-RC53IQB8" time="0.015">
+  <properties/>
+  <testcase name="simpleTest()" classname="XXLChess.SampleTest" time="0.015"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
