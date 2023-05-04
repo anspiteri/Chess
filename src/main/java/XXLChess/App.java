@@ -12,6 +12,11 @@ import processing.event.MouseEvent;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
+import XXLChess.board.Tile;
+import XXLChess.board.TileColour;
+import XXLChess.pieces.ChessPiece;
+
 import java.awt.Font;
 import java.io.*;
 import java.util.*;
