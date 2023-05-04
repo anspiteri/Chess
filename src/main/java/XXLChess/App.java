@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import XXLChess.board.Tile;
-import XXLChess.board.TileColour;
+import XXLChess.board.enums.TileColour;
 import XXLChess.pieces.ChessPiece;
 
 import java.awt.Font;

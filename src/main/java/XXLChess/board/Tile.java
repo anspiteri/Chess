@@ -1,6 +1,8 @@
 package XXLChess.board;
 
 import XXLChess.GameObject;
+import XXLChess.board.enums.HighlightColour;
+import XXLChess.board.enums.TileColour;
 
 public class Tile extends GameObject {
 
