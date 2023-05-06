@@ -32,13 +32,14 @@ public class App extends PApplet {
     public static int HEIGHT = BOARD_WIDTH*CELLSIZE;
 
     public static final int FPS = 60;
+
+    public static final String PATH = "src/main/resources/XXLChess/";
 	
     public String configPath;
 
-    private Tile[][] tiles;
-    private TileColour tileColour;
-    private ChessPiece[][] whitePeices;
-    private ChessPiece[][] blackPieces;
+    private Board board;
+    private Tileset tileset;
+    private Pieceset pieceset;
 
 
     public App() {
@@ -56,19 +57,18 @@ public class App extends PApplet {
     */
     public void setup() {
         frameRate(FPS);
+
+        tileset = new Tileset();
+        pieceset = new Pieceset(BOARD_WIDTH);
+        board = new Board(tileset, pieceset);
         
         // Load images during setup
-
-        // PImage spr = loadImage("src/main/resources/XXLChess/"+...);
-
+        pieceset.loadImages(PATH);
+        
 		// load config
         JSONObject conf = loadJSONObject(new File(this.configPath));
 
         // initialise gameboard
-        tiles = new Tile[BOARD_WIDTH][BOARD_WIDTH];
-        whitePeices = new ChessPiece[BOARD_WIDTH][2];
-        blackPieces = new ChessPiece[BOARD_WIDTH][2];
-        setupTiles(tiles);
     }
 
     /**
@@ -108,28 +108,6 @@ public class App extends PApplet {
     }
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.
-    public void setupTiles(Tile[][] tiles) {
-        
-        for (int i = 0; i < tiles.length; i++) {
-            // determine the starting colour per row
-            if (i % 2 == 0) {
-                tileColour = TileColour.WHITE;
-            } else {
-                tileColour = TileColour.BLACK;
-            }
-            
-            for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j] = new Tile(j * CELLSIZE, i * CELLSIZE, tileColour);
-                // logic used to create alternating black and white tiles across rows
-                if (tileColour == TileColour.WHITE) {
-                    tileColour = TileColour.BLACK;
-                } else {
-                    tileColour = TileColour.WHITE;
-                }
-            }
-        }
-
-    }
 
     public void drawTiles() {
         for (int i = 0; i < tiles.length; i++) {
