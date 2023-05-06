@@ -13,10 +13,6 @@ import processing.event.MouseEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import XXLChess.board.Tile;
-import XXLChess.board.enums.TileColour;
-import XXLChess.pieces.ChessPiece;
-
 import java.awt.Font;
 import java.io.*;
 import java.util.*;
@@ -37,7 +33,6 @@ public class App extends PApplet {
 	
     public String configPath;
 
-    private Board board;
     private Tileset tileset;
     private Pieceset pieceset;
 
@@ -58,9 +53,8 @@ public class App extends PApplet {
     public void setup() {
         frameRate(FPS);
 
-        tileset = new Tileset();
-        pieceset = new Pieceset(BOARD_WIDTH);
-        board = new Board(tileset, pieceset);
+        tileset = new Tileset(this, BOARD_WIDTH);
+        pieceset = new Pieceset(this, BOARD_WIDTH);
         
         // Load images during setup
         pieceset.loadImages(PATH);
@@ -69,6 +63,7 @@ public class App extends PApplet {
         JSONObject conf = loadJSONObject(new File(this.configPath));
 
         // initialise gameboard
+        tileset.setup(CELLSIZE);
     }
 
     /**
@@ -102,50 +97,12 @@ public class App extends PApplet {
     public void draw() {
 
         // Display chess board tiles as well as highlighted colours. 
-        drawTiles();
+        tileset.display(CELLSIZE);
 
         
     }
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.
-
-    public void drawTiles() {
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles.length; j++) {
-                if (tiles[i][j].getTileColour() == TileColour.WHITE) {
-                    fill(255, 255, 240);
-                } else {
-                    fill(85, 63, 47);
-                }
-                if (tiles[i][j].highlighted()) {
-                    switch (tiles[i][j].getHighlightColour()) {
-                        case BLUE:
-                            stroke(0, 0, 255, 30);
-                            break;
-                        case LIGHT_RED:
-                            stroke(255, 153, 153, 30);
-                            break;
-                        case GREEN:
-                            stroke(0, 255, 0, 30);
-                            break;
-                        case YELLOW:
-                            stroke(255, 255, 0, 30);
-                            break;
-                        case DARK_RED:
-                            stroke(153, 0, 0, 30);
-                            break;
-                        default:
-                            stroke(0);
-                    }
-                    strokeWeight(4);
-                } else {
-                    stroke(0);
-                    strokeWeight(1);
-                }
-                rect(tiles[i][j].getX(), tiles[i][j].getY(), CELLSIZE, CELLSIZE);
-            }
-        }
-    }
 
     public static void main(String[] args) {
         PApplet.main("XXLChess.App");

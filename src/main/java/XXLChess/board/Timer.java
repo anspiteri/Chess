@@ -1,10 +1,14 @@
 package XXLChess.board;
 
 import XXLChess.GameObject;
+import processing.core.PApplet;
 
 public class Timer extends GameObject {
-    
-    public Timer(int time) {
+
+
+    protected Timer(PApplet parent) {
+        super(parent);
+        //TODO Auto-generated constructor stub
     }
 
     public void addTime(int time) {

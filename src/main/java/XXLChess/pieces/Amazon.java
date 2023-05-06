@@ -11,3 +11,4 @@ public class Amazon extends ChessPiece {
         super(parent, image);
         this.colour = colour;
     }
+}
