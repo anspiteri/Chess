@@ -1,28 +1,41 @@
 package XXLChess.board;
 
-import XXLChess.GameObject;
+import XXLChess.DisplayObject;
 import XXLChess.board.enums.HighlightColour;
 import XXLChess.board.enums.TileColour;
 import processing.core.PApplet;
 
-public class Tile extends GameObject {
+public class Tile extends DisplayObject {
+
+    private int CELLSIZE;
 
     private int x;
     private int y;
+
     private TileColour colour; 
     private HighlightColour highlightColour;
-    private boolean highlighted;
 
-    public Tile (PApplet parent, int x, int y, TileColour colour) {
+    private boolean highlighted;
+    private boolean occupied;
+
+    public Tile (PApplet parent, int x, int y, TileColour colour, int CELLSIZE) {
         super(parent);
+        this.CELLSIZE = CELLSIZE;
         this.x = x;
         this.y = y;
         this.colour = colour;
         this.highlightColour = null;
         this.highlighted = false;
+        this.occupied = false; 
     }
 
-    public void display(int CELLSIZE) {
+    @Override
+    public void setup() {
+        ;
+    }
+
+    @Override
+    public void display() {
         if (colour == TileColour.WHITE) {
             parent.fill(255, 255, 240);
         } else {
@@ -56,6 +69,14 @@ public class Tile extends GameObject {
         parent.rect(x, y, CELLSIZE, CELLSIZE);
     }
 
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
+    }
+
     public void setHighlight(HighlightColour highlightColour) {
         this.highlightColour = highlightColour;
         this.highlighted = true;
@@ -74,15 +95,18 @@ public class Tile extends GameObject {
         return highlighted;
     }
 
-    public int getX() {
-        return x;
-    }
-    
-    public int getY() {
-        return y;
-    }
-
     public TileColour getTileColour() {
         return colour;
+    }
+
+    public void setOccupied(boolean makeOccupied) {
+        if (makeOccupied) {
+            this.occupied = true;
+        } else {
+            this.occupied = false;
+        }
+    }
+    public boolean getOccupied() {
+        return occupied;
     }
 }

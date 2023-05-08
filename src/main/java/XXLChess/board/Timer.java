@@ -1,9 +1,9 @@
 package XXLChess.board;
 
-import XXLChess.GameObject;
+import XXLChess.DisplayObject;
 import processing.core.PApplet;
 
-public class Timer extends GameObject {
+public class Timer extends DisplayObject {
 
 
     protected Timer(PApplet parent) {
@@ -12,5 +12,17 @@ public class Timer extends GameObject {
     }
 
     public void addTime(int time) {
+    }
+
+    @Override
+    protected void display() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'display'");
+    }
+
+    @Override
+    protected void setup() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setup'");
     }
 }

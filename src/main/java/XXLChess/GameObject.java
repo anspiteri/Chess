@@ -10,6 +10,4 @@ public abstract class GameObject {
     }
     
     protected abstract void setup();
-
-    protected abstract void display();
 }

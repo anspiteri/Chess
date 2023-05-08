@@ -4,18 +4,14 @@ import XXLChess.pieces.ChessPiece;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class Pieceset extends GameObject {
-    private int BOARD_LENGTH;
+public class Pieceset extends DisplayObject {
     
-    private ChessPiece[][] whitePieces;
-    private ChessPiece[][] blackPieces;
+    private ChessPiece[][] pieces;
 
-    public Pieceset(PApplet parent, int BOARD_WIDTH) {
+    public Pieceset(PApplet parent, int BOARD_LENGTH) {
         super(parent);
     
-        this.BOARD_LENGTH = BOARD_WIDTH;
-        whitePieces = new ChessPiece[BOARD_LENGTH][2];
-        blackPieces = new ChessPiece[BOARD_LENGTH][2];
+        pieces = new ChessPiece[BOARD_LENGTH][BOARD_LENGTH];
     }
 
     public void loadImages(String PATH) {
@@ -155,15 +151,9 @@ public class Pieceset extends GameObject {
     }
 
     public void setup() {
-        // Set up top of board.
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < blackPieces.length; j++) {
-
-            }
-        }
-        // Set up bottom of board.
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < whitePieces.length; j++) {
+        // Set up board.
+        for (int i = 0; i < pieces.length; i++) {
+            for (int j = 0; j < pieces.length; j++) {
 
             }
         }

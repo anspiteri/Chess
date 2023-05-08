@@ -4,7 +4,7 @@ import XXLChess.board.Tile;
 import XXLChess.board.enums.TileColour;
 import processing.core.PApplet;
 
-public class Tileset extends GameObject {
+public class Tileset extends DisplayObject {
     
     private int CELLSIZE;
 

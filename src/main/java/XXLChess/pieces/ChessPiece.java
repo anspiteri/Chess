@@ -1,11 +1,11 @@
 package XXLChess.pieces;
 
-import XXLChess.GameObject;
+import XXLChess.DisplayObject;
 import XXLChess.pieces.enums.PieceColour;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public abstract class ChessPiece extends GameObject {
+public abstract class ChessPiece extends DisplayObject {
     protected PImage image;
 
     protected PieceColour colour;

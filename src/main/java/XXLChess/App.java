@@ -13,6 +13,7 @@ import processing.event.MouseEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import XXLChess.players.Player;
 import netscape.javascript.JSException;
 
 import java.awt.Font;
@@ -36,8 +37,12 @@ public class App extends PApplet {
 	
     public String configPath;
 
-    private Tileset tileset;
-    private Pieceset pieceset;
+    private Tileset tiles;
+    private Pieceset pieces;
+    private Board board;
+
+    private Player playerBlack;
+    private Player playerWhite;
 
 
     public App() {
@@ -56,23 +61,25 @@ public class App extends PApplet {
     public void setup() {
         frameRate(FPS);
 
-        tileset = new Tileset(this, BOARD_WIDTH, CELLSIZE);
-        pieceset = new Pieceset(this, BOARD_WIDTH);
+        tiles = new Tileset(this, BOARD_WIDTH, CELLSIZE);
+        pieces = new Pieceset(this, BOARD_WIDTH);
+        // add logic to decide whether to instantiate human players or AI players
+        board = new Board(this, tiles, pieces, playerBlack, playerWhite);
         
         // Load images during setup
-        pieceset.loadImages(PATH);
+        pieces.loadImages(PATH);
         
 		// load config
         try {
             JSONObject conf = loadJSONObject(new File(this.configPath));
         } catch (JSException e) {
             e.printStackTrace();
-            // TODO: handle exception
+            System.out.println("Error parsing JSON file.");
         }
 
         // initialise gameboard
-        tileset.setup();
-        pieceset.setup();
+        tiles.setup();
+        pieces.setup();
     }
 
     /**
@@ -106,7 +113,7 @@ public class App extends PApplet {
     public void draw() {
 
         // Display chess board tiles as well as highlighted colours. 
-        tileset.display();
+        tiles.display();
 
         
     }
