@@ -1,13 +1,13 @@
 package XXLChess.pieces;
 
+import XXLChess.pieces.enums.PieceColour;
 import processing.core.PApplet;
 import processing.core.PImage;
 
 public class Pawn extends ChessPiece {
 
-    protected Pawn(PApplet parent, PImage image) {
-        super(parent, image);
-        //TODO Auto-generated constructor stub
+    public Pawn(PApplet parent, PImage image, PieceColour colour, int x, int y) {
+        super(parent, image, colour, x, x);
     }
     
 }

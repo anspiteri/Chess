@@ -5,10 +5,10 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public class Amazon extends ChessPiece {
-    private PieceColour colour;
 
-    public Amazon(PApplet parent, PImage image, PieceColour colour) {
-        super(parent, image);
-        this.colour = colour;
+    public Amazon(PApplet parent, PImage image, PieceColour colour, int x, int y) {
+        super(parent, image, colour, x, y);
+        //TODO Auto-generated constructor stub
     }
+
 }

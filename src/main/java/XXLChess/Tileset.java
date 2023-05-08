@@ -6,15 +6,19 @@ import processing.core.PApplet;
 
 public class Tileset extends GameObject {
     
+    private int CELLSIZE;
+
     private Tile[][] tiles;
     private TileColour tileColour;
 
-    public Tileset(PApplet parent, int BOARD_WIDTH) {
+    public Tileset(PApplet parent, int BOARD_WIDTH, int CELLSIZE) {
         super(parent);
+        this.CELLSIZE = CELLSIZE;
         tiles = new Tile[BOARD_WIDTH][BOARD_WIDTH];
     }
 
-    public void setup(int CELLSIZE) {
+    @Override
+    public void setup() {
         for (int i = 0; i < tiles.length; i++) {
             // determine the starting colour per row
             if (i % 2 == 0) {
@@ -35,7 +39,8 @@ public class Tileset extends GameObject {
         }
     }
 
-    public void display(int CELLSIZE) {
+    @Override
+    public void display() {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles.length; j++) {
                 tiles[i][j].display(CELLSIZE);

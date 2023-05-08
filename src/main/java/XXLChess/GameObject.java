@@ -8,4 +8,8 @@ public abstract class GameObject {
     protected GameObject(PApplet parent) {
         this.parent = parent;
     }
+    
+    protected abstract void setup();
+
+    protected abstract void display();
 }

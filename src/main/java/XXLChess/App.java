@@ -13,8 +13,11 @@ import processing.event.MouseEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import netscape.javascript.JSException;
+
 import java.awt.Font;
 import java.io.*;
+import java.text.ParseException;
 import java.util.*;
 
 public class App extends PApplet {
@@ -53,17 +56,23 @@ public class App extends PApplet {
     public void setup() {
         frameRate(FPS);
 
-        tileset = new Tileset(this, BOARD_WIDTH);
+        tileset = new Tileset(this, BOARD_WIDTH, CELLSIZE);
         pieceset = new Pieceset(this, BOARD_WIDTH);
         
         // Load images during setup
         pieceset.loadImages(PATH);
         
 		// load config
-        JSONObject conf = loadJSONObject(new File(this.configPath));
+        try {
+            JSONObject conf = loadJSONObject(new File(this.configPath));
+        } catch (JSException e) {
+            e.printStackTrace();
+            // TODO: handle exception
+        }
 
         // initialise gameboard
-        tileset.setup(CELLSIZE);
+        tileset.setup();
+        pieceset.setup();
     }
 
     /**
@@ -97,7 +106,7 @@ public class App extends PApplet {
     public void draw() {
 
         // Display chess board tiles as well as highlighted colours. 
-        tileset.display(CELLSIZE);
+        tileset.display();
 
         
     }
