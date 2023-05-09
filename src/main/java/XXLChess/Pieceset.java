@@ -2,178 +2,112 @@ package XXLChess;
 
 import java.util.ArrayList;
 
-import XXLChess.pieces.ChessPiece;
+import XXLChess.exceptions.PieceCreationException;
+import XXLChess.pieces.*;
+import XXLChess.pieces.enums.PieceColour;
 import processing.core.PApplet;
-import processing.core.PImage;
 
 public class Pieceset extends DisplayObject {
 
     private ArrayList<ArrayList<Character>> chessLayout;
     private ChessPiece[][] pieces;
 
-    public Pieceset(PApplet parent, ArrayList<ArrayList<Character>> chessLayout, int BOARD_LENGTH) {
+    public Pieceset(PApplet parent, ArrayList<ArrayList<Character>> chessLayout) {
         super(parent);
         this.chessLayout = chessLayout;
-        pieces = new ChessPiece[BOARD_LENGTH][BOARD_LENGTH];
-    }
-
-    public void loadImages(String PATH) {
-
-        try {
-            PImage amazonW = parent.loadImage(PATH + "w-amazon.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage amazonB = parent.loadImage(PATH + "b-amazon.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage archbishopW = parent.loadImage(PATH + "w-archbishop.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage archbishopB = parent.loadImage(PATH + "b-archbishop.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage bishopW = parent.loadImage(PATH + "w-bishop.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage bishopB = parent.loadImage(PATH + "b-bishop.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage camelW = parent.loadImage(PATH + "w-camel.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage camelB = parent.loadImage(PATH + "b-camel.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage chancellorW = parent.loadImage(PATH + "w-chancellor.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage chancellorB = parent.loadImage(PATH + "b-chancellor.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage kingW = parent.loadImage(PATH + "w-king.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage kingB = parent.loadImage(PATH + "b-king.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage knightKingW = parent.loadImage(PATH + "w-knight-king.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage knightKingB = parent.loadImage(PATH + "b-knight-king.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage knightW = parent.loadImage(PATH + "w-knight.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage knightB = parent.loadImage(PATH + "b-knight.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage pawnW = parent.loadImage(PATH + "w-pawn.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage pawnB = parent.loadImage(PATH + "b-pawn.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage queenW = parent.loadImage(PATH + "w-queen.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage queenB = parent.loadImage(PATH + "b-queen.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage rookW = parent.loadImage(PATH + "w-rook.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PImage rookB = parent.loadImage(PATH + "b-rook.png");
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
+        pieces = new ChessPiece[App.BOARD_WIDTH][App.BOARD_WIDTH];
     }
 
     public void setup() {
-        // Set up board.
+
         for (int row = 0; row < pieces.length; row++) {
             for (int column = 0; column < pieces.length; column++) {
                 char key = chessLayout.get(row).get(column);
-                ChessPiece piece = createPiece(key);
-                pieces[row][column] = piece;
+                
+                try {
+                    ChessPiece piece = createPiece(key, column * App.CELLSIZE, row * App.CELLSIZE);
+                    if (piece != null) {
+                        pieces[row][column] = piece;
+                    } else {
+                        throw new PieceCreationException("Layout key invalid.");
+                    }
+                } catch (PieceCreationException e) {
+                    System.out.println("Setup error: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public ChessPiece createPiece(char key, int x, int y) {
+        ChessPiece piece;
+
+        switch (key) {
+            case 'P':
+                piece = new Pawn(parent, PieceColour.BLACK, x, y);
+            case 'p':
+                piece = new Pawn(parent, PieceColour.WHITE, x, y);
+            case 'R':
+                piece = new Rook(parent, PieceColour.BLACK, x, y);
+            case 'r':
+                piece = new Rook(parent, PieceColour.WHITE, x, y);
+            case 'N':
+                piece = new Knight(parent, PieceColour.BLACK, x, y);
+            case 'n':
+                piece = new Knight(parent, PieceColour.WHITE, x, y);
+            case 'B':
+                piece = new Bishop(parent, PieceColour.BLACK, x, y);
+            case 'b':
+                piece = new Bishop(parent, PieceColour.WHITE, x, y);
+            case 'H':
+                piece = new Archbishop(parent, PieceColour.BLACK, x, y);
+            case 'h':
+                piece = new Archbishop(parent, PieceColour.WHITE, x, y);
+            case 'C':
+                piece = new Camel(parent, PieceColour.BLACK, x, y);
+            case 'c':
+                piece = new Camel(parent, PieceColour.WHITE, x, y);
+            case 'G':
+                piece = new General(parent, PieceColour.BLACK, x, y);
+            case 'g':
+                piece = new General(parent, PieceColour.WHITE, x, y);
+            case 'A':
+                piece = new Amazon(parent, PieceColour.BLACK, x, y);
+            case 'a':
+                piece = new Amazon(parent, PieceColour.WHITE, x, y);
+            case 'K':
+                piece = new King(parent, PieceColour.BLACK, x, y);
+            case 'k':
+                piece = new King(parent, PieceColour.WHITE, x, y);
+            case 'E':
+                piece = new Chancellor(parent, PieceColour.BLACK, x, y);
+            case 'e':
+                piece = new Chancellor(parent, PieceColour.WHITE, x, y);
+            case 'Q':
+                piece = new Queen(parent, PieceColour.BLACK, x, y);
+            case 'q':
+                piece = new Queen(parent, PieceColour.WHITE, x, y);
+            case ' ':
+                
+            default:
+                piece = null;
+        }
+        
+        return piece;
+    }
+
+    public void loadImages() {
+        for (ChessPiece[] rows : pieces) {
+            for (ChessPiece piece : rows) {
+                piece.loadImage(App.PATH);
             }
         }
     }
 
     public void display() {
-
-    }
-
-    public ChessPiece createPiece(char key) {
-        ChessPiece piece;
-
-        //switch (key) {}
-        
-        piece = null;
-        return piece;
+        for (ChessPiece[] rows : pieces) {
+            for (ChessPiece piece : rows) {
+                piece.display();
+            }
+        }
     }
 }

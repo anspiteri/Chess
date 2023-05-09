@@ -73,18 +73,19 @@ public class App extends PApplet {
         ArrayList<ArrayList<Character>> chessLayout = parseLayout(layoutFileString);
 
         // Instantiate board components
-        tiles = new Tileset(this, BOARD_WIDTH, CELLSIZE);
-        pieces = new Pieceset(this, chessLayout, BOARD_WIDTH);
+        tiles = new Tileset(this);
+        pieces = new Pieceset(this, chessLayout);
         // add logic to decide whether to instantiate human players or AI players
         board = new Board(this, tiles, pieces, playerBlack, playerWhite);
         
-        // Load images during setup
-        pieces.loadImages(PATH);
-
         // initialise gameboard
         tiles.setup();
         pieces.setup();
         board.setup();
+
+        // Load images during setup
+        pieces.loadImages();
+
     }
 
     /**
@@ -117,10 +118,9 @@ public class App extends PApplet {
     */
     public void draw() {
 
-        // Display chess board tiles as well as highlighted colours. 
+        // Display chess board tiles, pieces, timers, messages
         tiles.display();
-
-        
+        pieces.display();
     }
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.
@@ -182,7 +182,8 @@ public class App extends PApplet {
                 }
             }
         } catch (DimensionException e) {
-            System.out.println("Invalid layout file: " + e.getMessage());
+            System.err.println("Invalid layout file: " + e.getMessage());
+            System.exit(0);
         }
        
         return chessLayout;

@@ -5,16 +5,13 @@ import XXLChess.board.enums.TileColour;
 import processing.core.PApplet;
 
 public class Tileset extends DisplayObject {
-    
-    private int CELLSIZE;
 
     private Tile[][] tiles;
     private TileColour tileColour;
 
-    public Tileset(PApplet parent, int BOARD_WIDTH, int CELLSIZE) {
+    public Tileset(PApplet parent) {
         super(parent);
-        this.CELLSIZE = CELLSIZE;
-        tiles = new Tile[BOARD_WIDTH][BOARD_WIDTH];
+        tiles = new Tile[App.BOARD_WIDTH][App.BOARD_WIDTH];
     }
 
     @Override
@@ -28,7 +25,7 @@ public class Tileset extends DisplayObject {
             }
             
             for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j] = new Tile(parent, j * CELLSIZE, i * CELLSIZE, tileColour, CELLSIZE);
+                tiles[i][j] = new Tile(parent, j * App.CELLSIZE, i * App.CELLSIZE, tileColour);
                 // logic used to create alternating black and white tiles across rows
                 if (tileColour == TileColour.WHITE) {
                     tileColour = TileColour.BLACK;

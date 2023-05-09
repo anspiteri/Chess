@@ -1,13 +1,12 @@
 package XXLChess.board;
 
+import XXLChess.App;
 import XXLChess.DisplayObject;
 import XXLChess.board.enums.HighlightColour;
 import XXLChess.board.enums.TileColour;
 import processing.core.PApplet;
 
 public class Tile extends DisplayObject {
-
-    private int CELLSIZE;
 
     private int x;
     private int y;
@@ -18,9 +17,8 @@ public class Tile extends DisplayObject {
     private boolean highlighted;
     private boolean occupied;
 
-    public Tile (PApplet parent, int x, int y, TileColour colour, int CELLSIZE) {
+    public Tile (PApplet parent, int x, int y, TileColour colour) {
         super(parent);
-        this.CELLSIZE = CELLSIZE;
         this.x = x;
         this.y = y;
         this.colour = colour;
@@ -66,7 +64,7 @@ public class Tile extends DisplayObject {
             parent.stroke(0);
             parent.strokeWeight(1);
         }
-        parent.rect(x, y, CELLSIZE, CELLSIZE);
+        parent.rect(x, y, App.CELLSIZE, App.CELLSIZE);
     }
 
     public int getX() {

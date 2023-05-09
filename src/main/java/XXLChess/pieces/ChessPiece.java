@@ -14,16 +14,18 @@ public abstract class ChessPiece extends DisplayObject {
     // protected Player player;
 
 
-    protected ChessPiece(PApplet parent, PImage image, PieceColour colour, int x, int y) {
+    protected ChessPiece(PApplet parent, PieceColour colour, int x, int y) {
         super(parent);
-        this.image = image;
+        this.image = null;
         this.colour = colour;
         this.x = x;
         this.y = y;
         // this.player = player;
     }
 
-    protected PImage getImage() {
+    public abstract void loadImage(String PATH);
+
+    public PImage getImage() {
         return image;
     }
 }

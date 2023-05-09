@@ -11,7 +11,7 @@ public class Board extends GameObject {
     private Player playerBlack;
     private Player playerWhite;
 
-    protected Board(PApplet parent, Tileset tiles, Pieceset pieces, Player playerBlack, Player playerWhite) {
+    public Board(PApplet parent, Tileset tiles, Pieceset pieces, Player playerBlack, Player playerWhite) {
         super(parent);
         this.tiles = tiles;
         this.pieces = pieces;
@@ -20,7 +20,7 @@ public class Board extends GameObject {
     }
 
     @Override
-    protected void setup() {
+    public void setup() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setup'");
     }
