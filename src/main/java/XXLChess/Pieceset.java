@@ -1,16 +1,19 @@
 package XXLChess;
 
+import java.util.ArrayList;
+
 import XXLChess.pieces.ChessPiece;
 import processing.core.PApplet;
 import processing.core.PImage;
 
 public class Pieceset extends DisplayObject {
-    
+
+    private ArrayList<ArrayList<Character>> chessLayout;
     private ChessPiece[][] pieces;
 
-    public Pieceset(PApplet parent, int BOARD_LENGTH) {
+    public Pieceset(PApplet parent, ArrayList<ArrayList<Character>> chessLayout, int BOARD_LENGTH) {
         super(parent);
-    
+        this.chessLayout = chessLayout;
         pieces = new ChessPiece[BOARD_LENGTH][BOARD_LENGTH];
     }
 
@@ -152,14 +155,25 @@ public class Pieceset extends DisplayObject {
 
     public void setup() {
         // Set up board.
-        for (int i = 0; i < pieces.length; i++) {
-            for (int j = 0; j < pieces.length; j++) {
-
+        for (int row = 0; row < pieces.length; row++) {
+            for (int column = 0; column < pieces.length; column++) {
+                char key = chessLayout.get(row).get(column);
+                ChessPiece piece = createPiece(key);
+                pieces[row][column] = piece;
             }
         }
     }
 
     public void display() {
 
+    }
+
+    public ChessPiece createPiece(char key) {
+        ChessPiece piece;
+
+        //switch (key) {}
+        
+        piece = null;
+        return piece;
     }
 }

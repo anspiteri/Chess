@@ -28,7 +28,7 @@ public class Tileset extends DisplayObject {
             }
             
             for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j] = new Tile(parent, j * CELLSIZE, i * CELLSIZE, tileColour);
+                tiles[i][j] = new Tile(parent, j * CELLSIZE, i * CELLSIZE, tileColour, CELLSIZE);
                 // logic used to create alternating black and white tiles across rows
                 if (tileColour == TileColour.WHITE) {
                     tileColour = TileColour.BLACK;
@@ -43,7 +43,7 @@ public class Tileset extends DisplayObject {
     public void display() {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j].display(CELLSIZE);
+                tiles[i][j].display();
             }
         }
     }

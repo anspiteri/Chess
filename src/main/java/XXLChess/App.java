@@ -13,6 +13,7 @@ import processing.event.MouseEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import XXLChess.exceptions.DimensionException;
 import XXLChess.players.Player;
 import netscape.javascript.JSException;
 
@@ -34,8 +35,8 @@ public class App extends PApplet {
     public static final int FPS = 60;
 
     public static final String PATH = "src/main/resources/XXLChess/";
-	
     public String configPath;
+    public JSONObject conf;
 
     private Tileset tiles;
     private Pieceset pieces;
@@ -43,7 +44,6 @@ public class App extends PApplet {
 
     private Player playerBlack;
     private Player playerWhite;
-
 
     public App() {
         this.configPath = "config.json";
@@ -61,25 +61,30 @@ public class App extends PApplet {
     public void setup() {
         frameRate(FPS);
 
-        tiles = new Tileset(this, BOARD_WIDTH, CELLSIZE);
-        pieces = new Pieceset(this, BOARD_WIDTH);
-        // add logic to decide whether to instantiate human players or AI players
-        board = new Board(this, tiles, pieces, playerBlack, playerWhite);
-        
-        // Load images during setup
-        pieces.loadImages(PATH);
-        
-		// load config
+        // load config
         try {
-            JSONObject conf = loadJSONObject(new File(this.configPath));
+            conf  = loadJSONObject(new File(this.configPath));
         } catch (JSException e) {
             e.printStackTrace();
             System.out.println("Error parsing JSON file.");
         }
 
+        String layoutFileString = conf.getString("layout");
+        ArrayList<ArrayList<Character>> chessLayout = parseLayout(layoutFileString);
+
+        // Instantiate board components
+        tiles = new Tileset(this, BOARD_WIDTH, CELLSIZE);
+        pieces = new Pieceset(this, chessLayout, BOARD_WIDTH);
+        // add logic to decide whether to instantiate human players or AI players
+        board = new Board(this, tiles, pieces, playerBlack, playerWhite);
+        
+        // Load images during setup
+        pieces.loadImages(PATH);
+
         // initialise gameboard
         tiles.setup();
         pieces.setup();
+        board.setup();
     }
 
     /**
@@ -119,6 +124,69 @@ public class App extends PApplet {
     }
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.
+
+
+    public ArrayList<ArrayList<Character>> parseLayout(String layoutFileString) {
+        Scanner sc = null;
+        ArrayList<ArrayList<Character>> chessLayout = new ArrayList<ArrayList<Character>>();
+        
+        // Parse the layout file into the buffer. 
+        try {
+            sc = new Scanner(new File(layoutFileString));
+            sc.useDelimiter("\\n"); // Use delimiter instead of nextLine() as to not skip whitespaces. 
+
+            while (sc.hasNext()) {
+                ArrayList<Character> rowList = new ArrayList<>();
+                String line = sc.next();
+                
+                if (line.charAt(0) != '\n') {
+                    // If the line has chess positions: store keys into char array. 
+                    for (char c : line.toCharArray()) {
+                        if (c != '\n') {
+                            rowList.add(c);
+                        }
+                    }
+                } else {
+                    // If it is an empty line: Create a char array with appropriate length.
+                    for (int i = 0; i < BOARD_WIDTH; i++) {
+                        rowList.add(' ');
+                    }
+                }
+
+                chessLayout.add(rowList);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot find layout file: " + layoutFileString);
+            e.printStackTrace();
+        } finally {
+            if (sc != null) {
+                sc.close();
+            }
+        }
+        
+        // Check that the proper dimensions are setup. 
+        int expectedRows = BOARD_WIDTH, expectedCols = BOARD_WIDTH;
+
+        try {
+            if (chessLayout.size() != expectedRows) {
+                throw new DimensionException("Incorrect number of rows.");
+            }
+        } catch (DimensionException e) {
+            System.out.println("Invalid layout file: " + e.getMessage());
+        }
+
+        try {
+            for (ArrayList<Character> rowList : chessLayout) {
+                if (rowList.size() != expectedCols) {
+                    throw new DimensionException("Incorrect column length or mismatched column length.");
+                }
+            }
+        } catch (DimensionException e) {
+            System.out.println("Invalid layout file: " + e.getMessage());
+        }
+       
+        return chessLayout;
+    }
 
     public static void main(String[] args) {
         PApplet.main("XXLChess.App");
