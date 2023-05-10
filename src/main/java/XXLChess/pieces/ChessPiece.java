@@ -1,11 +1,12 @@
 package XXLChess.pieces;
 
+import XXLChess.App;
 import XXLChess.DisplayObject;
 import XXLChess.pieces.enums.PieceColour;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public abstract class ChessPiece extends DisplayObject {
+public class ChessPiece extends DisplayObject {
     protected PImage image;
 
     protected PieceColour colour;
@@ -23,9 +24,15 @@ public abstract class ChessPiece extends DisplayObject {
         // this.player = player;
     }
 
-    public abstract void loadImage(String PATH);
-
     public PImage getImage() {
         return image;
     }
+
+    public void display() {
+        parent.image(image, x, y, App.CELLSIZE, App.CELLSIZE);
+    }
+
+    public void loadImage() {
+    }
+
 }

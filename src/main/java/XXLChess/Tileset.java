@@ -14,7 +14,6 @@ public class Tileset extends DisplayObject {
         tiles = new Tile[App.BOARD_WIDTH][App.BOARD_WIDTH];
     }
 
-    @Override
     public void setup() {
         for (int i = 0; i < tiles.length; i++) {
             // determine the starting colour per row
@@ -36,7 +35,6 @@ public class Tileset extends DisplayObject {
         }
     }
 
-    @Override
     public void display() {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles.length; j++) {

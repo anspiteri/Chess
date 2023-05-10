@@ -18,10 +18,4 @@ public class Board extends GameObject {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
     }
-
-    @Override
-    public void setup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setup'");
-    }
 }

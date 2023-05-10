@@ -18,9 +18,4 @@ public class Player extends GameObject {
         super(parent);
         //TODO Auto-generated constructor stub
     }
-
-    @Override
-    protected void setup() {
-
-    }
 }

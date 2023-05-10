@@ -27,12 +27,6 @@ public class Tile extends DisplayObject {
         this.occupied = false; 
     }
 
-    @Override
-    public void setup() {
-        ;
-    }
-
-    @Override
     public void display() {
         if (colour == TileColour.WHITE) {
             parent.fill(255, 255, 240);

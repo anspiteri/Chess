@@ -8,10 +8,4 @@ public class AIPlayer extends Player {
         super(parent);
         //TODO Auto-generated constructor stub
     }
-
-    @Override
-    protected void setup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setup'");
-    }
 }

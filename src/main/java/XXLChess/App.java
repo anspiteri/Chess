@@ -34,6 +34,8 @@ public class App extends PApplet {
 
     public static final int FPS = 60;
 
+    public static final boolean DEBUG = false;
+
     public static final String PATH = "src/main/resources/XXLChess/";
     public String configPath;
     public JSONObject conf;
@@ -81,7 +83,7 @@ public class App extends PApplet {
         // initialise gameboard
         tiles.setup();
         pieces.setup();
-        board.setup();
+        //board.setup();
 
         // Load images during setup
         pieces.loadImages();
@@ -133,13 +135,12 @@ public class App extends PApplet {
         // Parse the layout file into the buffer. 
         try {
             sc = new Scanner(new File(layoutFileString));
-            sc.useDelimiter("\\n"); // Use delimiter instead of nextLine() as to not skip whitespaces. 
 
-            while (sc.hasNext()) {
+            while (sc.hasNextLine()) {
                 ArrayList<Character> rowList = new ArrayList<>();
-                String line = sc.next();
+                String line = sc.nextLine();
                 
-                if (line.charAt(0) != '\n') {
+                if (line.length() > 1) {
                     // If the line has chess positions: store keys into char array. 
                     for (char c : line.toCharArray()) {
                         if (c != '\n') {
@@ -149,18 +150,37 @@ public class App extends PApplet {
                 } else {
                     // If it is an empty line: Create a char array with appropriate length.
                     for (int i = 0; i < BOARD_WIDTH; i++) {
-                        rowList.add(' ');
+                        rowList.add('T');
                     }
                 }
 
+                if (DEBUG) {System.out.println(rowList.size());}
+
+                if (rowList.size() < BOARD_WIDTH) {
+                    // check if line is shorter than desired length. 
+                    int padding = BOARD_WIDTH - rowList.size();
+                    for (int i = 0; i < padding; i++) {
+                        rowList.add('T');
+                    }
+                }
                 chessLayout.add(rowList);
             }
+        
         } catch (FileNotFoundException e) {
             System.out.println("Cannot find layout file: " + layoutFileString);
             e.printStackTrace();
         } finally {
             if (sc != null) {
                 sc.close();
+            }
+        }
+
+        if (DEBUG) {
+            for (int row = 0; row < chessLayout.size(); row++) {
+                for (int col = 0; col < chessLayout.get(row).size(); col++) {
+                    System.out.print(chessLayout.get(row).get(col));
+                }
+                System.out.print('\n');
             }
         }
         

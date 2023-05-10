@@ -13,16 +13,4 @@ public class Timer extends DisplayObject {
 
     public void addTime(int time) {
     }
-
-    @Override
-    protected void display() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'display'");
-    }
-
-    @Override
-    protected void setup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setup'");
-    }
 }

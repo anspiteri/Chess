@@ -1,41 +1,40 @@
 package XXLChess.pieces;
 
+import XXLChess.App;
 import XXLChess.pieces.enums.PieceColour;
 import processing.core.PApplet;
 
 public class Queen extends ChessPiece {
+    private String keyB = "Q";
+    private String keyW = "q";
 
     public Queen(PApplet parent, PieceColour colour, int x, int y) {
         super(parent, colour, x, y);
     }
 
     @Override
-    public void loadImage(String PATH) {
+    public String toString() {
+        if (colour == PieceColour.BLACK) {
+            return keyB;
+        } else {
+            return keyW;
+        }
+    }
+
+    @Override
+    public void loadImage() {
         if (this.colour == PieceColour.BLACK) {
             try {
-                image = parent.loadImage(PATH + "b-queen.png");
+                image = parent.loadImage(App.PATH + "b-queen.png");
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
         } else if (this.colour == PieceColour.WHITE) {
             try {
-                image = parent.loadImage(PATH + "w-queen.png");
+                image = parent.loadImage(App.PATH + "w-queen.png");
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
         }
     }
-
-    @Override
-    protected void display() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'display'");
-    }
-
-    @Override
-    protected void setup() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setup'");
-    }
-    
 }
