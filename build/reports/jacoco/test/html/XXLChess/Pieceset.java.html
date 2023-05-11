@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Pieceset.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">chessXXL</a> &gt; <a href="index.source.html" class="el_package">XXLChess</a> &gt; <span class="el_source">Pieceset.java</span></div><h1>Pieceset.java</h1><pre class="source lang-java linenums">package XXLChess;
+
+import java.util.ArrayList;
+
+import XXLChess.exceptions.PieceCreationException;
+import XXLChess.pieces.*;
+import XXLChess.pieces.enums.PieceColour;
+import processing.core.PApplet;
+
+public class Pieceset extends DisplayObject {
+
+    private ArrayList&lt;ArrayList&lt;Character&gt;&gt; chessLayout;
+    private ChessPiece[][] pieces;
+
+    public Pieceset(PApplet parent, ArrayList&lt;ArrayList&lt;Character&gt;&gt; chessLayout) {
+<span class="nc" id="L16">        super(parent);</span>
+<span class="nc" id="L17">        this.chessLayout = chessLayout;</span>
+<span class="nc" id="L18">        pieces = new ChessPiece[App.BOARD_WIDTH][App.BOARD_WIDTH];</span>
+<span class="nc" id="L19">    }</span>
+
+    public void setup() {
+
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        for (int row = 0; row &lt; pieces.length; row++) {</span>
+<span class="nc bnc" id="L24" title="All 2 branches missed.">            for (int column = 0; column &lt; pieces.length; column++) {</span>
+<span class="nc" id="L25">                char key = chessLayout.get(row).get(column);</span>
+
+                try {
+<span class="nc" id="L28">                    ChessPiece piece = createPiece(key, column * App.CELLSIZE, row * App.CELLSIZE);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">                    if (piece != null) {</span>
+<span class="nc" id="L30">                        pieces[row][column] = piece;</span>
+                    } else {
+<span class="nc" id="L32">                        throw new PieceCreationException(&quot;Layout key invalid: &quot; + key);</span>
+                    }
+<span class="nc" id="L34">                } catch (PieceCreationException e) {</span>
+<span class="nc" id="L35">                    System.err.println(&quot;Piece Creation Error: &quot; + e.getMessage());</span>
+<span class="nc" id="L36">                    e.printStackTrace();</span>
+<span class="nc" id="L37">                    System.exit(0);</span>
+<span class="nc" id="L38">                }</span>
+            }
+        }
+<span class="nc" id="L41">    }</span>
+
+    public ChessPiece createPiece(char key, int x, int y) {
+        ChessPiece piece;
+
+<span class="nc bnc" id="L46" title="All 24 branches missed.">        switch (key) {</span>
+            case 'P':
+<span class="nc" id="L48">                piece = new Pawn(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L49">                break;</span>
+            case 'p':
+<span class="nc" id="L51">                piece = new Pawn(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L52">                break;</span>
+            case 'R':
+<span class="nc" id="L54">                piece = new Rook(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L55">                break;</span>
+            case 'r':
+<span class="nc" id="L57">                piece = new Rook(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L58">                break;</span>
+            case 'N':
+<span class="nc" id="L60">                piece = new Knight(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L61">                break;</span>
+            case 'n':
+<span class="nc" id="L63">                piece = new Knight(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L64">                break;</span>
+            case 'B':
+<span class="nc" id="L66">                piece = new Bishop(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L67">                break;</span>
+            case 'b':
+<span class="nc" id="L69">                piece = new Bishop(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L70">                break;</span>
+            case 'H':
+<span class="nc" id="L72">                piece = new Archbishop(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L73">                break;</span>
+            case 'h':
+<span class="nc" id="L75">                piece = new Archbishop(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L76">                break;</span>
+            case 'C':
+<span class="nc" id="L78">                piece = new Camel(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L79">                break;</span>
+            case 'c':
+<span class="nc" id="L81">                piece = new Camel(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L82">                break;</span>
+            case 'G':
+<span class="nc" id="L84">                piece = new General(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L85">                break;</span>
+            case 'g':
+<span class="nc" id="L87">                piece = new General(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L88">                break;</span>
+            case 'A':
+<span class="nc" id="L90">                piece = new Amazon(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L91">                break;</span>
+            case 'a':
+<span class="nc" id="L93">                piece = new Amazon(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L94">                break;</span>
+            case 'K':
+<span class="nc" id="L96">                piece = new King(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L97">                break;</span>
+            case 'k':
+<span class="nc" id="L99">                piece = new King(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L100">                break;</span>
+            case 'E':
+<span class="nc" id="L102">                piece = new Chancellor(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L103">                break;</span>
+            case 'e':
+<span class="nc" id="L105">                piece = new Chancellor(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L106">                break;</span>
+            case 'Q':
+<span class="nc" id="L108">                piece = new Queen(parent, PieceColour.BLACK, x, y);</span>
+<span class="nc" id="L109">                break;</span>
+            case 'q':
+<span class="nc" id="L111">                piece = new Queen(parent, PieceColour.WHITE, x, y);</span>
+<span class="nc" id="L112">                break;</span>
+            case 'T':
+<span class="nc" id="L114">                piece = new Empty(parent, PieceColour.NULL, x, y); // indicates an empty but valid tile</span>
+<span class="nc" id="L115">                break;</span>
+            default:
+<span class="nc" id="L117">                piece = null; // invalid key.</span>
+                break;
+        }
+<span class="nc" id="L120">        return piece;</span>
+    }
+
+    public void loadImages() {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        for (ChessPiece[] rows : pieces) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            for (ChessPiece piece : rows) {</span>
+<span class="nc" id="L126">                piece.loadImage();</span>
+            }
+        }
+<span class="nc" id="L129">    }</span>
+
+    public void display() {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        for (ChessPiece[] rows : pieces) {</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            for (ChessPiece piece : rows) {</span>
+<span class="nc" id="L134">                piece.display();</span>
+            }
+        }
+<span class="nc" id="L137">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

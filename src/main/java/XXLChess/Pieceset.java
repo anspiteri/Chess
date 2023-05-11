@@ -34,7 +34,7 @@ public class Pieceset extends DisplayObject {
                 } catch (PieceCreationException e) {
                     System.err.println("Piece Creation Error: " + e.getMessage());
                     e.printStackTrace();
-                    System.exit(0);
+                    System.exit(1);
                 }
             }
         }
