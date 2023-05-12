@@ -19,4 +19,9 @@ public class Empty extends ChessPiece {
     @Override
     public void display() {
     }
+
+    @Override
+    public String getKey() {
+        return this.key;
+    }
 }

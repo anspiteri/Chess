@@ -37,4 +37,9 @@ public class Pawn extends ChessPiece {
             }
         }
     } 
+
+    @Override
+    public String getKey() {
+        return this.key;
+    }
 }

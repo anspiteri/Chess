@@ -18,7 +18,7 @@ public class Pieceset extends DisplayObject {
         pieces = new ChessPiece[App.BOARD_WIDTH][App.BOARD_WIDTH];
     }
 
-    public void setup() {
+    public void setup(Tileset tiles) {
 
         for (int row = 0; row < pieces.length; row++) {
             for (int column = 0; column < pieces.length; column++) {
@@ -28,6 +28,10 @@ public class Pieceset extends DisplayObject {
                     ChessPiece piece = createPiece(key, column * App.CELLSIZE, row * App.CELLSIZE);
                     if (piece != null) {
                         pieces[row][column] = piece;
+                        // Check if the piece is an empty<"T"> or real piece for tile state.
+                        if (piece.getKey() != "T") {
+                            tiles.getTiles()[row][column].setOccupied(true);
+                        }
                     } else {
                         throw new PieceCreationException("Layout key invalid: " + key);
                     }

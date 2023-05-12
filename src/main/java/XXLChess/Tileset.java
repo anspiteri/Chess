@@ -42,4 +42,16 @@ public class Tileset extends DisplayObject {
             }
         }
     }
+
+    public Tile[][] getTiles() {
+        return this.tiles;
+    }
+
+    public void clearHighlights() {
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles.length; j++) {
+                tiles[i][j].removeHighlight();
+            }
+        }
+    }
 }

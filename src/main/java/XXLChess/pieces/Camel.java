@@ -37,4 +37,8 @@ public class Camel extends ChessPiece {
         }
     }
     
+    @Override
+    public String getKey() {
+        return this.key;
+    }
 }

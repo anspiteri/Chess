@@ -13,6 +13,8 @@ import processing.event.MouseEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
+import XXLChess.board.Tile;
+import XXLChess.board.enums.HighlightColour;
 import XXLChess.exceptions.DimensionException;
 import XXLChess.players.Player;
 
@@ -41,7 +43,6 @@ public class App extends PApplet {
 
     private Tileset tiles;
     private Pieceset pieces;
-    private Board board;
 
     private Player playerBlack;
     private Player playerWhite;
@@ -85,17 +86,15 @@ public class App extends PApplet {
             System.exit(1);
         }
 
-
         // Instantiate board components
         tiles = new Tileset(this);
         pieces = new Pieceset(this, chessLayoutBuffer);
-        // add logic to decide whether to instantiate human players or AI players
-        board = new Board(this, tiles, pieces, playerBlack, playerWhite);
+
         
         // initialise gameboard
         tiles.setup();
-        pieces.setup();
-        //board.setup();
+        pieces.setup(tiles); // requires tiles so that as pieces are instantiated, the corresponding tile state changes to 'occupied'.
+        
 
         // Load images during setup
         pieces.loadImages();
@@ -119,7 +118,44 @@ public class App extends PApplet {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        
+        int mouseX = e.getX();
+        int mouseY = e.getY();
+        boolean clickValid = false;
+
+
+        /*
+         * CONDITION CHECK 
+         *  - player has selected a valid chess piece.
+         */
+
+        // I will use the tile as the coordinate bounds for selection, thus iterate through each tile in the tileset.
+        for (int row = 0; row < tiles.getTiles().length; row++) {
+            for (int col = 0; col < tiles.getTiles()[row].length; col++) {
+                Tile tile = tiles.getTiles()[row][col];
+                
+                // Check if mouse press is within bounds of tile. 
+                if ( (mouseX > tile.getX() & mouseX < (tile.getX() + CELLSIZE)) & (mouseY > tile.getY() & mouseY < (tile.getY() + CELLSIZE)) ) {
+                    
+                    // Within bounds of tile. Next check if tile is occupied. 
+                    if (tile.getOccupied() == true) {
+                        // Valid piece selection. 
+                        clickValid = true;
+                        tiles.clearHighlights();
+                        tile.setHighlight(HighlightColour.GREEN);
+                    } 
+                }
+            }
+        }
+
+        /*
+         * CONDITION CHECK
+         *  - player has selected a screen element. 
+         */
+
+        // All conditions checked. 
+        if (!clickValid) {
+            tiles.clearHighlights();
+        }
     }
 
     @Override

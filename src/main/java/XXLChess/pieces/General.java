@@ -37,4 +37,9 @@ public class General extends ChessPiece {
             }
         }
     }
+
+    @Override
+    public String getKey() {
+        return this.key;
+    }
 }

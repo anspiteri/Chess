@@ -37,4 +37,9 @@ public class King extends ChessPiece {
             }
         }
     }
+
+    @Override
+    public String getKey() {
+        return this.key;
+    }
 }

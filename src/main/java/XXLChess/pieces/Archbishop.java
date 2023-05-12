@@ -38,4 +38,8 @@ public class Archbishop extends ChessPiece {
         }
     }
 
+    @Override
+    public String getKey() {
+        return this.key;
+    }
 }

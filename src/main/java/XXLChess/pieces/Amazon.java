@@ -38,4 +38,9 @@ public class Amazon extends ChessPiece {
             }
         }
     }
+
+    @Override
+    public String getKey() {
+        return this.key;
+    }
 }
