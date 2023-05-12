@@ -44,6 +44,48 @@ public class Tile extends DisplayObject {
         }});
     }
 
+    public int getX() {
+        return x;
+    }
+    
+    public int getY() {
+        return y;
+    }    
+
+    public void setHighlight(HighlightColour highlightColour) {
+        this.highlightColour = highlightColour;
+        this.highlighted = true;
+    }
+
+    public HighlightColour getHighlightColour() {
+        return this.highlightColour;
+    }
+
+    public boolean gethighlighted() {
+        return highlighted;
+    } 
+
+    public void removeHighlight() {
+        this.highlightColour = null;
+        this.highlighted = false;
+    }
+
+    public TileColour getTileColour() {
+        return colour;
+    }
+
+    public void setOccupied(boolean makeOccupied) {
+        if (makeOccupied) {
+            this.occupied = true;
+        } else {
+            this.occupied = false;
+        }
+    }
+
+    public boolean getOccupied() {
+        return occupied;
+    }      
+
     public void display() {
 
         if (colour == TileColour.WHITE) {
@@ -76,46 +118,5 @@ public class Tile extends DisplayObject {
             parent.strokeWeight(1);
         }
         parent.rect(x, y, App.CELLSIZE, App.CELLSIZE);
-    }
-
-    public int getX() {
-        return x;
-    }
-    
-    public int getY() {
-        return y;
-    }
-
-    public void setHighlight(HighlightColour highlightColour) {
-        this.highlightColour = highlightColour;
-        this.highlighted = true;
-    }
-
-    public HighlightColour getHighlightColour() {
-        return this.highlightColour;
-    }
-
-    public void removeHighlight() {
-        this.highlightColour = null;
-        this.highlighted = false;
-    }
-
-    public boolean gethighlighted() {
-        return highlighted;
-    }
-
-    public TileColour getTileColour() {
-        return colour;
-    }
-
-    public void setOccupied(boolean makeOccupied) {
-        if (makeOccupied) {
-            this.occupied = true;
-        } else {
-            this.occupied = false;
-        }
-    }
-    public boolean getOccupied() {
-        return occupied;
     }
 }
