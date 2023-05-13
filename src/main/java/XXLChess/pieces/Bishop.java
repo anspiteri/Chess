@@ -1,20 +1,20 @@
 package XXLChess.pieces;
 
 import XXLChess.App;
-import XXLChess.pieces.enums.PieceColour;
+import XXLChess.enums.Colour;
 import processing.core.PApplet;
 
 public class Bishop extends ChessPiece {
     private String keyB = "B";
     private String keyW = "b";
 
-    public Bishop(PApplet parent, PieceColour colour, int x, int y) {
-        super(parent, colour, x, y);
+    public Bishop(PApplet parent, int x, int y, Colour colour) {
+        super(parent, x, y, colour);
     }
     
     @Override
     public String toString() {
-        if (colour == PieceColour.BLACK) {
+        if (colour == Colour.BLACK) {
             return keyB;
         } else {
             return keyW;
@@ -23,13 +23,13 @@ public class Bishop extends ChessPiece {
 
     @Override
     public void loadImage() {
-        if (this.colour == PieceColour.BLACK) {
+        if (this.colour == Colour.BLACK) {
             try {
                 image = parent.loadImage(App.PATH + "b-bishop.png");
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
-        } else if (this.colour == PieceColour.WHITE) {
+        } else if (this.colour == Colour.WHITE) {
             try {
                 image = parent.loadImage(App.PATH + "w-bishop.png");
             } catch (RuntimeException e) {

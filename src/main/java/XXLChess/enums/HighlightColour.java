@@ -1,4 +1,4 @@
-package XXLChess.board.enums;
+package XXLChess.enums;
 
 /*
  *  Blue – the player clicked on a piece, and it is able to move to this square.

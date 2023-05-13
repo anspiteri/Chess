@@ -2,22 +2,18 @@ package XXLChess.pieces;
 
 import XXLChess.App;
 import XXLChess.DisplayObject;
-import XXLChess.pieces.enums.PieceColour;
+import XXLChess.enums.Colour;
 import processing.core.PApplet;
 import processing.core.PImage;
 
 public class ChessPiece extends DisplayObject {
     protected PImage image;
-    protected PieceColour colour;
-    protected int x;
-    protected int y;
     protected String key;
 
-    protected ChessPiece(PApplet parent, PieceColour colour, int x, int y) {
-        super(parent);
+    protected ChessPiece(PApplet parent, int x, int y, Colour colour) {
+        super(parent, x, y, colour);
         
         this.image = null;
-        this.colour = colour;
         this.x = x;
         this.y = y;
         this.key = null;

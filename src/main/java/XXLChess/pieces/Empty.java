@@ -1,13 +1,13 @@
 package XXLChess.pieces;
 
-import XXLChess.pieces.enums.PieceColour;
+import XXLChess.enums.Colour;
 import processing.core.PApplet;
 
 public class Empty extends ChessPiece {
     private String key = "T";
 
-    public Empty(PApplet parent, PieceColour colour, int x, int y) {
-        super(parent, colour, x, y);
+    public Empty(PApplet parent, int x, int y, Colour colour) {
+        super(parent, x, y, colour);
     }
 
     @Override

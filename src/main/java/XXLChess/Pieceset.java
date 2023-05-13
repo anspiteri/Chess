@@ -2,12 +2,12 @@ package XXLChess;
 
 import java.util.ArrayList;
 
+import XXLChess.enums.Colour;
 import XXLChess.exceptions.PieceCreationException;
 import XXLChess.pieces.*;
-import XXLChess.pieces.enums.PieceColour;
 import processing.core.PApplet;
 
-public class Pieceset extends DisplayObject {
+public class Pieceset extends SetObject {
 
     private ArrayList<ArrayList<Character>> chessLayout;
     private ChessPiece[][] pieces;
@@ -49,73 +49,73 @@ public class Pieceset extends DisplayObject {
 
         switch (key) {
             case 'P':
-                piece = new Pawn(parent, PieceColour.BLACK, x, y);
+                piece = new Pawn(parent, x, y, Colour.BLACK);
                 break;
             case 'p':
-                piece = new Pawn(parent, PieceColour.WHITE, x, y);
+                piece = new Pawn(parent, x, y, Colour.WHITE);
                 break;
             case 'R':
-                piece = new Rook(parent, PieceColour.BLACK, x, y);
+                piece = new Rook(parent, x, y, Colour.BLACK);
                 break;
             case 'r':
-                piece = new Rook(parent, PieceColour.WHITE, x, y);
+                piece = new Rook(parent, x, y, Colour.WHITE);
                 break;
             case 'N':
-                piece = new Knight(parent, PieceColour.BLACK, x, y);
+                piece = new Knight(parent, x, y, Colour.BLACK);
                 break;
             case 'n':
-                piece = new Knight(parent, PieceColour.WHITE, x, y);
+                piece = new Knight(parent, x, y, Colour.WHITE);
                 break;
             case 'B':
-                piece = new Bishop(parent, PieceColour.BLACK, x, y);
+                piece = new Bishop(parent, x, y, Colour.BLACK);
                 break;
             case 'b':
-                piece = new Bishop(parent, PieceColour.WHITE, x, y);
+                piece = new Bishop(parent, x, y, Colour.WHITE);
                 break;
             case 'H':
-                piece = new Archbishop(parent, PieceColour.BLACK, x, y);
+                piece = new Archbishop(parent, x, y, Colour.BLACK);
                 break;
             case 'h':
-                piece = new Archbishop(parent, PieceColour.WHITE, x, y);
+                piece = new Archbishop(parent, x, y, Colour.WHITE);
                 break;
             case 'C':
-                piece = new Camel(parent, PieceColour.BLACK, x, y);
+                piece = new Camel(parent, x, y, Colour.BLACK);
                 break;
             case 'c':
-                piece = new Camel(parent, PieceColour.WHITE, x, y);
+                piece = new Camel(parent, x, y, Colour.WHITE);
                 break;
             case 'G':
-                piece = new General(parent, PieceColour.BLACK, x, y);
+                piece = new General(parent, x, y, Colour.BLACK);
                 break;
             case 'g':
-                piece = new General(parent, PieceColour.WHITE, x, y);
+                piece = new General(parent, x, y, Colour.WHITE);
                 break;
             case 'A':
-                piece = new Amazon(parent, PieceColour.BLACK, x, y);
+                piece = new Amazon(parent, x, y, Colour.BLACK);
                 break;
             case 'a':
-                piece = new Amazon(parent, PieceColour.WHITE, x, y);
+                piece = new Amazon(parent, x, y, Colour.WHITE);
                 break;
             case 'K':
-                piece = new King(parent, PieceColour.BLACK, x, y);
+                piece = new King(parent, x, y, Colour.BLACK);
                 break;
             case 'k':
-                piece = new King(parent, PieceColour.WHITE, x, y);
+                piece = new King(parent, x, y, Colour.WHITE);
                 break;
             case 'E':
-                piece = new Chancellor(parent, PieceColour.BLACK, x, y);
+                piece = new Chancellor(parent, x, y, Colour.BLACK);
                 break;
             case 'e':
-                piece = new Chancellor(parent, PieceColour.WHITE, x, y);
+                piece = new Chancellor(parent, x, y, Colour.WHITE);
                 break;
             case 'Q':
-                piece = new Queen(parent, PieceColour.BLACK, x, y);
+                piece = new Queen(parent, x, y, Colour.BLACK);
                 break;
             case 'q':
-                piece = new Queen(parent, PieceColour.WHITE, x, y);
+                piece = new Queen(parent, x, y, Colour.WHITE);
                 break;
             case 'T':
-                piece = new Empty(parent, PieceColour.NULL, x, y); // indicates an empty but valid tile
+                piece = new Empty(parent, x, y, Colour.NULL); // indicates an empty but valid tile
                 break;
             default:
                 piece = null; // invalid key.
@@ -132,6 +132,7 @@ public class Pieceset extends DisplayObject {
         }
     }
 
+    @Override
     public void display() {
         for (ChessPiece[] rows : pieces) {
             for (ChessPiece piece : rows) {

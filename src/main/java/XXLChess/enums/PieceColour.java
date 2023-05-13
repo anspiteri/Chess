@@ -1,4 +1,4 @@
-package XXLChess.pieces.enums;
+package XXLChess.enums;
 
 public enum PieceColour {
     WHITE, BLACK, NULL

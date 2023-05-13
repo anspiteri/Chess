@@ -14,10 +14,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import XXLChess.board.Tile;
-import XXLChess.board.enums.HighlightColour;
+import XXLChess.enums.Colour;
+import XXLChess.enums.HighlightColour;
+import XXLChess.exceptions.ConfigException;
 import XXLChess.exceptions.DimensionException;
+import XXLChess.players.AIPlayer;
+import XXLChess.players.HumanPlayer;
 import XXLChess.players.Player;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.*;
 import java.text.ParseException;
@@ -43,9 +48,10 @@ public class App extends PApplet {
 
     private Tileset tiles;
     private Pieceset pieces;
+    private UI UI;
 
-    private Player playerBlack;
-    private Player playerWhite;
+    private Player humanPlayer;
+    private Player aiPlayer;
 
     public App() {
         this.configPath = "config.json";
@@ -86,15 +92,32 @@ public class App extends PApplet {
             System.exit(1);
         }
 
-        // Instantiate board components
+        // Instantiate App components
         tiles = new Tileset(this);
         pieces = new Pieceset(this, chessLayoutBuffer);
+
+        try {
+            if (playerColour == "white") {
+                humanPlayer = new HumanPlayer(this, Colour.WHITE);
+                aiPlayer = new AIPlayer(this, Colour.BLACK);
+            } else if (playerColour == "black") {
+                humanPlayer = new HumanPlayer(this, Colour.BLACK);
+                aiPlayer = new AIPlayer(this, Colour.WHITE);
+            } else {
+                throw new ConfigException("Syntax err in colour param, must be \"black\" or \"white\"");
+            }
+        } catch (ConfigException e) {
+            System.err.println("Config Error: " + e);
+            System.exit(1);
+        }
+
+        UI = new UI(this, humanPlayer.getColour(), aiPlayer.getColour());
 
         
         // initialise gameboard
         tiles.setup();
         pieces.setup(tiles); // requires tiles so that as pieces are instantiated, the corresponding tile state changes to 'occupied'.
-        
+        UI.setup();
 
         // Load images during setup
         pieces.loadImages();
@@ -167,10 +190,10 @@ public class App extends PApplet {
      * Draw all elements in the game by current frame. 
     */
     public void draw() {
-
         // Display chess board tiles, pieces, timers, messages
         tiles.display();
         pieces.display();
+        UI.display();
     }
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.

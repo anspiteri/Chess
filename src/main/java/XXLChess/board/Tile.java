@@ -6,8 +6,8 @@ import java.util.Map;
 
 import XXLChess.App;
 import XXLChess.DisplayObject;
-import XXLChess.board.enums.HighlightColour;
-import XXLChess.board.enums.TileColour;
+import XXLChess.enums.Colour;
+import XXLChess.enums.HighlightColour;
 import processing.core.PApplet;
 
 public class Tile extends DisplayObject {
@@ -21,26 +21,21 @@ public class Tile extends DisplayObject {
     private final int DARK_RED = parent.color(153, 0, 0);
     private final float HIGHLIGHT_AMT = 0.5f;
 
-    private final Map<TileColour, Integer> colorDict;
+    private final Map<Colour, Integer> colorDict;
 
-    private int x, y;
-    private TileColour colour; 
     private HighlightColour highlightColour;
     private boolean highlighted, occupied;
 
-    public Tile (PApplet parent, int x, int y, TileColour colour) {
-        super(parent);
-        this.x = x;
-        this.y = y;
-        this.colour = colour;
+    public Tile (PApplet parent, int x, int y, Colour colour) {
+        super(parent, x, y, colour);
         
         highlightColour = null;
         highlighted = false;
         occupied = false; 
 
-        colorDict = Collections.unmodifiableMap(new HashMap<TileColour, Integer>() {{
-            put(TileColour.WHITE, WHITE);
-            put(TileColour.BLACK, BLACK);
+        colorDict = Collections.unmodifiableMap(new HashMap<Colour, Integer>() {{
+            put(Colour.WHITE, WHITE);
+            put(Colour.BLACK, BLACK);
         }});
     }
 
@@ -70,7 +65,7 @@ public class Tile extends DisplayObject {
         this.highlighted = false;
     }
 
-    public TileColour getTileColour() {
+    public Colour getTileColour() {
         return colour;
     }
 
@@ -88,7 +83,7 @@ public class Tile extends DisplayObject {
 
     public void display() {
 
-        if (colour == TileColour.WHITE) {
+        if (colour == Colour.WHITE) {
             parent.fill(this.WHITE);
         } else {
             parent.fill(this.BLACK);
