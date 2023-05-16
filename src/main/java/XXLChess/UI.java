@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import XXLChess.board.Message;
 import XXLChess.board.Timer;
 import XXLChess.enums.Colour;
+import XXLChess.enums.GameOver;
 import processing.core.PApplet;
 
 public class UI extends SetObject {
@@ -28,14 +30,34 @@ public class UI extends SetObject {
         }});
     }
 
+    public void setupTimers(int secondsHuman, int incrementHuman, int secondsAI, int incrementAI) {
+        timerTop.setTime(secondsAI, incrementAI);
+        timerBottom.setTime(secondsHuman, incrementHuman);
+    }
+
+    public Timer getTimer(Colour teamColour) {
+        return timerDict.get(teamColour);
+    }
+
+    public void updateTimers() {
+        timerTop.updateTimer();
+        timerBottom.updateTimer();
+    }
+
+    public Message gameOver(GameOver condition) {
+        Message message = null;
+        if (condition == GameOver.TIME) {
+            message = new Message(parent, TIMER_TOP_XY[0], App.HEIGHT / 2, null, "Times up!");
+        }
+
+        return message;
+    }
+
     @Override
     public void display() {
         timerTop.display();
         timerBottom.display();
     }
 
-    public Timer getTimer(Colour teamColour) {
-        return timerDict.get(teamColour);
-    }
     
 }

@@ -13,14 +13,11 @@ import processing.event.MouseEvent;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import XXLChess.board.Tile;
-import XXLChess.enums.Colour;
-import XXLChess.enums.HighlightColour;
-import XXLChess.exceptions.ConfigException;
-import XXLChess.exceptions.DimensionException;
-import XXLChess.players.AIPlayer;
-import XXLChess.players.HumanPlayer;
-import XXLChess.players.Player;
+import XXLChess.board.*;
+import XXLChess.enums.*;
+import XXLChess.exceptions.*;
+import XXLChess.players.*;
+
 
 import java.awt.Color;
 import java.awt.Font;
@@ -39,6 +36,7 @@ public class App extends PApplet {
     public static int HEIGHT = BOARD_WIDTH*CELLSIZE;
 
     public static final int FPS = 60;
+    private int tickCounter = 0;
 
     public static final boolean DEBUG = false;
 
@@ -72,8 +70,9 @@ public class App extends PApplet {
         // load config
         ArrayList<ArrayList<Character>> chessLayoutBuffer = null;
         JSONObject timeControls = null;
-        String playerColour = null;
+        String playerColour = "null";
         Double pieceMovementSpeed = 0.0, maxMovementTime = 0.0;
+        int secondsHuman = 0, incrementHuman = -1, secondsAI = 0, incrementAI = -1;
 
         try {
             conf = loadJSONObject(new File(this.configPath));
@@ -86,6 +85,11 @@ public class App extends PApplet {
             pieceMovementSpeed = conf.getDouble("piece_movement_speed");
             maxMovementTime = conf.getDouble("max_movement_time");
 
+            secondsHuman = timeControls.getJSONObject("player").getInt("seconds");
+            incrementHuman = timeControls.getJSONObject("player").getInt("increment");
+            secondsAI = timeControls.getJSONObject("cpu").getInt("seconds");
+            incrementAI = timeControls.getJSONObject("cpu").getInt("seconds");
+
         } catch (RuntimeException e) {
             e.printStackTrace();
             System.err.println("Error parsing JSON file.");
@@ -97,10 +101,10 @@ public class App extends PApplet {
         pieces = new Pieceset(this, chessLayoutBuffer);
 
         try {
-            if (playerColour == "white") {
+            if (playerColour.equals("white")) {
                 humanPlayer = new HumanPlayer(this, Colour.WHITE);
                 aiPlayer = new AIPlayer(this, Colour.BLACK);
-            } else if (playerColour == "black") {
+            } else if (playerColour.equals("black")) {
                 humanPlayer = new HumanPlayer(this, Colour.BLACK);
                 aiPlayer = new AIPlayer(this, Colour.WHITE);
             } else {
@@ -108,16 +112,26 @@ public class App extends PApplet {
             }
         } catch (ConfigException e) {
             System.err.println("Config Error: " + e);
+            System.err.println("player colour param: " + playerColour);
             System.exit(1);
         }
 
         UI = new UI(this, humanPlayer.getColour(), aiPlayer.getColour());
 
-        
+        try {
+            if (secondsHuman > 0 & incrementHuman >= 0 & secondsAI > 0 & incrementAI >= 0) {
+                UI.setupTimers(secondsHuman, incrementHuman, secondsAI, incrementAI);
+            } else {
+                throw new ConfigException("Syntax err in time controls params, seconds: positive nums, increment: 0 or positive");
+            }
+        } catch (ConfigException e) {
+            System.err.println("Config Error: " + e);
+            System.exit(1);
+        }
+
         // initialise gameboard
         tiles.setup();
         pieces.setup(tiles); // requires tiles so that as pieces are instantiated, the corresponding tile state changes to 'occupied'.
-        UI.setup();
 
         // Load images during setup
         pieces.loadImages();
@@ -190,6 +204,15 @@ public class App extends PApplet {
      * Draw all elements in the game by current frame. 
     */
     public void draw() {
+        tickCounter++;
+
+        if (tickCounter == 60) {
+            tick();
+            tickCounter = 0;
+        }
+
+        background(128, 128, 128);
+
         // Display chess board tiles, pieces, timers, messages
         tiles.display();
         pieces.display();
@@ -199,7 +222,7 @@ public class App extends PApplet {
 	// Add any additional methods or attributes you want. Please put classes in different files.
 
     /**
-     * parseLayout:
+     * parseLayout():
      * 
      * @param layoutFileString
      * @return ArrayList<ArrayList<Character>> chessLayout buffer of chess layout presented in level layout. 
@@ -278,6 +301,24 @@ public class App extends PApplet {
        
         return chessLayout;
     }
+
+    /**
+     * tick():
+     * Updates every second (60 frames)
+     */
+    public void tick() {
+
+        //TODO: Push message object to the main draw command where it will continually display on screen. 
+
+        // check game over conditions. 
+        if ( (UI.getTimer(Colour.BLACK).getTime() == 0) | (UI.getTimer(Colour.WHITE).getTime() == 0) ) {
+            Message message = UI.gameOver(GameOver.TIME);
+            message.display();
+        }
+
+        // timer decreases 
+        UI.updateTimers();
+    }    
 
     public static void main(String[] args) {
         PApplet.main("XXLChess.App");

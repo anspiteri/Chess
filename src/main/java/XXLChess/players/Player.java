@@ -12,9 +12,9 @@ public class Player extends LogicObject {
     protected Colour playerColour;
     protected ArrayList<ChessPiece>[] capturedPieces;
 
-    protected Player(PApplet parent, Colour playeColour) {
+    protected Player(PApplet parent, Colour playerColour) {
         super(parent);
-        this.playerColour = playeColour;
+        this.playerColour = playerColour;
     }
 
     public Colour getColour() {
