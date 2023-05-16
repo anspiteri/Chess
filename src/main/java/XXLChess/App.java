@@ -1,28 +1,16 @@
 package XXLChess;
 
-//import org.reflections.Reflections;
-//import org.reflections.scanners.Scanners;
 import processing.core.PApplet;
-//import processing.core.PImage;
 import processing.data.JSONObject;
-//import processing.data.JSONArray;
-import processing.core.PFont;
-import processing.core.PGraphics;
 import processing.event.MouseEvent;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 import XXLChess.board.*;
 import XXLChess.enums.*;
 import XXLChess.exceptions.*;
+import XXLChess.pieces.ChessPiece;
 import XXLChess.players.*;
 
-
-import java.awt.Color;
-import java.awt.Font;
 import java.io.*;
-import java.text.ParseException;
 import java.util.*;
 
 public class App extends PApplet {
@@ -50,6 +38,8 @@ public class App extends PApplet {
 
     private Player humanPlayer;
     private Player aiPlayer;
+
+    private Colour turnState;
 
     public App() {
         this.configPath = "config.json";
@@ -136,6 +126,9 @@ public class App extends PApplet {
         // Load images during setup
         pieces.loadImages();
 
+        // Starting turn. 
+        turnState = Colour.WHITE;
+
     }
 
     /**
@@ -157,45 +150,35 @@ public class App extends PApplet {
     public void mousePressed(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
+        Tile tile = null;
+        ChessPiece piece = null;
         boolean clickValid = false;
-
-
+        
         /*
          * CONDITION CHECK 
          *  - player has selected a valid chess piece.
          */
+        if ((turnState == humanPlayer.getColour()) & (UI.isGameOver() == false)) {
+            tile = tiles.findTile(mouseX, mouseY);
+            if (tile != null) {
+                piece = pieces.getPiece(tile.getRow(), tile.getCol());
 
-        // I will use the tile as the coordinate bounds for selection, thus iterate through each tile in the tileset.
-        for (int row = 0; row < tiles.getTiles().length; row++) {
-            for (int col = 0; col < tiles.getTiles()[row].length; col++) {
-                Tile tile = tiles.getTiles()[row][col];
-                
-                // Check if mouse press is within bounds of tile. 
-                if ( (mouseX > tile.getX() & mouseX < (tile.getX() + CELLSIZE)) & (mouseY > tile.getY() & mouseY < (tile.getY() + CELLSIZE)) ) {
-                    
-                    // Within bounds of tile. Next check if tile is occupied. 
-                    // TODO: Check that the piece is a player's piece. 
-                    /*
-                     * Possibly, make each tile contain a pointer to the corresponding Chesspiece object
-                     * in the pieces array. 
-                     */
-                    if ((tile.getOccupied() == true) & (UI.isGameOver() == false)) {
-                        // Valid piece selection. 
-                        clickValid = true;
-                        tiles.clearHighlights();
-                        tile.setHighlight(HighlightColour.GREEN);
-                        /*
-                         * TODO: Calculate valid moves and display corresponding highlight colours. 
-                         */
-                    } 
+                if (piece.getColour() == humanPlayer.getColour()) {
+                    clickValid = true;
+                    tiles.clearHighlights();
+                    tile.setHighlight(HighlightColour.GREEN);
+
+                    // determine valid moves and set highlights.
+
+                    // if second click on valid move:
+                        // get row/col for click and move piece or capture & move. 
+                        // get x/y for animation
+                        // CHANGE TURN STATE
+                            // check for checkmate, and set game over accordingly.
+                            // In this method, make AI do their turn. 
                 }
             }
         }
-
-        /*
-         * CONDITION CHECK
-         *  - player has selected a screen element. 
-         */
 
         // All conditions checked. 
         if (!clickValid) {
@@ -205,7 +188,6 @@ public class App extends PApplet {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        
     }
 
     /**
@@ -327,7 +309,7 @@ public class App extends PApplet {
 
         // timer decreases 
         if (UI.isGameOver() == false) {
-            UI.updateTimers();
+            UI.updateTimers(turnState);
         }
     }    
 

@@ -25,7 +25,7 @@ public class Tileset extends SetObject {
             }
             
             for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j] = new Tile(parent, j * App.CELLSIZE, i * App.CELLSIZE, tileColour);
+                tiles[i][j] = new Tile(parent, j * App.CELLSIZE, i * App.CELLSIZE, tileColour, i, j);
                 // logic used to create alternating black and white tiles across rows
                 if (tileColour == Colour.WHITE) {
                     tileColour = Colour.BLACK;
@@ -40,9 +40,29 @@ public class Tileset extends SetObject {
     public void display() {
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j].display();
+                tiles[i][j].display();  
             }
         }
+    }
+
+    public Tile findTile(int mouseX, int mouseY) {
+        Tile tile = null;
+
+        for (int row = 0; row < tiles.length; row++) {
+            for (int col = 0; col < tiles[row].length; col++) {
+                tile = tiles[row][col];
+
+                // Check if mouse press is within bounds of tile. 
+                if ( (mouseX > tile.getX() & mouseX < (tile.getX() + App.CELLSIZE))
+                     & (mouseY > tile.getY() & mouseY < (tile.getY() + App.CELLSIZE)) ) {
+                    
+                        if (tile.getOccupied() == true) {
+                            return tile;
+                        }                    
+                }
+            }
+        }
+        return tile;
     }
 
     public Tile[][] getTiles() {

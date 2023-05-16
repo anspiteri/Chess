@@ -25,13 +25,16 @@ public class Tile extends DisplayObject {
 
     private HighlightColour highlightColour;
     private boolean highlighted, occupied;
+    private int row, col;
 
-    public Tile (PApplet parent, int x, int y, Colour colour) {
+    public Tile (PApplet parent, int x, int y, Colour colour, int row, int col) {
         super(parent, x, y, colour);
         
         highlightColour = null;
         highlighted = false;
         occupied = false; 
+        this.row = row;
+        this.col = col;
 
         colorDict = Collections.unmodifiableMap(new HashMap<Colour, Integer>() {{
             put(Colour.WHITE, WHITE);
@@ -72,6 +75,14 @@ public class Tile extends DisplayObject {
     public boolean getOccupied() {
         return occupied;
     }      
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
 
     public void display() {
 

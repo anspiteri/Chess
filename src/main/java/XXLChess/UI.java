@@ -14,13 +14,13 @@ public class UI extends SetObject {
     private final String TIME_BLACK_WIN = "Black\nwins.";
     private final String TIME_WHITE_WIN = "White\nwins.";
     private final String TIME_DRAW = "Draw.";
-    private final String CHECKMATE_BLACK_WIN = "Checkmate, black wins.";
-    private final String CHECKMATE_WHITE_WIN = "Checkmate, white wins.";
+    private final String CHECKMATE_BLACK_WIN = "Checkmate\nblack wins.";
+    private final String CHECKMATE_WHITE_WIN = "Checkmate\nwhite wins.";
     private final String STANDARD_DRAW = "Draw.";
 
     private final int[] TIMER_TOP_XY = {App.WIDTH - 2*App.CELLSIZE, App.CELLSIZE};
     private final int[] TIMER_BOTTOM_XY = {App.WIDTH - 2*App.CELLSIZE, App.HEIGHT - App.CELLSIZE};
-    private final int[] MESSAGE_XY = {(App.CELLSIZE * App.BOARD_WIDTH) + 16, (App.HEIGHT/2) + 24};
+    private final int[] MESSAGE_XY = {(App.CELLSIZE * App.BOARD_WIDTH) + 16, (App.HEIGHT/2) + 16};
 
     private final Map<Colour, Timer> timerDict;
 
@@ -51,9 +51,8 @@ public class UI extends SetObject {
         return timerDict.get(teamColour);
     }
 
-    public void updateTimers() {
-        timerTop.updateTimer();
-        timerBottom.updateTimer();
+    public void updateTimers(Colour playerTurn) {
+        timerDict.get(playerTurn).updateTimer();
     }
 
     public boolean isGameOver() {

@@ -132,6 +132,10 @@ public class Pieceset extends SetObject {
         }
     }
 
+    public ChessPiece getPiece(int row, int col) {
+        return pieces[row][col];
+    }
+
     @Override
     public void display() {
         for (ChessPiece[] rows : pieces) {
