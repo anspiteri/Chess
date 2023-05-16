@@ -37,15 +37,7 @@ public class Tile extends DisplayObject {
             put(Colour.WHITE, WHITE);
             put(Colour.BLACK, BLACK);
         }});
-    }
-
-    public int getX() {
-        return x;
-    }
-    
-    public int getY() {
-        return y;
-    }    
+    }  
 
     public void setHighlight(HighlightColour highlightColour) {
         this.highlightColour = highlightColour;

@@ -10,8 +10,8 @@ public class Message extends DisplayObject {
     public Message(PApplet parent, int x, int y, Colour colour, String message) {
         super(parent, x, y, colour);
         this.colour = Colour.NULL;
-
-        parent.textSize(32);
+        this.message = message;
+        parent.textSize(28);
     }
     
     public void display() {

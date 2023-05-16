@@ -26,10 +26,6 @@ public class Timer extends DisplayObject {
         parent.text(seconds, x, y);
     }
 
-    public Colour getColour() {
-        return colour;
-    }
-
     public void addTime() {
         seconds += increment;
     }

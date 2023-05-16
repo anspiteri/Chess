@@ -13,4 +13,16 @@ public class DisplayObject extends GameObject {
         this.y = y;
         this.colour = colour;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public Colour getColour() {
+        return colour;
+    }
 }

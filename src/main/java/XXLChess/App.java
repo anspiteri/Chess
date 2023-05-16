@@ -174,11 +174,19 @@ public class App extends PApplet {
                 if ( (mouseX > tile.getX() & mouseX < (tile.getX() + CELLSIZE)) & (mouseY > tile.getY() & mouseY < (tile.getY() + CELLSIZE)) ) {
                     
                     // Within bounds of tile. Next check if tile is occupied. 
-                    if (tile.getOccupied() == true) {
+                    // TODO: Check that the piece is a player's piece. 
+                    /*
+                     * Possibly, make each tile contain a pointer to the corresponding Chesspiece object
+                     * in the pieces array. 
+                     */
+                    if ((tile.getOccupied() == true) & (UI.isGameOver() == false)) {
                         // Valid piece selection. 
                         clickValid = true;
                         tiles.clearHighlights();
                         tile.setHighlight(HighlightColour.GREEN);
+                        /*
+                         * TODO: Calculate valid moves and display corresponding highlight colours. 
+                         */
                     } 
                 }
             }
@@ -308,16 +316,19 @@ public class App extends PApplet {
      */
     public void tick() {
 
-        //TODO: Push message object to the main draw command where it will continually display on screen. 
-
         // check game over conditions. 
-        if ( (UI.getTimer(Colour.BLACK).getTime() == 0) | (UI.getTimer(Colour.WHITE).getTime() == 0) ) {
-            Message message = UI.gameOver(GameOver.TIME);
-            message.display();
+        if ( (UI.getTimer(Colour.BLACK).getTime() == 0) ) {
+            UI.gameOver(GameOver.TIME, Colour.WHITE);
+        } else if (UI.getTimer(Colour.WHITE).getTime() == 0) {
+            UI.gameOver(GameOver.TIME, Colour.BLACK);
+        } else if ( (UI.getTimer(Colour.BLACK).getTime() == 0) & (UI.getTimer(Colour.WHITE).getTime() == 0) ) {
+            UI.gameOver(GameOver.TIME, Colour.NULL);
         }
 
         // timer decreases 
-        UI.updateTimers();
+        if (UI.isGameOver() == false) {
+            UI.updateTimers();
+        }
     }    
 
     public static void main(String[] args) {

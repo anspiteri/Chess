@@ -36,14 +36,6 @@ public class ChessPiece extends DisplayObject {
     public void loadImage() {
     }
 
-    public int getX() {
-        return this.x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
     public void setX(int x) {
         this.x = x;
     }
