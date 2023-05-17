@@ -6,8 +6,8 @@ import processing.core.PApplet;
 public class Empty extends ChessPiece {
     private String key = "T";
 
-    public Empty(PApplet parent, int x, int y, Colour colour) {
-        super(parent, x, y, colour);
+    public Empty(PApplet parent, int x, int y, Colour colour, int row, int col) {
+        super(parent, x, y, colour, row, col);
     }
 
     @Override

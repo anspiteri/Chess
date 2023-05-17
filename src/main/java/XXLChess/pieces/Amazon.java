@@ -9,8 +9,8 @@ public class Amazon extends ChessPiece {
     private String keyW = "a";
 
 
-    public Amazon(PApplet parent, int x, int y, Colour colour) {
-        super(parent, x, y, colour);
+    public Amazon(PApplet parent, int x, int y, Colour colour, int row, int col) {
+        super(parent, x, y, colour, row, col);
     }
 
     @Override

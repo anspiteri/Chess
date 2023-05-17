@@ -8,8 +8,8 @@ public class Bishop extends ChessPiece {
     private String keyB = "B";
     private String keyW = "b";
 
-    public Bishop(PApplet parent, int x, int y, Colour colour) {
-        super(parent, x, y, colour);
+    public Bishop(PApplet parent, int x, int y, Colour colour, int row, int col) {
+        super(parent, x, y, colour, row, col);
     }
     
     @Override

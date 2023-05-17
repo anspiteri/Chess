@@ -16,7 +16,7 @@ public class UI extends SetObject {
     private final String TIME_DRAW = "Draw.";
     private final String CHECKMATE_BLACK_WIN = "Checkmate\nblack wins.";
     private final String CHECKMATE_WHITE_WIN = "Checkmate\nwhite wins.";
-    private final String STANDARD_DRAW = "Draw.";
+    private final String STANDARD_DRAW = "Stalemate.";
 
     private final int[] TIMER_TOP_XY = {App.WIDTH - 2*App.CELLSIZE, App.CELLSIZE};
     private final int[] TIMER_BOTTOM_XY = {App.WIDTH - 2*App.CELLSIZE, App.HEIGHT - App.CELLSIZE};
@@ -53,6 +53,10 @@ public class UI extends SetObject {
 
     public void updateTimers(Colour playerTurn) {
         timerDict.get(playerTurn).updateTimer();
+    }
+
+    public void incrementTimer(Colour timer) {
+        timerDict.get(timer).addTime();
     }
 
     public boolean isGameOver() {

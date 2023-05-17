@@ -2,11 +2,11 @@
   "layout": "level1.txt",
   "time_controls": {
     "player": {
-      "seconds": 5,
+      "seconds": 120,
       "increment": 2
     },
     "cpu": {
-      "seconds": 5,
+      "seconds": 120,
       "increment": 2
     }
   },

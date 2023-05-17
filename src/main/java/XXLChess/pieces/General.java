@@ -8,8 +8,8 @@ public class General extends ChessPiece {
     private String keyB = "G";
     private String keyW = "g";
 
-    public General(PApplet parent, int x, int y, Colour colour) {
-        super(parent, x, y, colour);
+    public General(PApplet parent, int x, int y, Colour colour, int row, int col) {
+        super(parent, x, y, colour, row, col);
     }
 
     @Override

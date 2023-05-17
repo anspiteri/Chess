@@ -8,8 +8,8 @@ public class Knight extends ChessPiece {
     private String keyB = "N";
     private String keyW = "n";
 
-    public Knight(PApplet parent, int x, int y, Colour colour) {
-        super(parent, x, y, colour);
+    public Knight(PApplet parent, int x, int y, Colour colour, int row, int col) {
+        super(parent, x, y, colour, row, col);
     }
 
     @Override

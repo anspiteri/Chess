@@ -8,8 +8,8 @@ public class Camel extends ChessPiece {
     private String keyB = "C";
     private String keyW = "c";
 
-    public Camel(PApplet parent, int x, int y, Colour colour) {
-        super(parent, x, y, colour);
+    public Camel(PApplet parent, int x, int y, Colour colour, int row, int col) {
+        super(parent, x, y, colour, row, col);
     }
 
     @Override

@@ -5,6 +5,7 @@ import processing.data.JSONObject;
 import processing.event.MouseEvent;
 
 import XXLChess.board.*;
+import XXLChess.board.logic.Move;
 import XXLChess.enums.*;
 import XXLChess.exceptions.*;
 import XXLChess.pieces.ChessPiece;
@@ -150,39 +151,36 @@ public class App extends PApplet {
     public void mousePressed(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
-        Tile tile = null;
-        ChessPiece piece = null;
+
         boolean clickValid = false;
         
         /*
-         * CONDITION CHECK 
-         *  - player has selected a valid chess piece.
+         * CONDITION CHECKLIST
+         *  - game is not over.
+         *  - player's turn
+         *  - player has selected a valid tile via xy coords, checkTile() also checks tile is occupied. 
+         *  - checks piece is their own piece.
          */
-        if ((turnState == humanPlayer.getColour()) & (UI.isGameOver() == false)) {
-            tile = tiles.findTile(mouseX, mouseY);
+        if ( (UI.isGameOver() == false) & (turnState == humanPlayer.getColour()) ) {
+            Tile tile = tiles.checkTile(mouseX, mouseY);
             if (tile != null) {
-                piece = pieces.getPiece(tile.getRow(), tile.getCol());
+                ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());
 
                 if (piece.getColour() == humanPlayer.getColour()) {
                     clickValid = true;
-                    tiles.clearHighlights();
-                    tile.setHighlight(HighlightColour.GREEN);
-
-                    // determine valid moves and set highlights.
+                    select(tile, piece);
 
                     // if second click on valid move:
                         // get row/col for click and move piece or capture & move. 
                         // get x/y for animation
                         // CHANGE TURN STATE
-                            // check for checkmate, and set game over accordingly.
-                            // In this method, make AI do their turn. 
                 }
             }
         }
 
         // All conditions checked. 
         if (!clickValid) {
-            tiles.clearHighlights();
+            deselect();
         }
     }
 
@@ -298,7 +296,7 @@ public class App extends PApplet {
      */
     public void tick() {
 
-        // check game over conditions. 
+        // check game over condition for timer. 
         if ( (UI.getTimer(Colour.BLACK).getTime() == 0) ) {
             UI.gameOver(GameOver.TIME, Colour.WHITE);
         } else if (UI.getTimer(Colour.WHITE).getTime() == 0) {
@@ -311,7 +309,53 @@ public class App extends PApplet {
         if (UI.isGameOver() == false) {
             UI.updateTimers(turnState);
         }
-    }    
+    }
+
+    public void changeTurn() {
+        // TODO: check for checkmate & set game over accordingly, make AI do their turn. 
+        if (turnState == Colour.WHITE) {
+            turnState = Colour.BLACK;
+            UI.incrementTimer(Colour.WHITE);
+        } else {
+            turnState = Colour.WHITE;
+            UI.incrementTimer(Colour.BLACK);
+        }
+    }
+
+    /**
+     * select
+     * @param tile
+     * @param piece
+     */
+    public void select(Tile tile, ChessPiece piece) {
+        this.deselect();
+        tiles.selectTile(tile);
+        pieces.selectPiece(piece);
+
+        List<Move> validMoves = piece.getValidMoves(tiles, pieces);
+        if (validMoves != null) {
+            for (Move move : validMoves) {
+                tiles.addHighlight(move.getNewRow(), move.getNewCol(), move.isCaptureMove());
+            }
+        }
+
+    }
+
+    /**
+     * deselect
+     */
+    public void deselect() {
+        tiles.deselectTile();
+        pieces.deselectPiece();
+    }
+    
+    public Player getHumanPlayer() {
+        return humanPlayer;
+    }
+
+    public Player getAiPlayer() {
+        return aiPlayer;
+    }
 
     public static void main(String[] args) {
         PApplet.main("XXLChess.App");
