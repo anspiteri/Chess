@@ -5,7 +5,6 @@ import processing.data.JSONObject;
 import processing.event.MouseEvent;
 
 import XXLChess.board.*;
-import XXLChess.board.logic.Move;
 import XXLChess.enums.*;
 import XXLChess.exceptions.*;
 import XXLChess.pieces.ChessPiece;
@@ -37,8 +36,8 @@ public class App extends PApplet {
     private Pieceset pieces;
     private UI UI;
 
-    private Player humanPlayer;
-    private Player aiPlayer;
+    private HumanPlayer humanPlayer;
+    private AIPlayer aiPlayer;
 
     private Colour turnState;
 
@@ -129,7 +128,6 @@ public class App extends PApplet {
 
         // Starting turn. 
         turnState = Colour.WHITE;
-
     }
 
     /**
@@ -158,29 +156,39 @@ public class App extends PApplet {
          * CONDITION CHECKLIST
          *  - game is not over.
          *  - player's turn
-         *  - player has selected a valid tile via xy coords, checkTile() also checks tile is occupied. 
+         *  - player has selected a valid tile via xy coords
          *  - checks piece is their own piece.
          */
         if ( (UI.isGameOver() == false) & (turnState == humanPlayer.getColour()) ) {
             Tile tile = tiles.checkTile(mouseX, mouseY);
             if (tile != null) {
-                ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());
+                if ((humanPlayer.hasSelected() == false) & (tile.getOccupied())) {
+                    ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());
 
-                if (piece.getColour() == humanPlayer.getColour()) {
-                    clickValid = true;
-                    select(tile, piece);
+                    if (piece.getColour() == humanPlayer.getColour()) {
+                        clickValid = true;
+                        humanPlayer.select(tile, piece, tiles, pieces);
+                    }
+                    
+                } else if ((humanPlayer.hasSelected() == true) & (tile.getOccupied())) {
+                    ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());
 
-                    // if second click on valid move:
-                        // get row/col for click and move piece or capture & move. 
-                        // get x/y for animation
-                        // CHANGE TURN STATE
+                    if (piece.getColour() == humanPlayer.getColour()) {
+                        clickValid = true;
+                        humanPlayer.select(tile, piece, tiles, pieces);
+                    }
+                } else if ((humanPlayer.hasSelected() == true) & (humanPlayer.isValidMove(tile.getRow(), tile.getCol()))) {
+                    // get row/col for click and move piece or capture & move. 
+                    humanPlayer.makeMove();
+                    // get x/y for animation
+                    changeTurn();
                 }
             }
         }
 
         // All conditions checked. 
         if (!clickValid) {
-            deselect();
+            humanPlayer.deselect(tiles, pieces);
         }
     }
 
@@ -320,33 +328,6 @@ public class App extends PApplet {
             turnState = Colour.WHITE;
             UI.incrementTimer(Colour.BLACK);
         }
-    }
-
-    /**
-     * select
-     * @param tile
-     * @param piece
-     */
-    public void select(Tile tile, ChessPiece piece) {
-        this.deselect();
-        tiles.selectTile(tile);
-        pieces.selectPiece(piece);
-
-        List<Move> validMoves = piece.getValidMoves(tiles, pieces);
-        if (validMoves != null) {
-            for (Move move : validMoves) {
-                tiles.addHighlight(move.getNewRow(), move.getNewCol(), move.isCaptureMove());
-            }
-        }
-
-    }
-
-    /**
-     * deselect
-     */
-    public void deselect() {
-        tiles.deselectTile();
-        pieces.deselectPiece();
     }
     
     public Player getHumanPlayer() {

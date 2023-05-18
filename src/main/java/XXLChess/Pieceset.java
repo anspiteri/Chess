@@ -20,6 +20,36 @@ public class Pieceset extends SetObject {
         selectedPiece = null;
     }
 
+    public void capturePiece(ChessPiece capturingPiece, int row, int col) {
+        // Store location information from capturing piece.  
+        int oldRow = capturingPiece.getRow(), oldCol = capturingPiece.getCol();
+        int oldX = capturingPiece.getX(), oldY = capturingPiece.getY();
+
+        // Move capturing piece and replace the captured piece
+        int newX = pieces[row][col].getX(), newY = pieces[row][col].getY();
+        capturingPiece.setX(newX);
+        capturingPiece.setY(newY);
+        pieces[row][col] = capturingPiece;
+
+        // Generate an empty piece for the old location. 
+        pieces[oldRow][oldCol] = new Empty(parent, oldX, oldY, null, oldRow, oldCol);
+    }
+
+    public void movePiece(ChessPiece movingPiece, int row, int col) {
+        // Store location information from moving piece.  
+        int oldRow = movingPiece.getRow(), oldCol = movingPiece.getCol();
+        int oldX = movingPiece.getX(), oldY = movingPiece.getY();
+
+        // Move capturing piece and replace the captured piece
+        int newX = pieces[row][col].getX(), newY = pieces[row][col].getY();
+        movingPiece.setX(newX);
+        movingPiece.setY(newY);
+        pieces[row][col] = movingPiece;
+
+        // Generate an empty piece for the old location. 
+        pieces[oldRow][oldCol] = new Empty(parent, oldX, oldY, null, oldRow, oldCol);
+    }
+
     public void selectPiece(ChessPiece piece) {
         selectedPiece = piece;
     }

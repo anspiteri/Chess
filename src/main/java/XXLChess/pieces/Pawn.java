@@ -16,6 +16,8 @@ public class Pawn extends ChessPiece {
 
     public Pawn(PApplet parent, int x, int y, Colour colour, int row, int col) {
         super(parent, x, y, colour, row, col);
+        this.x = x;
+        this.y = y;
         this.row = row;
         this.col = col;
     }
@@ -59,6 +61,26 @@ public class Pawn extends ChessPiece {
     @Override 
     public int getCol() {
         return this.col;
+    }
+
+    @Override
+    public int getX() {
+        return this.x;
+    }
+
+    @Override
+    public int getY() {
+        return this.y;
+    }
+
+    @Override
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    @Override
+    public void setY(int y) {
+        this.y = y;
     }
 
     @Override

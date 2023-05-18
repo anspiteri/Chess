@@ -62,10 +62,7 @@ public class Tileset extends SetObject {
                 // Check if mouse press is within bounds of tile. 
                 if ( (mouseX > tile.getX() & mouseX < (tile.getX() + App.CELLSIZE))
                      & (mouseY > tile.getY() & mouseY < (tile.getY() + App.CELLSIZE)) ) {
-                    
-                        if (tile.getOccupied() == true) {
-                            return tile;
-                        }                    
+                    return tile;                   
                 }
             }
         }
