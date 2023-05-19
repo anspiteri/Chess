@@ -1,25 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">chessXXL</a> &gt; <a href="index.source.html" class="el_package">XXLChess</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package XXLChess;
 
-//import org.reflections.Reflections;
-//import org.reflections.scanners.Scanners;
 import processing.core.PApplet;
-import processing.core.PImage;
 import processing.data.JSONObject;
-import processing.data.JSONArray;
-import processing.core.PFont;
-import processing.core.PGraphics;
 import processing.event.MouseEvent;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
+import XXLChess.board.*;
+import XXLChess.enums.*;
+import XXLChess.exceptions.*;
+import XXLChess.pieces.ChessPiece;
+import XXLChess.players.*;
 
-import XXLChess.exceptions.DimensionException;
-import XXLChess.players.Player;
-import netscape.javascript.JSException;
-
-import java.awt.Font;
 import java.io.*;
-import java.text.ParseException;
 import java.util.*;
 
 public class App extends PApplet {
@@ -29,10 +20,11 @@ public class App extends PApplet {
     public static final int SIDEBAR = 120;
     public static final int BOARD_WIDTH = 14;
 
-<span class="nc" id="L32">    public static int WIDTH = CELLSIZE*BOARD_WIDTH+SIDEBAR;</span>
-<span class="nc" id="L33">    public static int HEIGHT = BOARD_WIDTH*CELLSIZE;</span>
+<span class="nc" id="L23">    public static int WIDTH = CELLSIZE*BOARD_WIDTH+SIDEBAR;</span>
+<span class="nc" id="L24">    public static int HEIGHT = BOARD_WIDTH*CELLSIZE;</span>
 
     public static final int FPS = 60;
+<span class="nc" id="L27">    private int tickCounter = 0;</span>
 
     public static final boolean DEBUG = false;
 
@@ -42,53 +34,101 @@ public class App extends PApplet {
 
     private Tileset tiles;
     private Pieceset pieces;
-    private Board board;
+    private UI UI;
 
-    private Player playerBlack;
-    private Player playerWhite;
+    private HumanPlayer humanPlayer;
+    private AIPlayer aiPlayer;
 
-<span class="nc" id="L50">    public App() {</span>
-<span class="nc" id="L51">        this.configPath = &quot;config.json&quot;;</span>
-<span class="nc" id="L52">    }</span>
+    private Colour turnState;
+
+<span class="nc" id="L44">    public App() {</span>
+<span class="nc" id="L45">        this.configPath = &quot;config.json&quot;;</span>
+<span class="nc" id="L46">    }</span>
 
     /**
      * Initialise the setting of the window size.
     */
     public void settings() {
-<span class="nc" id="L58">        size(WIDTH, HEIGHT);</span>
-<span class="nc" id="L59">    }</span>
+<span class="nc" id="L52">        size(WIDTH, HEIGHT);</span>
+<span class="nc" id="L53">    }</span>
     /**
      * Load all resources such as images. Initialise the elements such as the player, enemies and map elements.
     */
     public void setup() {
-<span class="nc" id="L64">        frameRate(FPS);</span>
+<span class="nc" id="L58">        frameRate(FPS);</span>
 
         // load config
+<span class="nc" id="L61">        ArrayList&lt;ArrayList&lt;Character&gt;&gt; chessLayoutBuffer = null;</span>
+<span class="nc" id="L62">        JSONObject timeControls = null;</span>
+<span class="nc" id="L63">        String playerColour = &quot;null&quot;;</span>
+<span class="nc" id="L64">        Double pieceMovementSpeed = 0.0, maxMovementTime = 0.0;</span>
+<span class="nc" id="L65">        int secondsHuman = 0, incrementHuman = -1, secondsAI = 0, incrementAI = -1;</span>
+
         try {
-<span class="nc" id="L68">            conf  = loadJSONObject(new File(this.configPath));</span>
-<span class="nc" id="L69">        } catch (JSException e) {</span>
-<span class="nc" id="L70">            e.printStackTrace();</span>
-<span class="nc" id="L71">            System.out.println(&quot;Error parsing JSON file.&quot;);</span>
-<span class="nc" id="L72">        }</span>
+<span class="nc" id="L68">            conf = loadJSONObject(new File(this.configPath));</span>
+            
+<span class="nc" id="L70">            String layoutFileString = conf.getString(&quot;layout&quot;);</span>
+<span class="nc" id="L71">            chessLayoutBuffer = parseLayout(layoutFileString);</span>
 
-<span class="nc" id="L74">        String layoutFileString = conf.getString(&quot;layout&quot;);</span>
-<span class="nc" id="L75">        ArrayList&lt;ArrayList&lt;Character&gt;&gt; chessLayout = parseLayout(layoutFileString);</span>
+<span class="nc" id="L73">            timeControls = conf.getJSONObject(&quot;time_controls&quot;);</span>
+<span class="nc" id="L74">            playerColour = conf.getString(&quot;player_colour&quot;);</span>
+<span class="nc" id="L75">            pieceMovementSpeed = conf.getDouble(&quot;piece_movement_speed&quot;);</span>
+<span class="nc" id="L76">            maxMovementTime = conf.getDouble(&quot;max_movement_time&quot;);</span>
 
-        // Instantiate board components
-<span class="nc" id="L78">        tiles = new Tileset(this);</span>
-<span class="nc" id="L79">        pieces = new Pieceset(this, chessLayout);</span>
-        // add logic to decide whether to instantiate human players or AI players
-<span class="nc" id="L81">        board = new Board(this, tiles, pieces, playerBlack, playerWhite);</span>
-        
+<span class="nc" id="L78">            secondsHuman = timeControls.getJSONObject(&quot;player&quot;).getInt(&quot;seconds&quot;);</span>
+<span class="nc" id="L79">            incrementHuman = timeControls.getJSONObject(&quot;player&quot;).getInt(&quot;increment&quot;);</span>
+<span class="nc" id="L80">            secondsAI = timeControls.getJSONObject(&quot;cpu&quot;).getInt(&quot;seconds&quot;);</span>
+<span class="nc" id="L81">            incrementAI = timeControls.getJSONObject(&quot;cpu&quot;).getInt(&quot;seconds&quot;);</span>
+
+<span class="nc" id="L83">        } catch (RuntimeException e) {</span>
+<span class="nc" id="L84">            e.printStackTrace();</span>
+<span class="nc" id="L85">            System.err.println(&quot;Error parsing JSON file.&quot;);</span>
+<span class="nc" id="L86">            System.exit(1);</span>
+<span class="nc" id="L87">        }</span>
+
+        // Instantiate App components
+<span class="nc" id="L90">        tiles = new Tileset(this);</span>
+<span class="nc" id="L91">        pieces = new Pieceset(this, chessLayoutBuffer);</span>
+
+        try {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (playerColour.equals(&quot;white&quot;)) {</span>
+<span class="nc" id="L95">                humanPlayer = new HumanPlayer(this, Colour.WHITE);</span>
+<span class="nc" id="L96">                aiPlayer = new AIPlayer(this, Colour.BLACK);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            } else if (playerColour.equals(&quot;black&quot;)) {</span>
+<span class="nc" id="L98">                humanPlayer = new HumanPlayer(this, Colour.BLACK);</span>
+<span class="nc" id="L99">                aiPlayer = new AIPlayer(this, Colour.WHITE);</span>
+            } else {
+<span class="nc" id="L101">                throw new ConfigException(&quot;Syntax err in colour param, must be \&quot;black\&quot; or \&quot;white\&quot;&quot;);</span>
+            }
+<span class="nc" id="L103">        } catch (ConfigException e) {</span>
+<span class="nc" id="L104">            System.err.println(&quot;Config Error: &quot; + e);</span>
+<span class="nc" id="L105">            System.err.println(&quot;player colour param: &quot; + playerColour);</span>
+<span class="nc" id="L106">            System.exit(1);</span>
+<span class="nc" id="L107">        }</span>
+
+<span class="nc" id="L109">        UI = new UI(this, humanPlayer.getColour(), aiPlayer.getColour());</span>
+
+        try {
+<span class="nc bnc" id="L112" title="All 10 branches missed.">            if (secondsHuman &gt; 0 &amp; incrementHuman &gt;= 0 &amp; secondsAI &gt; 0 &amp; incrementAI &gt;= 0) {</span>
+<span class="nc" id="L113">                UI.setupTimers(secondsHuman, incrementHuman, secondsAI, incrementAI);</span>
+            } else {
+<span class="nc" id="L115">                throw new ConfigException(&quot;Syntax err in time controls params, seconds: positive nums, increment: 0 or positive&quot;);</span>
+            }
+<span class="nc" id="L117">        } catch (ConfigException e) {</span>
+<span class="nc" id="L118">            System.err.println(&quot;Config Error: &quot; + e);</span>
+<span class="nc" id="L119">            System.exit(1);</span>
+<span class="nc" id="L120">        }</span>
+
         // initialise gameboard
-<span class="nc" id="L84">        tiles.setup();</span>
-<span class="nc" id="L85">        pieces.setup();</span>
-        //board.setup();
+<span class="nc" id="L123">        tiles.setup();</span>
+<span class="nc" id="L124">        pieces.setup(tiles); // requires tiles so that as pieces are instantiated, the corresponding tile state changes to 'occupied'.</span>
 
         // Load images during setup
-<span class="nc" id="L89">        pieces.loadImages();</span>
+<span class="nc" id="L127">        pieces.loadImages();</span>
 
-<span class="nc" id="L91">    }</span>
+        // Starting turn. 
+<span class="nc" id="L130">        turnState = Colour.WHITE;</span>
+<span class="nc" id="L131">    }</span>
 
     /**
      * Receive key pressed signal from the keyboard.
@@ -96,122 +136,211 @@ public class App extends PApplet {
     public void keyPressed(){
 
 
-<span class="nc" id="L99">    }</span>
+<span class="nc" id="L139">    }</span>
     
     /**
      * Receive key released signal from the keyboard.
     */
     public void keyReleased(){
 
-<span class="nc" id="L106">    }</span>
+<span class="nc" id="L146">    }</span>
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
+<span class="nc" id="L150">        int mouseX = e.getX();</span>
+<span class="nc" id="L151">        int mouseY = e.getY();</span>
+
+<span class="nc" id="L153">        boolean clickValid = false;</span>
         
-<span class="nc" id="L111">    }</span>
+        /*
+         * CONDITION CHECKLIST
+         *  - game is not over.
+         *  - player's turn
+         *  - player has selected a valid tile via xy coords
+         *  - checks piece is their own piece.
+         */
+<span class="nc bnc" id="L162" title="All 6 branches missed.">        if ( (UI.isGameOver() == false) &amp; (turnState == humanPlayer.getColour()) ) {</span>
+<span class="nc" id="L163">            Tile tile = tiles.checkTile(mouseX, mouseY);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">            if (tile != null) {</span>
+<span class="nc bnc" id="L165" title="All 4 branches missed.">                if ((humanPlayer.hasSelected() == false) &amp; (tile.getOccupied())) {</span>
+<span class="nc" id="L166">                    ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                    if (piece.getColour() == humanPlayer.getColour()) {</span>
+<span class="nc" id="L169">                        clickValid = true;</span>
+<span class="nc" id="L170">                        humanPlayer.select(tile, piece, tiles, pieces);</span>
+                    }
+                    
+<span class="nc bnc" id="L173" title="All 4 branches missed.">                } else if ((humanPlayer.hasSelected() == true) &amp; (tile.getOccupied())) {</span>
+<span class="nc" id="L174">                    ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                    if (piece.getColour() == humanPlayer.getColour()) {</span>
+<span class="nc" id="L177">                        clickValid = true;</span>
+<span class="nc" id="L178">                        humanPlayer.select(tile, piece, tiles, pieces);</span>
+                    }
+<span class="nc bnc" id="L180" title="All 4 branches missed.">                } else if ((humanPlayer.hasSelected() == true) &amp; (humanPlayer.isValidMove(tile.getRow(), tile.getCol()))) {</span>
+                    // get row/col for click and move piece or capture &amp; move. 
+<span class="nc" id="L182">                    humanPlayer.makeMove();</span>
+                    // get x/y for animation
+<span class="nc" id="L184">                    changeTurn();</span>
+                }
+            }
+        }
+
+        // All conditions checked. 
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (!clickValid) {</span>
+<span class="nc" id="L191">            humanPlayer.deselect(tiles, pieces);</span>
+        }
+<span class="nc" id="L193">    }</span>
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        
-<span class="nc" id="L116">    }</span>
+<span class="nc" id="L197">    }</span>
 
     /**
      * Draw all elements in the game by current frame. 
     */
     public void draw() {
+<span class="nc" id="L203">        tickCounter++;</span>
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (tickCounter == 60) {</span>
+<span class="nc" id="L206">            tick();</span>
+<span class="nc" id="L207">            tickCounter = 0;</span>
+        }
+
+<span class="nc" id="L210">        background(128, 128, 128);</span>
 
         // Display chess board tiles, pieces, timers, messages
-<span class="nc" id="L124">        tiles.display();</span>
-<span class="nc" id="L125">        pieces.display();</span>
-<span class="nc" id="L126">    }</span>
+<span class="nc" id="L213">        tiles.display();</span>
+<span class="nc" id="L214">        pieces.display();</span>
+<span class="nc" id="L215">        UI.display();</span>
+<span class="nc" id="L216">    }</span>
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.
 
-
+    /**
+     * parseLayout():
+     * 
+     * @param layoutFileString
+     * @return ArrayList&lt;ArrayList&lt;Character&gt;&gt; chessLayout buffer of chess layout presented in level layout. 
+     */
     public ArrayList&lt;ArrayList&lt;Character&gt;&gt; parseLayout(String layoutFileString) {
-<span class="nc" id="L132">        Scanner sc = null;</span>
-<span class="nc" id="L133">        ArrayList&lt;ArrayList&lt;Character&gt;&gt; chessLayout = new ArrayList&lt;ArrayList&lt;Character&gt;&gt;();</span>
+<span class="nc" id="L227">        Scanner sc = null;</span>
+<span class="nc" id="L228">        ArrayList&lt;ArrayList&lt;Character&gt;&gt; chessLayout = new ArrayList&lt;ArrayList&lt;Character&gt;&gt;();</span>
         
         // Parse the layout file into the buffer. 
         try {
-<span class="nc" id="L137">            sc = new Scanner(new File(layoutFileString));</span>
+<span class="nc" id="L232">            sc = new Scanner(new File(layoutFileString));</span>
 
-<span class="nc bnc" id="L139" title="All 2 branches missed.">            while (sc.hasNextLine()) {</span>
-<span class="nc" id="L140">                ArrayList&lt;Character&gt; rowList = new ArrayList&lt;&gt;();</span>
-<span class="nc" id="L141">                String line = sc.nextLine();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            while (sc.hasNextLine()) {</span>
+<span class="nc" id="L235">                ArrayList&lt;Character&gt; rowList = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L236">                String line = sc.nextLine();</span>
                 
-<span class="nc bnc" id="L143" title="All 2 branches missed.">                if (line.length() &gt; 1) {</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">                if (line.length() &gt; 1) {</span>
                     // If the line has chess positions: store keys into char array. 
-<span class="nc bnc" id="L145" title="All 2 branches missed.">                    for (char c : line.toCharArray()) {</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">                        if (c != '\n') {</span>
-<span class="nc" id="L147">                            rowList.add(c);</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                    for (char c : line.toCharArray()) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                        if (c != '\n') {</span>
+<span class="nc" id="L242">                            rowList.add(c);</span>
                         }
                     }
                 } else {
                     // If it is an empty line: Create a char array with appropriate length.
-<span class="nc bnc" id="L152" title="All 2 branches missed.">                    for (int i = 0; i &lt; BOARD_WIDTH; i++) {</span>
-<span class="nc" id="L153">                        rowList.add('T');</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">                    for (int i = 0; i &lt; BOARD_WIDTH; i++) {</span>
+<span class="nc" id="L248">                        rowList.add('T');</span>
                     }
                 }
 
-                if (DEBUG) {System.out.println(rowList.size());}
-
-<span class="nc bnc" id="L159" title="All 2 branches missed.">                if (rowList.size() &lt; BOARD_WIDTH) {</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (rowList.size() &lt; BOARD_WIDTH) {</span>
                     // check if line is shorter than desired length. 
-<span class="nc" id="L161">                    int padding = BOARD_WIDTH - rowList.size();</span>
-<span class="nc bnc" id="L162" title="All 2 branches missed.">                    for (int i = 0; i &lt; padding; i++) {</span>
-<span class="nc" id="L163">                        rowList.add('T');</span>
+<span class="nc" id="L254">                    int padding = BOARD_WIDTH - rowList.size();</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">                    for (int i = 0; i &lt; padding; i++) {</span>
+<span class="nc" id="L256">                        rowList.add('T');</span>
                     }
                 }
-<span class="nc" id="L166">                chessLayout.add(rowList);</span>
-<span class="nc" id="L167">            }</span>
+<span class="nc" id="L259">                chessLayout.add(rowList);</span>
+<span class="nc" id="L260">            }</span>
         
-<span class="nc" id="L169">        } catch (FileNotFoundException e) {</span>
-<span class="nc" id="L170">            System.out.println(&quot;Cannot find layout file: &quot; + layoutFileString);</span>
-<span class="nc" id="L171">            e.printStackTrace();</span>
-        } finally {
-<span class="nc bnc" id="L173" title="All 2 branches missed.">            if (sc != null) {</span>
-<span class="nc" id="L174">                sc.close();</span>
-            }
-        }
+<span class="nc" id="L262">        } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L263">            System.err.println(&quot;Cannot find layout file: &quot; + layoutFileString);</span>
+<span class="nc" id="L264">            e.printStackTrace();</span>
+<span class="nc" id="L265">            System.exit(1);</span>
 
-        if (DEBUG) {
-            for (int row = 0; row &lt; chessLayout.size(); row++) {
-                for (int col = 0; col &lt; chessLayout.get(row).size(); col++) {
-                    System.out.print(chessLayout.get(row).get(col));
-                }
-                System.out.print('\n');
+        } finally {
+<span class="nc bnc" id="L268" title="All 2 branches missed.">            if (sc != null) {</span>
+<span class="nc" id="L269">                sc.close();</span>
             }
         }
         
         // Check that the proper dimensions are setup. 
-<span class="nc" id="L188">        int expectedRows = BOARD_WIDTH, expectedCols = BOARD_WIDTH;</span>
+<span class="nc" id="L274">        int expectedRows = BOARD_WIDTH, expectedCols = BOARD_WIDTH;</span>
 
         try {
-<span class="nc bnc" id="L191" title="All 2 branches missed.">            if (chessLayout.size() != expectedRows) {</span>
-<span class="nc" id="L192">                throw new DimensionException(&quot;Incorrect number of rows.&quot;);</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">            if (chessLayout.size() != expectedRows) {</span>
+<span class="nc" id="L278">                throw new DimensionException(&quot;Incorrect number of rows.&quot;);</span>
             }
-<span class="nc" id="L194">        } catch (DimensionException e) {</span>
-<span class="nc" id="L195">            System.out.println(&quot;Invalid layout file: &quot; + e.getMessage());</span>
-<span class="nc" id="L196">        }</span>
+<span class="nc" id="L280">        } catch (DimensionException e) {</span>
+<span class="nc" id="L281">            System.err.println(&quot;Invalid layout file: &quot; + e.getMessage());</span>
+<span class="nc" id="L282">            e.printStackTrace();</span>
+<span class="nc" id="L283">            System.exit(1);</span>
+<span class="nc" id="L284">        }</span>
 
         try {
-<span class="nc bnc" id="L199" title="All 2 branches missed.">            for (ArrayList&lt;Character&gt; rowList : chessLayout) {</span>
-<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (rowList.size() != expectedCols) {</span>
-<span class="nc" id="L201">                    throw new DimensionException(&quot;Incorrect column length or mismatched column length.&quot;);</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">            for (ArrayList&lt;Character&gt; rowList : chessLayout) {</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">                if (rowList.size() != expectedCols) {</span>
+<span class="nc" id="L289">                    throw new DimensionException(&quot;Incorrect column length or mismatched column length.&quot;);</span>
                 }
-<span class="nc" id="L203">            }</span>
-<span class="nc" id="L204">        } catch (DimensionException e) {</span>
-<span class="nc" id="L205">            System.err.println(&quot;Invalid layout file: &quot; + e.getMessage());</span>
-<span class="nc" id="L206">            System.exit(0);</span>
-<span class="nc" id="L207">        }</span>
+<span class="nc" id="L291">            }</span>
+<span class="nc" id="L292">        } catch (DimensionException e) {</span>
+<span class="nc" id="L293">            System.err.println(&quot;Invalid layout file: &quot; + e.getMessage());</span>
+<span class="nc" id="L294">            e.printStackTrace();</span>
+<span class="nc" id="L295">            System.exit(1);</span>
+<span class="nc" id="L296">        }</span>
        
-<span class="nc" id="L209">        return chessLayout;</span>
+<span class="nc" id="L298">        return chessLayout;</span>
+    }
+
+    /**
+     * tick():
+     * Updates every second (60 frames)
+     */
+    public void tick() {
+
+        // check game over condition for timer. 
+<span class="nc bnc" id="L308" title="All 2 branches missed.">        if ( (UI.getTimer(Colour.BLACK).getTime() == 0) ) {</span>
+<span class="nc" id="L309">            UI.gameOver(GameOver.TIME, Colour.WHITE);</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">        } else if (UI.getTimer(Colour.WHITE).getTime() == 0) {</span>
+<span class="nc" id="L311">            UI.gameOver(GameOver.TIME, Colour.BLACK);</span>
+<span class="nc bnc" id="L312" title="All 6 branches missed.">        } else if ( (UI.getTimer(Colour.BLACK).getTime() == 0) &amp; (UI.getTimer(Colour.WHITE).getTime() == 0) ) {</span>
+<span class="nc" id="L313">            UI.gameOver(GameOver.TIME, Colour.NULL);</span>
+        }
+
+        // timer decreases 
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        if (UI.isGameOver() == false) {</span>
+<span class="nc" id="L318">            UI.updateTimers(turnState);</span>
+        }
+<span class="nc" id="L320">    }</span>
+
+    public void changeTurn() {
+        // TODO: check for checkmate &amp; set game over accordingly, make AI do their turn. 
+<span class="nc bnc" id="L324" title="All 2 branches missed.">        if (turnState == Colour.WHITE) {</span>
+<span class="nc" id="L325">            turnState = Colour.BLACK;</span>
+<span class="nc" id="L326">            UI.incrementTimer(Colour.WHITE);</span>
+        } else {
+<span class="nc" id="L328">            turnState = Colour.WHITE;</span>
+<span class="nc" id="L329">            UI.incrementTimer(Colour.BLACK);</span>
+        }
+<span class="nc" id="L331">    }</span>
+    
+    public Player getHumanPlayer() {
+<span class="nc" id="L334">        return humanPlayer;</span>
+    }
+
+    public Player getAiPlayer() {
+<span class="nc" id="L338">        return aiPlayer;</span>
     }
 
     public static void main(String[] args) {
-<span class="nc" id="L213">        PApplet.main(&quot;XXLChess.App&quot;);</span>
-<span class="nc" id="L214">    }</span>
+<span class="nc" id="L342">        PApplet.main(&quot;XXLChess.App&quot;);</span>
+<span class="nc" id="L343">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

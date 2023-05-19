@@ -5,6 +5,7 @@ import processing.data.JSONObject;
 import processing.event.MouseEvent;
 
 import XXLChess.board.*;
+import XXLChess.board.logic.Move;
 import XXLChess.enums.*;
 import XXLChess.exceptions.*;
 import XXLChess.pieces.ChessPiece;
@@ -25,6 +26,7 @@ public class App extends PApplet {
 
     public static final int FPS = 60;
     private int tickCounter = 0;
+    private int tickTime = 0;
 
     public static final boolean DEBUG = false;
 
@@ -61,7 +63,7 @@ public class App extends PApplet {
         ArrayList<ArrayList<Character>> chessLayoutBuffer = null;
         JSONObject timeControls = null;
         String playerColour = "null";
-        Double pieceMovementSpeed = 0.0, maxMovementTime = 0.0;
+        //Double pieceMovementSpeed = 0.0, maxMovementTime = 0.0;
         int secondsHuman = 0, incrementHuman = -1, secondsAI = 0, incrementAI = -1;
 
         try {
@@ -72,13 +74,13 @@ public class App extends PApplet {
 
             timeControls = conf.getJSONObject("time_controls");
             playerColour = conf.getString("player_colour");
-            pieceMovementSpeed = conf.getDouble("piece_movement_speed");
-            maxMovementTime = conf.getDouble("max_movement_time");
+            //pieceMovementSpeed = conf.getDouble("piece_movement_speed");
+            //maxMovementTime = conf.getDouble("max_movement_time");
 
             secondsHuman = timeControls.getJSONObject("player").getInt("seconds");
             incrementHuman = timeControls.getJSONObject("player").getInt("increment");
             secondsAI = timeControls.getJSONObject("cpu").getInt("seconds");
-            incrementAI = timeControls.getJSONObject("cpu").getInt("seconds");
+            incrementAI = timeControls.getJSONObject("cpu").getInt("increment");
 
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -134,7 +136,9 @@ public class App extends PApplet {
      * Receive key pressed signal from the keyboard.
     */
     public void keyPressed(){
-
+        if (keyCode == ESC) {
+            System.exit(0);
+        }
 
     }
     
@@ -149,39 +153,38 @@ public class App extends PApplet {
     public void mousePressed(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
-
         boolean clickValid = false;
         
-        /*
-         * CONDITION CHECKLIST
-         *  - game is not over.
-         *  - player's turn
-         *  - player has selected a valid tile via xy coords
-         *  - checks piece is their own piece.
-         */
         if ( (UI.isGameOver() == false) & (turnState == humanPlayer.getColour()) ) {
-            Tile tile = tiles.checkTile(mouseX, mouseY);
+            Tile tile = tiles.checkTile(mouseX, mouseY); // checks mouse xy is in a tile x/y.
             if (tile != null) {
+                ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());
+                // INSTANCE ONE: 
+                //  Player hasnt selected anything, and they want to click a valid piece.
                 if ((humanPlayer.hasSelected() == false) & (tile.getOccupied())) {
-                    ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());
 
                     if (piece.getColour() == humanPlayer.getColour()) {
                         clickValid = true;
-                        humanPlayer.select(tile, piece, tiles, pieces);
+                        humanPlayer.select(tile, piece, tiles, pieces, UI);
                     }
-                    
-                } else if ((humanPlayer.hasSelected() == true) & (tile.getOccupied())) {
-                    ChessPiece piece = pieces.getPiece(tile.getRow(), tile.getCol());
+                // INSTANCE TWO
+                // Player already has a piece selected but aborts that for another piece.
+                } else if ((humanPlayer.hasSelected() == true) & (tile.getOccupied()) 
+                        & (piece.getColour() == humanPlayer.getColour())) {
 
-                    if (piece.getColour() == humanPlayer.getColour()) {
-                        clickValid = true;
-                        humanPlayer.select(tile, piece, tiles, pieces);
+                    clickValid = true;
+                    humanPlayer.select(tile, piece, tiles, pieces, UI);
+
+                // INSTANCE THREE
+                // Player has selected a piece and wants to make a move. 
+                } else if (humanPlayer.hasSelected() == true) {
+                    Move selectedMove = humanPlayer.isValidMove(tile.getRow(), tile.getCol());
+                    if (selectedMove != null) {
+                        // get row/col for click and move piece or capture & move. 
+                        humanPlayer.makeMove(selectedMove, tiles, pieces);
+                        // get x/y for animation
+                        changeTurn();
                     }
-                } else if ((humanPlayer.hasSelected() == true) & (humanPlayer.isValidMove(tile.getRow(), tile.getCol()))) {
-                    // get row/col for click and move piece or capture & move. 
-                    humanPlayer.makeMove();
-                    // get x/y for animation
-                    changeTurn();
                 }
             }
         }
@@ -203,8 +206,13 @@ public class App extends PApplet {
         tickCounter++;
 
         if (tickCounter == 60) {
+            tickTime++;
             tick();
             tickCounter = 0;
+            
+            if (tickTime == 5) {
+                tickTime = 0;
+            }
         }
 
         background(128, 128, 128);
@@ -216,6 +224,48 @@ public class App extends PApplet {
     }
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.
+
+    /**
+     * tick():
+     * Updates every second (60 frames)
+     */
+    public void tick() {
+
+        // check game over condition for timer. 
+        if ( (UI.getTimer(humanPlayer.getColour()).getTime() == 0) ) {
+            UI.gameOver(GameOver.TIME, false);
+        } else if (UI.getTimer(aiPlayer.getColour()).getTime() == 0) {
+            UI.gameOver(GameOver.TIME, true);
+        }
+
+        // timer decreases 
+        if (UI.isGameOver() == false) {
+            UI.updateTimers(turnState);
+        }
+
+        if ((turnState == aiPlayer.getColour()) & (tickTime == 5)) {
+            changeTurn();
+        }
+    }
+
+    public void changeTurn() {
+        // TODO: check for checkmate & set game over accordingly, make AI do their turn. 
+        if (turnState == Colour.WHITE) {
+            turnState = Colour.BLACK;
+            UI.incrementTimer(Colour.WHITE);
+        } else {
+            turnState = Colour.WHITE;
+            UI.incrementTimer(Colour.BLACK);
+        }
+    }
+    
+    public Player getHumanPlayer() {
+        return humanPlayer;
+    }
+
+    public Player getAiPlayer() {
+        return aiPlayer;
+    }
 
     /**
      * parseLayout():
@@ -296,46 +346,6 @@ public class App extends PApplet {
         }
        
         return chessLayout;
-    }
-
-    /**
-     * tick():
-     * Updates every second (60 frames)
-     */
-    public void tick() {
-
-        // check game over condition for timer. 
-        if ( (UI.getTimer(Colour.BLACK).getTime() == 0) ) {
-            UI.gameOver(GameOver.TIME, Colour.WHITE);
-        } else if (UI.getTimer(Colour.WHITE).getTime() == 0) {
-            UI.gameOver(GameOver.TIME, Colour.BLACK);
-        } else if ( (UI.getTimer(Colour.BLACK).getTime() == 0) & (UI.getTimer(Colour.WHITE).getTime() == 0) ) {
-            UI.gameOver(GameOver.TIME, Colour.NULL);
-        }
-
-        // timer decreases 
-        if (UI.isGameOver() == false) {
-            UI.updateTimers(turnState);
-        }
-    }
-
-    public void changeTurn() {
-        // TODO: check for checkmate & set game over accordingly, make AI do their turn. 
-        if (turnState == Colour.WHITE) {
-            turnState = Colour.BLACK;
-            UI.incrementTimer(Colour.WHITE);
-        } else {
-            turnState = Colour.WHITE;
-            UI.incrementTimer(Colour.BLACK);
-        }
-    }
-    
-    public Player getHumanPlayer() {
-        return humanPlayer;
-    }
-
-    public Player getAiPlayer() {
-        return aiPlayer;
     }
 
     public static void main(String[] args) {

@@ -11,7 +11,7 @@ public class Message extends DisplayObject {
         super(parent, x, y, colour);
         this.colour = Colour.NULL;
         this.message = message;
-        parent.textSize(28);
+        parent.textSize(16);
     }
     
     public void display() {

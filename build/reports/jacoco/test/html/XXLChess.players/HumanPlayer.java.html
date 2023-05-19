@@ -1,12 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HumanPlayer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">chessXXL</a> &gt; <a href="index.source.html" class="el_package">XXLChess.players</a> &gt; <span class="el_source">HumanPlayer.java</span></div><h1>HumanPlayer.java</h1><pre class="source lang-java linenums">package XXLChess.players;
 
+import XXLChess.Pieceset;
+import XXLChess.Tileset;
+import XXLChess.board.Tile;
+import XXLChess.board.logic.Move;
+import XXLChess.enums.Colour;
+import XXLChess.pieces.ChessPiece;
 import processing.core.PApplet;
 
 public class HumanPlayer extends Player {
 
-    protected HumanPlayer(PApplet parent) {
-<span class="nc" id="L8">        super(parent);</span>
-        //TODO Auto-generated constructor stub
-<span class="nc" id="L10">    }</span>
+    public HumanPlayer(PApplet parent, Colour playerColour) {
+<span class="nc" id="L14">        super(parent, playerColour);</span>
+<span class="nc" id="L15">        this.hasSelected = false;</span>
+<span class="nc" id="L16">        this.availableMoves = null;</span>
+<span class="nc" id="L17">    }</span>
+
+    public boolean isValidMove(int row, int col) {
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if (availableMoves != null) {</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">            for (Move move : availableMoves) {</span>
+<span class="nc bnc" id="L22" title="All 6 branches missed.">                if ((move.getNewRow() == row) &amp; (move.getNewCol() == col)) {</span>
+<span class="nc" id="L23">                    return true; </span>
+                }
+<span class="nc" id="L25">            }</span>
+        }
+        
+<span class="nc" id="L28">        return false;</span>
+    }
+
+    public void makeMove(Tile tile, Tileset tiles, Pieceset pieces) {
+<span class="nc" id="L32">        int newRow = tile.getRow();</span>
+<span class="nc" id="L33">        int newCol = tile.getCol();</span>
+        
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        for (Move move : availableMoves) {</span>
+<span class="nc bnc" id="L36" title="All 6 branches missed.">            if ((move.getNewRow() == newRow) &amp; (move.getNewCol() == newCol)) {</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">                if (move.isCaptureMove()) {</span>
+<span class="nc" id="L38">                    pieces.capturePiece(pieces.getPiece(newRow, newCol), newRow, newCol);</span>
+                } else {
+<span class="nc" id="L40">                    pieces.movePiece(pieces.getPiece(newRow, newCol), newRow, newCol);</span>
+                }
+            }
+<span class="nc" id="L43">        }</span>
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * select
+     * @param tile
+     * @param piece
+     */
+    @Override
+    public void select(Tile tile, ChessPiece piece, Tileset tiles, Pieceset pieces) {
+<span class="nc" id="L53">        this.deselect(tiles, pieces);</span>
+<span class="nc" id="L54">        hasSelected = true;</span>
+<span class="nc" id="L55">        availableMoves = piece.getValidMoves(tiles, pieces);</span>
+<span class="nc" id="L56">        tiles.selectTile(tile);</span>
+<span class="nc" id="L57">        pieces.selectPiece(piece);</span>
+
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (availableMoves != null) {</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            for (Move move : availableMoves) {</span>
+<span class="nc" id="L61">                tiles.addHighlight(move.getNewRow(), move.getNewCol(), move.isCaptureMove());</span>
+<span class="nc" id="L62">            }</span>
+        }
+
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * deselect
+     */
+    @Override
+    public void deselect(Tileset tiles, Pieceset pieces) {
+<span class="nc" id="L72">        hasSelected = false;</span>
+<span class="nc" id="L73">        availableMoves = null;</span>
+<span class="nc" id="L74">        tiles.deselectTile();</span>
+<span class="nc" id="L75">        pieces.deselectPiece();</span>
+<span class="nc" id="L76">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

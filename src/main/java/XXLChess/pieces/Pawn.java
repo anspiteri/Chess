@@ -96,14 +96,14 @@ public class Pawn extends ChessPiece {
         int forwardRow = currentRow + (1 * boardDir);
         if ((forwardRow < App.BOARD_WIDTH) & (forwardRow > 0)) {
             if (tiles.getTile(forwardRow, currentCol).getOccupied() == false) {
-                validMoves.add(new Move(forwardRow, currentCol));  
+                validMoves.add(new Move(forwardRow, currentCol, this));  
                 
                 // if forward row is unblocked, than can check if next forward row is available.
                 if (firstMove) {
                     int doubleforwardRow = currentRow + (2 * boardDir);
                     if ((doubleforwardRow < App.BOARD_WIDTH) 
                         & (tiles.getTile(doubleforwardRow, currentCol).getOccupied() == false)) {
-                            validMoves.add(new Move(doubleforwardRow, currentCol));
+                            validMoves.add(new Move(doubleforwardRow, currentCol, this));
                     }
                 }
             }
@@ -113,15 +113,30 @@ public class Pawn extends ChessPiece {
         int[] captureCol = {currentCol - 1, currentCol + 1};
         if (captureCol[0] >= 0) {
             if (tiles.getTile(forwardRow, captureCol[0]).getOccupied()) {
-                ChessPiece capturedPiece = pieces.getPiece(forwardRow, captureCol[0]);
-                validMoves.add(new Move(forwardRow, captureCol[0], capturedPiece));
+                if (pieces.getPiece(forwardRow, captureCol[0]).getColour() != this.colour) {
+                    Move newMove = new Move(forwardRow, captureCol[0], this, true);
+                
+                    if ((pieces.getPiece(forwardRow, captureCol[0]).getKey() == "K") 
+                        | (pieces.getPiece(forwardRow, captureCol[0]).getKey() == "k")) {
+                        newMove.setCheck();
+                    }
+                    validMoves.add(newMove);
+                }
+                
             }
         }
         
         if (captureCol[1] < App.BOARD_WIDTH) {
             if (tiles.getTile(forwardRow, captureCol[1]).getOccupied()) {
-                ChessPiece capturedPiece = pieces.getPiece(forwardRow, captureCol[1]);
-                validMoves.add(new Move(forwardRow, captureCol[1], capturedPiece));
+                if (pieces.getPiece(forwardRow, captureCol[1]).getColour() != this.colour) {
+                    Move newMove = new Move(forwardRow, captureCol[1], this, true);
+                
+                    if ((pieces.getPiece(forwardRow, captureCol[1]).getKey() == "K") 
+                        | (pieces.getPiece(forwardRow, captureCol[1]).getKey() == "k")) {
+                        newMove.setCheck();
+                    }
+                    validMoves.add(newMove);
+                }
             }
         }
 

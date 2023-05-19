@@ -9,4 +9,8 @@ public class AIPlayer extends Player {
         super(parent, playerColour);
         //TODO Auto-generated constructor stub
     }
+
+    public void makeMove() {
+        // do something.
+    }
 }

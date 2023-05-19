@@ -23,9 +23,6 @@ public class Player extends LogicObject {
         hasSelected = false; 
     }
 
-    public void select(Tile tile, ChessPiece piece, Tileset tiles, Pieceset pieces) {
-    }
-
     public void deselect(Tileset tiles, Pieceset pieces) {
     }
 
@@ -35,9 +32,6 @@ public class Player extends LogicObject {
 
     public Colour getColour() {
         return playerColour;
-    }
-
-    public void makeMove() {
     }
 
     public boolean hasWon() {

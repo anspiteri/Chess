@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Empty.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">chessXXL</a> &gt; <a href="index.source.html" class="el_package">XXLChess.pieces</a> &gt; <span class="el_source">Empty.java</span></div><h1>Empty.java</h1><pre class="source lang-java linenums">package XXLChess.pieces;
 
-import XXLChess.pieces.enums.PieceColour;
+import XXLChess.enums.Colour;
 import processing.core.PApplet;
 
 public class Empty extends ChessPiece {
 <span class="nc" id="L7">    private String key = &quot;T&quot;;</span>
 
-    public Empty(PApplet parent, PieceColour colour, int x, int y) {
-<span class="nc" id="L10">        super(parent, colour, x, y);</span>
+    public Empty(PApplet parent, int x, int y, Colour colour, int row, int col) {
+<span class="nc" id="L10">        super(parent, x, y, colour, row, col);</span>
 <span class="nc" id="L11">    }</span>
 
     @Override
@@ -19,5 +19,10 @@ public class Empty extends ChessPiece {
     @Override
     public void display() {
 <span class="nc" id="L21">    }</span>
+
+    @Override
+    public String getKey() {
+<span class="nc" id="L25">        return this.key;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

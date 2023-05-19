@@ -7,23 +7,25 @@ public class Move {
     private int newCol;
 
     private boolean captureMove;
-    private ChessPiece capturedPiece;
+    private ChessPiece movingPiece;
+    private boolean check;
 
-    public Move(int newRow, int newCol) {
+    public Move(int newRow, int newCol, ChessPiece movingPiece) {
 
         this.newRow = newRow;
         this.newCol = newCol;
 
         this.captureMove = false;
-        this.capturedPiece = null;
+        this.movingPiece = movingPiece;
+        this.check = false;
     }
 
-    public Move(int newRow, int newCol, ChessPiece capturedPiece) {
+    public Move(int newRow, int newCol, ChessPiece movingPiece, boolean isCaptureMove) {
         this.newRow = newRow;
         this.newCol = newCol;
 
         this.captureMove = true;
-        this.capturedPiece = null;
+        this.movingPiece = movingPiece;
     }
 
     public int getNewRow() {
@@ -38,7 +40,15 @@ public class Move {
         return captureMove;
     }
 
-    public ChessPiece getCapturedPiece() {
-        return capturedPiece;
+    public ChessPiece getMovingPiece() {
+        return movingPiece;
+    }
+
+    public void setCheck() {
+        this.check = true;
+    }
+
+    public boolean isCheck() {
+        return this.check;
     }
 }

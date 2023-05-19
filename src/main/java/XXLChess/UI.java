@@ -11,12 +11,12 @@ import XXLChess.enums.GameOver;
 import processing.core.PApplet;
 
 public class UI extends SetObject {
-    private final String TIME_BLACK_WIN = "Black\nwins.";
-    private final String TIME_WHITE_WIN = "White\nwins.";
-    private final String TIME_DRAW = "Draw.";
-    private final String CHECKMATE_BLACK_WIN = "Checkmate\nblack wins.";
-    private final String CHECKMATE_WHITE_WIN = "Checkmate\nwhite wins.";
-    private final String STANDARD_DRAW = "Stalemate.";
+    private final String TIME_HUMAN_WIN = "You win\non time.";
+    private final String TIME_CPU_WIN = "You lost\non time.";
+    private final String CHECK = "Check!";
+    private final String CHECKMATE_HUMAN_WIN = "You win\nby checkmate.";
+    private final String CHECKMATE_CPU_WIN = "You lost\nby checkmate.";
+    private final String STALEMATE_DRAW = "Stalemate\ndraw.";
 
     private final int[] TIMER_TOP_XY = {App.WIDTH - 2*App.CELLSIZE, App.CELLSIZE};
     private final int[] TIMER_BOTTOM_XY = {App.WIDTH - 2*App.CELLSIZE, App.HEIGHT - App.CELLSIZE};
@@ -63,23 +63,25 @@ public class UI extends SetObject {
         return gameOver;
     }
 
-    public void gameOver(GameOver condition, Colour winner) {
+    public void check() {
+        message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, CHECK);
+    }
+
+    public void gameOver(GameOver condition, boolean humanWin) {
         if (condition == GameOver.TIME) {
-            if (winner == Colour.BLACK) {
-                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_BLACK_WIN);
-            } else if (winner == Colour.WHITE) {
-                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_WHITE_WIN);
+            if (humanWin) {
+                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_HUMAN_WIN);
             } else {
-                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_DRAW);
+                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_CPU_WIN);
             }
         } else if (condition == GameOver.CHECKMATE) {
-            if (winner == Colour.BLACK) {
-                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, CHECKMATE_BLACK_WIN);
-            } else if (winner == Colour.WHITE) {
-                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, CHECKMATE_WHITE_WIN);
+            if (humanWin) {
+                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, CHECKMATE_HUMAN_WIN);
+            } else if (!humanWin) {
+                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, CHECKMATE_CPU_WIN);
             }
         } else {
-            message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, STANDARD_DRAW);
+            message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, STALEMATE_DRAW);
         }
         gameOver = true; 
     }

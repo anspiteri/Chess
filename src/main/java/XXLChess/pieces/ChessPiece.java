@@ -41,6 +41,10 @@ public class ChessPiece extends DisplayObject {
         return image;
     }
 
+    public Colour getColour() {
+        return colour;
+    }
+
     /**
      * Called in tileset class which is called in the draw() method of PApplet.
      */
@@ -76,6 +80,17 @@ public class ChessPiece extends DisplayObject {
 
     public int getCol() {
         return col;
+    }
+
+    public void setRowCol(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public void checkFirstMove() {
+        if (firstMove == true) {
+            firstMove = false;
+        }
     }
 
 }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UI.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">chessXXL</a> &gt; <a href="index.source.html" class="el_package">XXLChess</a> &gt; <span class="el_source">UI.java</span></div><h1>UI.java</h1><pre class="source lang-java linenums">package XXLChess;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import XXLChess.board.Message;
+import XXLChess.board.Timer;
+import XXLChess.enums.Colour;
+import XXLChess.enums.GameOver;
+import processing.core.PApplet;
+
+public class UI extends SetObject {
+<span class="nc" id="L14">    private final String TIME_BLACK_WIN = &quot;Black\nwins.&quot;;</span>
+<span class="nc" id="L15">    private final String TIME_WHITE_WIN = &quot;White\nwins.&quot;;</span>
+<span class="nc" id="L16">    private final String TIME_DRAW = &quot;Draw.&quot;;</span>
+<span class="nc" id="L17">    private final String CHECKMATE_BLACK_WIN = &quot;Checkmate\nblack wins.&quot;;</span>
+<span class="nc" id="L18">    private final String CHECKMATE_WHITE_WIN = &quot;Checkmate\nwhite wins.&quot;;</span>
+<span class="nc" id="L19">    private final String STANDARD_DRAW = &quot;Stalemate.&quot;;</span>
+
+<span class="nc" id="L21">    private final int[] TIMER_TOP_XY = {App.WIDTH - 2*App.CELLSIZE, App.CELLSIZE};</span>
+<span class="nc" id="L22">    private final int[] TIMER_BOTTOM_XY = {App.WIDTH - 2*App.CELLSIZE, App.HEIGHT - App.CELLSIZE};</span>
+<span class="nc" id="L23">    private final int[] MESSAGE_XY = {(App.CELLSIZE * App.BOARD_WIDTH) + 16, (App.HEIGHT/2) + 16};</span>
+
+    private final Map&lt;Colour, Timer&gt; timerDict;
+
+    private Timer timerTop;
+    private Timer timerBottom;
+    private Message message;
+    private boolean gameOver;
+
+    public UI(PApplet parent, Colour playerColour, Colour AIColour) {
+<span class="nc" id="L33">        super(parent);</span>
+<span class="nc" id="L34">        timerTop = new Timer(parent, TIMER_TOP_XY[0], TIMER_TOP_XY[1], AIColour);</span>
+<span class="nc" id="L35">        timerBottom = new Timer(parent, TIMER_BOTTOM_XY[0], TIMER_BOTTOM_XY[1], playerColour);</span>
+<span class="nc" id="L36">        message = null;</span>
+<span class="nc" id="L37">        gameOver = false;</span>
+
+<span class="nc" id="L39">        timerDict = Collections.unmodifiableMap(new HashMap&lt;Colour, Timer&gt;() {{</span>
+<span class="nc" id="L40">            put(timerTop.getColour(), timerTop);</span>
+<span class="nc" id="L41">            put(timerBottom.getColour(), timerBottom);</span>
+<span class="nc" id="L42">        }});</span>
+<span class="nc" id="L43">    }</span>
+
+    public void setupTimers(int secondsHuman, int incrementHuman, int secondsAI, int incrementAI) {
+<span class="nc" id="L46">        timerTop.setTime(secondsAI, incrementAI);</span>
+<span class="nc" id="L47">        timerBottom.setTime(secondsHuman, incrementHuman);</span>
+<span class="nc" id="L48">    }</span>
+
+    public Timer getTimer(Colour teamColour) {
+<span class="nc" id="L51">        return timerDict.get(teamColour);</span>
+    }
+
+    public void updateTimers(Colour playerTurn) {
+<span class="nc" id="L55">        timerDict.get(playerTurn).updateTimer();</span>
+<span class="nc" id="L56">    }</span>
+
+    public void incrementTimer(Colour timer) {
+<span class="nc" id="L59">        timerDict.get(timer).addTime();</span>
+<span class="nc" id="L60">    }</span>
+
+    public boolean isGameOver() {
+<span class="nc" id="L63">        return gameOver;</span>
+    }
+
+    public void gameOver(GameOver condition, Colour winner) {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (condition == GameOver.TIME) {</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (winner == Colour.BLACK) {</span>
+<span class="nc" id="L69">                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_BLACK_WIN);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            } else if (winner == Colour.WHITE) {</span>
+<span class="nc" id="L71">                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_WHITE_WIN);</span>
+            } else {
+<span class="nc" id="L73">                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, TIME_DRAW);</span>
+            }
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        } else if (condition == GameOver.CHECKMATE) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (winner == Colour.BLACK) {</span>
+<span class="nc" id="L77">                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, CHECKMATE_BLACK_WIN);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">            } else if (winner == Colour.WHITE) {</span>
+<span class="nc" id="L79">                message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, CHECKMATE_WHITE_WIN);</span>
+            }
+        } else {
+<span class="nc" id="L82">            message = new Message(parent, MESSAGE_XY[0], MESSAGE_XY[1], null, STANDARD_DRAW);</span>
+        }
+<span class="nc" id="L84">        gameOver = true; </span>
+<span class="nc" id="L85">    }</span>
+
+    @Override
+    public void display() {
+<span class="nc" id="L89">        timerTop.display();</span>
+<span class="nc" id="L90">        timerBottom.display();</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (gameOver == true) {</span>
+<span class="nc" id="L93">           message.display();</span>
+        }
+<span class="nc" id="L95">    }</span>
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

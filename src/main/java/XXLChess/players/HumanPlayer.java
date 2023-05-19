@@ -2,9 +2,11 @@ package XXLChess.players;
 
 import XXLChess.Pieceset;
 import XXLChess.Tileset;
+import XXLChess.UI;
 import XXLChess.board.Tile;
 import XXLChess.board.logic.Move;
 import XXLChess.enums.Colour;
+import XXLChess.enums.HighlightColour;
 import XXLChess.pieces.ChessPiece;
 import processing.core.PApplet;
 
@@ -16,31 +18,42 @@ public class HumanPlayer extends Player {
         this.availableMoves = null;
     }
 
-    public boolean isValidMove(int row, int col) {
+    public Move isValidMove(int row, int col) {
         if (availableMoves != null) {
             for (Move move : availableMoves) {
                 if ((move.getNewRow() == row) & (move.getNewCol() == col)) {
-                    return true; 
+                    return move; 
                 }
             }
         }
         
-        return false;
+        return null;
     }
 
-    public void makeMove(Tile tile, Tileset tiles, Pieceset pieces) {
-        int newRow = tile.getRow();
-        int newCol = tile.getCol();
+    public void makeMove(Move move, Tileset tiles, Pieceset pieces) {
+        // Store location of moving piece. 
+        int originalRow = move.getMovingPiece().getRow();
+        int originalCol = move.getMovingPiece().getCol();
+        int originalX = move.getMovingPiece().getX();
+        int originalY = move.getMovingPiece().getY();
         
-        for (Move move : availableMoves) {
-            if ((move.getNewRow() == newRow) & (move.getNewCol() == newCol)) {
-                if (move.isCaptureMove()) {
-                    pieces.capturePiece(pieces.getPiece(newRow, newCol), newRow, newCol);
-                } else {
-                    pieces.movePiece(pieces.getPiece(newRow, newCol), newRow, newCol);
-                }
-            }
-        }
+        // Get location of new board location. 
+        int newRow = move.getNewRow();
+        int newCol = move.getNewCol();
+        int newX = pieces.getPiece(newRow, newCol).getX();
+        int newY = pieces.getPiece(newRow, newCol).getY();
+
+        // Move piece
+        move.getMovingPiece().setX(newX);
+        move.getMovingPiece().setY(newY);
+        move.getMovingPiece().setRowCol(newRow, newCol);
+
+        pieces.movePiece(move.getMovingPiece(), originalRow, originalCol);
+        tiles.getTile(newRow, newCol).setOccupied(true);
+        tiles.getTile(originalRow, originalCol).setOccupied(false);
+        pieces.createPiece('T', originalX, originalY, originalRow, originalCol);
+
+        move.getMovingPiece().checkFirstMove();
     }
 
     /**
@@ -48,8 +61,7 @@ public class HumanPlayer extends Player {
      * @param tile
      * @param piece
      */
-    @Override
-    public void select(Tile tile, ChessPiece piece, Tileset tiles, Pieceset pieces) {
+    public void select(Tile tile, ChessPiece piece, Tileset tiles, Pieceset pieces, UI ui) {
         this.deselect(tiles, pieces);
         hasSelected = true;
         availableMoves = piece.getValidMoves(tiles, pieces);
@@ -58,7 +70,12 @@ public class HumanPlayer extends Player {
 
         if (availableMoves != null) {
             for (Move move : availableMoves) {
-                tiles.addHighlight(move.getNewRow(), move.getNewCol(), move.isCaptureMove());
+                if (move.isCheck()) {
+                    tiles.addHighlight(move.getNewRow(), move.getNewCol(), HighlightColour.DARK_RED);
+                    ui.check();
+                } else {
+                    tiles.addHighlight(move.getNewRow(), move.getNewCol(), move.isCaptureMove());
+                }
             }
         }
 

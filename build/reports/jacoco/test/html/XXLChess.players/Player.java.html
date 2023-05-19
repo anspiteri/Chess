@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">chessXXL</a> &gt; <a href="index.source.html" class="el_package">XXLChess.players</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">package XXLChess.players;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import XXLChess.GameObject;
+import XXLChess.LogicObject;
+import XXLChess.Pieceset;
+import XXLChess.Tileset;
+import XXLChess.board.Tile;
+import XXLChess.board.logic.Move;
+import XXLChess.enums.Colour;
 import XXLChess.pieces.ChessPiece;
-import XXLChess.pieces.enums.PieceColour;
 import processing.core.PApplet;
 
-public class Player extends GameObject {
+public class Player extends LogicObject {
 
-    protected PieceColour playerColour;
+    protected Colour playerColour;
+    protected boolean hasSelected;
+    protected List&lt;Move&gt; availableMoves;
 
-    protected ArrayList&lt;ChessPiece&gt;[] playerPieces;
-    protected ArrayList&lt;ChessPiece&gt;[] capturedPieces;
+    protected Player(PApplet parent, Colour playerColour) {
+<span class="nc" id="L21">        super(parent);</span>
+<span class="nc" id="L22">        this.playerColour = playerColour;</span>
+<span class="nc" id="L23">        hasSelected = false; </span>
+<span class="nc" id="L24">    }</span>
 
-    protected Player(PApplet parent) {
-<span class="nc" id="L18">        super(parent);</span>
-        //TODO Auto-generated constructor stub
-<span class="nc" id="L20">    }</span>
+    public void select(Tile tile, ChessPiece piece, Tileset tiles, Pieceset pieces) {
+<span class="nc" id="L27">    }</span>
+
+    public void deselect(Tileset tiles, Pieceset pieces) {
+<span class="nc" id="L30">    }</span>
+
+    public boolean hasSelected() {
+<span class="nc" id="L33">        return hasSelected;</span>
+    }
+
+    public Colour getColour() {
+<span class="nc" id="L37">        return playerColour;</span>
+    }
+
+    public void makeMove() {
+<span class="nc" id="L41">    }</span>
+
+    public boolean hasWon() {
+<span class="nc" id="L44">        return false; </span>
+    }
+
+    public boolean isInCheck() {
+<span class="nc" id="L48">        return false;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
