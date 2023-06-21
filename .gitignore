@@ -1,0 +1,10 @@
+# Gradle build output and bin
+/build/
+/bin/
+
+# Gradle & VSC IDE-specific files
+/.gradle/
+/.vscode/
+
+# Other commonly ignored files
+.DS_Store
