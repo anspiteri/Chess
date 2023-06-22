@@ -1,1 +1,2 @@
 # XXLChessSource
+This is the legacy code for a software project for university. This branch contains the code submitted for the assignment and it is specifically designed per the designated specification of the assignment. 
