@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import XXLChess.enums.Colour;
+import XXLChess.exceptions.ConfigException;
 import XXLChess.exceptions.ValidationException;
 import processing.core.PApplet;
 import processing.data.JSONObject;
@@ -40,6 +41,14 @@ public class Config {
      * @param configName - This must be a String and match the file name specified in App.class: "config.java"
      */
     public void parseFile(String configName) {
+        try {
+            if (configName != "config.json") {
+                throw new ConfigException();
+            }
+        } catch (ConfigException ve) {
+            System.err.println("config name within system has changed from \"config.json\".");
+        }
+        
         try {
             JSONObject conf = PApplet.loadJSONObject(new File(configName));
             parseTimeSettings(conf.getJSONObject("time_settings"));

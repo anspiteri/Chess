@@ -65,14 +65,6 @@ public class App extends PApplet {
         pieces = new Pieceset(this, chessLayoutBuffer);
         // <-------------------------------------------
 
-        try {
-            if (configPath != "config.json") {
-                throw new ConfigException();
-            }
-        } catch (ConfigException ve) {
-            System.err.println("config name within system has changed from \"config.json\".");
-        }
-
         config.parseFile(configPath);
 
         // deprecated -------------------------------------------------------------------------------------------------------------->
