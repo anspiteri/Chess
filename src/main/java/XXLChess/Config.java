@@ -12,9 +12,10 @@ import processing.data.JSONObject;
 /**
  * Config is the class used to parse and store the configuration settings from file. 
  * <p/>
- * Config needs to be instantiated once in the App class in order to parse the JSON params.
- * The Config class exists throughout the program and interacts with various components 
- * as needed.
+ * Config needs to be instantiated once in the App class in order to parse the JSON params
+ * and the parameters are stored within the class itself.
+ * The Config class performs parsing once, and then exists as a buffer throughout the program 
+ * interacting with various components as needed.
  */
 public class Config {
     private Map<String, Integer> playerTimeSettings;
