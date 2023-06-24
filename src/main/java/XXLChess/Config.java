@@ -9,6 +9,13 @@ import XXLChess.exceptions.ValidationException;
 import processing.core.PApplet;
 import processing.data.JSONObject;
 
+/**
+ * Config is the class used to parse and store the configuration settings from file. 
+ * <p/>
+ * Config needs to be instantiated once in the App class in order to parse the JSON params.
+ * The Config class exists throughout the program and interacts with various components 
+ * as needed.
+ */
 public class Config {
     private Map<String, Integer> playerTimeSettings;
     private Map<String, Integer> cpuTimeSettings;
@@ -24,6 +31,13 @@ public class Config {
         playAsCpu = false;
     }
 
+    /**
+     * The method used to parse the configuration settings from config.json. 
+     * <p/>
+     * This method retrieves the settings from the appropriate keys and stores the settings within the
+     * Config object. 
+     * @param configName - This must be a String and match the file name specified in App.class: "config.java"
+     */
     public void parseFile(String configName) {
         try {
             JSONObject conf = PApplet.loadJSONObject(new File(configName));
@@ -116,30 +130,86 @@ public class Config {
      * Welcome to Java...
      */
 
+    /**
+     * This method retrieves the intial value of the player clock.
+     * The clock value is originally specified in the config file:
+     * <p/>
+     * "time_settings": { "player": { "seconds" } }
+     * @return An Integer object with the total number of seconds alloted to the player for
+     * the duration of the game. Return will be a positive number.
+     */
     public Integer getPlayerClock() {
         return playerTimeSettings.get("seconds"); 
     }
 
+    /**
+     * This method retrieves the intial value of the cpu clock.
+     * The clock value is originally specified in the config file:
+     * <p/>
+     * "time_settings": { "cpu": { "seconds" } }
+     * @return An Integer object with the total number of seconds alloted to the cpu for
+     * the duration of the game. Return will be a positive number.
+     */
     public Integer getCpuClock() {
         return cpuTimeSettings.get("seconds"); 
     }
 
+    /**
+     * This method retrieves the value that is deducted from the player's clock each
+     * turn. This value is originally specified in the config file:
+     * <p/>
+     * "time_settings": { "player": { "increment" } }
+     * @return An Integer object with the number of seconds deincremented from the
+     * player clock each turn. Return will be positive or equal to zero.
+     */
     public Integer getPlayerIncrement() {
         return playerTimeSettings.get("increment");
     }
 
+    /**
+     * This method retrieves the value that is deducted from the cpu's clock each
+     * turn. This value is originally specified in the config file:
+     * <p/>
+     * "time_settings": { "cpu": { "increment" } }
+     * @return An Integer object with the number of seconds deincremented from the
+     * cpu clock each turn. Return will be positive or equal to zero.
+     */
     public Integer getCpuIncrement() {
         return cpuTimeSettings.get("increment");
     }
 
+    /**
+     * This method retrieves the colour that is assigned to the player. 
+     * This value is originally specified in the config file:
+     * <p/>
+     * "colour_settings": { "player_colour" }
+     * @return A value of the enumerator type "Colour".
+     * * Specific values are either "BLACK", "WHITE", or "NULL".
+     */
     public Colour getPlayerColour() {
         return playerColour;
     }
 
-    public Colour getCpColour() {
+    /**
+     * This method retrieves the colour that is assigned to the cpu. 
+     * This value is determined by choosing the opposite colour
+     * assigned to the player.
+     * @return A value of the enumerator type "Colour".
+     * Specific values are either "BLACK", or "WHITE".
+     */
+    public Colour getCpuColour() {
         return cpuColour;
     }
 
+    /**
+     * This method retrieves the special setting which turns 
+     * the game into a cpu vs. cpu match. 
+     * This value is originally specified in the config file:
+     * <p/>
+     * "other_settings": { "play_as_cpu" }
+     * @return A boolean value. True, means the player will turn 
+     * into a cpu. False means the player will play as normal. 
+     */
     public boolean getPlayAsCpu() {
         return playAsCpu;
     }
