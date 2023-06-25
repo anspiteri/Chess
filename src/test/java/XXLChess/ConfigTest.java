@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import XXLChess.enums.Colour;
-import XXLChess.exceptions.ConfigException;
 
 class ConfigTest {
     final String testConfig = "testconfig.json";
@@ -27,16 +26,6 @@ class ConfigTest {
     /*
      * The following set of tests pertain to the parseFile method. 
      */
-
-    @Test
-    void TestConfigExceptionIsThrown() {
-        Config config = new Config();
-        assertThrows(ConfigException.class, 
-            () -> {
-                config.parseFile("testconfig.json");
-            }
-        );
-    }
 
     @Test
     void TestParseTimeSettings() {

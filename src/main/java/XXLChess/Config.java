@@ -42,11 +42,11 @@ public class Config {
      */
     public void parseFile(String configName) {
         try {
-            if (configName != "config.json") {
+            if (configName.equals("config.json") == false) {
                 throw new ConfigException();
             }
         } catch (ConfigException ve) {
-            System.err.println("config name within system has changed from \"config.json\".");
+            System.err.println("Config name within program has changed from \"config.json\" to " + configName);
         }
         
         try {
@@ -109,10 +109,10 @@ public class Config {
     private void parsePlayerColour(JSONObject colourSetting) {
         try {
             String playerColour = colourSetting.getString("player_colour");
-            if (playerColour == "white") {
+            if (playerColour.equals("white")) {
                 this.playerColour = Colour.WHITE;
                 this.cpuColour = Colour.BLACK;
-            } else if (playerColour == "black") {
+            } else if (playerColour.equals("black")) {
                 this.playerColour = Colour.BLACK;
                 this.cpuColour = Colour.WHITE;
             } else {
