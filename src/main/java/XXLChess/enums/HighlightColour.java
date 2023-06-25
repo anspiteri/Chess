@@ -9,5 +9,9 @@ package XXLChess.enums;
  *  contribute to the checkmate are highlighted in light red)
  */
 public enum HighlightColour {
-    BLUE, LIGHT_RED, GREEN, YELLOW, DARK_RED
+    BLUE, 
+    LIGHT_RED, 
+    GREEN, 
+    YELLOW, 
+    DARK_RED
 }

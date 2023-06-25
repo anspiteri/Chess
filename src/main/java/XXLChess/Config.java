@@ -58,7 +58,11 @@ public class Config {
             System.err.println("No config name specified in program.");
             System.exit(1);
         } catch (RuntimeException re) {
-            System.err.println("Error parsing JSON file. Check that filename matches \"config.json\" and file exists.");
+            System.err.println("Error parsing JSON file. (1/5)");
+            System.err.println("Check that filename matches \"config.json\" and file exists. (2/5)");
+            System.err.println("Check that \"time_settings\" key exists. (3/5)");
+            System.err.println("Check that \"colour_settings\" key exists. (4/5)");
+            System.err.println("Check that \"other_settings\" key exists. (5/5)");
             System.exit(1);
         }
     }

@@ -5,10 +5,8 @@ import java.util.List;
 import XXLChess.LogicObject;
 import XXLChess.Pieceset;
 import XXLChess.Tileset;
-import XXLChess.board.Tile;
 import XXLChess.board.logic.Move;
 import XXLChess.enums.Colour;
-import XXLChess.pieces.ChessPiece;
 import processing.core.PApplet;
 
 public class Player extends LogicObject {
