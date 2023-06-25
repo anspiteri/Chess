@@ -5,6 +5,7 @@
 # Gradle & VSC IDE-specific files
 /.gradle/
 /.vscode/
+/.vs/
 
 # Other commonly ignored files
 .DS_Store
