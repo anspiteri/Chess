@@ -1,4 +1,4 @@
-# XXLChessSource
+# Chess
 
 This is a chess game made within the processing library in java 8. It was orignally
 specified for an assignment but is now being worked on for my own personal learning.
