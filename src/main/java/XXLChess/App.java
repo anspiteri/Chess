@@ -1,6 +1,13 @@
 package XXLChess;
 
+import XXLChess.enums.PieceType;
+import XXLChess.exceptions.ValidationException;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import processing.core.PApplet;
+import processing.core.PImage;
 import processing.event.MouseEvent;
 
 public class App extends PApplet {
@@ -8,7 +15,7 @@ public class App extends PApplet {
     public static final int SPRITESIZE = 480;
     public static final int CELLSIZE = 48;
     public static final int SIDEBAR = 120;
-    public static final int BOARD_WIDTH = 14;
+    public static final int BOARD_WIDTH = 8;
 
     public static int WIDTH = CELLSIZE*BOARD_WIDTH+SIDEBAR;
     public static int HEIGHT = BOARD_WIDTH*CELLSIZE;
@@ -18,10 +25,11 @@ public class App extends PApplet {
     private int tickTime = 0;
 
     public static final String PATH = "src/main/resources/XXLChess/";
-    public String configPath;
+    public static final String CONFIG = "config.json";
+
+    private Map<PieceType, PImage> loadedImageMap;
 
     public App() {
-        this.configPath = "config.json";
     }
 
     /**
@@ -37,10 +45,10 @@ public class App extends PApplet {
         frameRate(FPS);
         
         Config config = new Config();
-        config.parseFile(configPath);
+        config.parseFile(App.CONFIG);
        
         // Load images during setup
-        loadImages();
+        loadedImageMap = loadImages();
 
         // Starting turn. 
     }
@@ -96,8 +104,38 @@ public class App extends PApplet {
 	
 	// Add any additional methods or attributes you want. Please put classes in different files.
 
-    private void loadImages() {
-        //TODO:
+    /**
+     * Helper method within App.setup() which loads all chess piece images from file. 
+     * @return: returns a HashMap with keys defined in PieceType enumerator, and values
+     * as PImage objects. 
+     * <p/>
+     * e.g. 
+     *      imageHashMap.get(PieceType.BISHOP_B); 
+     * <p/>
+     *      // returns the black bishop png, loaded as a PImage.  
+     */
+    private Map<PieceType, PImage> loadImages() {
+        Map<PieceType, PImage> imagesMap = new HashMap<>();
+
+        // Iterate through the enumerator PieceType. 
+        // Each PieceType constructs with a fileName attribute which is used in the loadImage method. 
+        for (PieceType pieceType : PieceType.values()) {
+            imagesMap.put(pieceType, loadImage(App.PATH + pieceType.imageFileName));
+        }
+        
+        // Validate that images have loaded correctly.
+        try {
+            for (PieceType imageKey : imagesMap.keySet()) {
+            if (imagesMap.get(imageKey) == null) { // if an image is not loaded correctly, the loadImage method returns null. 
+                throw new ValidationException("Error loading image: " + imageKey);
+            }
+        }
+        } catch (ValidationException ve) {
+            System.err.println(ve.getMessage());
+            System.exit(0);
+        }
+
+        return imagesMap;
     }
 
     private void drawTiles() {
@@ -105,7 +143,8 @@ public class App extends PApplet {
     }
 
     private void drawPieces() {
-        //TODO:
+        // use loaded images here. 
+        loadedImageMap.values();
     }
 
     private void drawUI() {

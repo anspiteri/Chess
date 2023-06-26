@@ -95,41 +95,11 @@ public class Pieceset extends SetObject {
             case 'b':
                 piece = new Bishop(parent, x, y, Colour.WHITE, row, col);
                 break;
-            case 'H':
-                piece = new Archbishop(parent, x, y, Colour.BLACK, row, col);
-                break;
-            case 'h':
-                piece = new Archbishop(parent, x, y, Colour.WHITE, row, col);
-                break;
-            case 'C':
-                piece = new Camel(parent, x, y, Colour.BLACK, row, col);
-                break;
-            case 'c':
-                piece = new Camel(parent, x, y, Colour.WHITE, row, col);
-                break;
-            case 'G':
-                piece = new General(parent, x, y, Colour.BLACK, row, col);
-                break;
-            case 'g':
-                piece = new General(parent, x, y, Colour.WHITE, row, col);
-                break;
-            case 'A':
-                piece = new Amazon(parent, x, y, Colour.BLACK, row, col);
-                break;
-            case 'a':
-                piece = new Amazon(parent, x, y, Colour.WHITE, row, col);
-                break;
             case 'K':
                 piece = new King(parent, x, y, Colour.BLACK, row, col);
                 break;
             case 'k':
                 piece = new King(parent, x, y, Colour.WHITE, row, col);
-                break;
-            case 'E':
-                piece = new Chancellor(parent, x, y, Colour.BLACK, row, col);
-                break;
-            case 'e':
-                piece = new Chancellor(parent, x, y, Colour.WHITE, row, col);
                 break;
             case 'Q':
                 piece = new Queen(parent, x, y, Colour.BLACK, row, col);
@@ -145,14 +115,6 @@ public class Pieceset extends SetObject {
                 break;
         }
         return piece;
-    }
-
-    public void loadImages() {
-        for (ChessPiece[] rows : pieces) {
-            for (ChessPiece piece : rows) {
-                piece.loadImage();
-            }
-        }
     }
 
     @Override

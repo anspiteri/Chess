@@ -52,12 +52,6 @@ public class ChessPiece extends DisplayObject {
         parent.image(image, x, y, App.CELLSIZE, App.CELLSIZE);
     }
 
-    /**
-     * Implemented in every child class of Chesspiece for each distinct png.
-     */
-    public void loadImage() {
-    }
-
     public List<Move> getValidMoves(Tileset tiles, Pieceset pieces) {
         return null;
     }

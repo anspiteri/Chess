@@ -29,23 +29,6 @@ public class Pawn extends ChessPiece {
         } else {
             return keyW;
         }
-    }
-
-    @Override
-    public void loadImage() {
-        if (this.colour == Colour.BLACK) {
-            try {
-                image = parent.loadImage(App.PATH + "b-pawn.png");
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
-        } else if (this.colour == Colour.WHITE) {
-            try {
-                image = parent.loadImage(App.PATH + "w-pawn.png");
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
-        }
     } 
 
     @Override
