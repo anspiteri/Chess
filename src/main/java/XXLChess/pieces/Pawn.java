@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import XXLChess.App;
-import XXLChess.Pieceset;
-import XXLChess.Tileset;
+import XXLChess.LegacyClasses.Pieceset;
+import XXLChess.LegacyClasses.Tileset;
 import XXLChess.board.logic.Move;
 import XXLChess.enums.Colour;
 import processing.core.PApplet;

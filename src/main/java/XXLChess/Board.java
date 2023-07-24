@@ -7,31 +7,7 @@ public class Board {
         boardPositions = new Position[boardWidth * boardHeight];
     }
 
-    public Point getCoordinate(int boardIndex) {
-        XYCalculator XYCoordinates = new XYCalculator(boardIndex);
-        return new Point(XYCoordinates.X, XYCoordinates.Y);
-    }
-
-    public class XYCalculator {
-        private int X;
-        private int Y;
-        
-        public XYCalculator(int boardIndex) {
-            // TODO: Algorithm that works out x & y coordinates from board index.
-            X = 0;
-            Y = 0;
-        }
-
-        public int X() {
-            return X;
-        }
-
-        public int Y() {
-            return Y;
-        }
-    }
-
-    // TODO:
+     // TODO:
     // Determine whether getOccupied is a relevent function, because if I'm checking if something 
     // is occupied, I often want to know what is there as well. So check whether I ever need isOccupied 
     // on its own, and if so, I need to work out some logic, (possibly an if-else statment) where if 
@@ -55,6 +31,24 @@ public class Board {
             return isOccupied;
         }
     }
+
+    /**
+     * This method is used to calculate the coordinates of a given position. 
+     * This is required especially for drawing object positions to the screen. 
+     * @param boardIndex
+     * @return A Point object which contains the x and y coordinate as params. 
+     */
+    public static Point getCoordinate(int boardIndex) {
+        double xCoord, yCoord;
+
+        //TODO: Algorithm for calculating coords from board index. 
+        xCoord = 0;
+        yCoord = 0;
+
+        return new Point(xCoord, yCoord);
+    }
+
+   
 
     /*
      * Possible movement methods.

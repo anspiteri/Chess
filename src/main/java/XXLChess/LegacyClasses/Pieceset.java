@@ -1,7 +1,8 @@
-package XXLChess;
+package XXLChess.LegacyClasses;
 
 import java.util.ArrayList;
 
+import XXLChess.App;
 import XXLChess.enums.Colour;
 import XXLChess.exceptions.PieceCreationException;
 import XXLChess.pieces.*;

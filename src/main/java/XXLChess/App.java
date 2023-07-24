@@ -1,5 +1,9 @@
 package XXLChess;
 
+import XXLChess.LegacyClasses.DisplayObject;
+import XXLChess.LegacyClasses.Tile;
+import XXLChess.enums.Colour;
+import XXLChess.enums.HighlightColour;
 import XXLChess.enums.PieceType;
 import XXLChess.exceptions.ValidationException;
 
@@ -27,7 +31,17 @@ public class App extends PApplet {
     public static final String PATH = "src/main/resources/XXLChess/";
     public static final String CONFIG = "config.json";
 
+    private final int WHITE = color(255, 255, 240);
+    private final int BLACK = color(85, 63, 47);
+    private final int BLUE = color(0, 0, 255);
+    private final int LIGHT_RED = color(255, 153, 153);
+    private final int GREEN = color(0, 255, 0);
+    private final int YELLOW = color(255, 255, 0);
+    private final int DARK_RED = color(153, 0, 0);
+    private final float HIGHLIGHT_AMT = 0.5f;
+
     private Map<PieceType, PImage> loadedImageMap;
+    private Tiles tiles; 
 
     public App() {
     }
@@ -46,6 +60,9 @@ public class App extends PApplet {
         
         Config config = new Config();
         config.parseFile(App.CONFIG);
+
+        // Initialize board elements
+        tiles = new Tiles(BOARD_WIDTH * BOARD_WIDTH);
        
         // Load images during setup
         loadedImageMap = loadImages();
@@ -102,7 +119,10 @@ public class App extends PApplet {
         drawUI();
     }
 	
-	// Add any additional methods or attributes you want. Please put classes in different files.
+	/*
+     *                                              HELPER METHODS
+     * -----------------------------------------------------------------------------------------------------
+     */
 
     /**
      * Helper method within App.setup() which loads all chess piece images from file. 
@@ -138,8 +158,45 @@ public class App extends PApplet {
         return imagesMap;
     }
 
+    // TODO: Work out how to implement tile highlighting into this logic as well as how the colour system works in Processing. 
     private void drawTiles() {
-        //TODO:
+        Colour[] tilesList = tiles.getTileList();
+        for (int i = 0; i < tilesList.length; i++) {
+            if (tilesList[i] == Colour.WHITE) {
+                fill(WHITE);
+            } else if (tilesList[i] == Colour.BLACK) {
+                fill(BLACK);
+            } else {
+                highlightTile(tilesList[i]);
+            }
+            // Want this to be running every draw call. 
+            stroke(0);
+            strokeWeight(1);
+            rect(Board.getCoordinate(i).xCoord(), Board.getCoordinate(i).yCoord(), App.CELLSIZE, App.CELLSIZE);
+        }
+    }
+
+    private void highlightTile(Colour highlightColour) {
+        switch (highlightColour) {
+            case BLUE:
+                fill(lerpColor(colorDict.get(this.colour), BLUE, HIGHLIGHT_AMT));
+                break;
+            case LIGHT_RED:
+                fill(lerpColor(colorDict.get(this.colour), LIGHT_RED, HIGHLIGHT_AMT));
+                break;
+            case GREEN:
+                fill(lerpColor(colorDict.get(this.colour), GREEN, HIGHLIGHT_AMT));
+                break;
+            case YELLOW:
+                fill(lerpColor(colorDict.get(this.colour), YELLOW, HIGHLIGHT_AMT));
+                break;
+            case DARK_RED:
+                fill(lerpColor(colorDict.get(this.colour), DARK_RED, HIGHLIGHT_AMT));
+                break;
+            default:
+                stroke(0);
+                break;
+        }
     }
 
     private void drawPieces() {

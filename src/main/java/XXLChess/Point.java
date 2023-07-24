@@ -1,19 +1,19 @@
 package XXLChess;
 
 public class Point {
-    private final int xCoord;
-    private final int yCoord;
+    private final double xCoord;
+    private final double yCoord;
 
-    public Point(int xCoord, int yCoord) {
+    public Point(double xCoord, double yCoord) {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
     }
 
-    public int xCoord() {
+    public double xCoord() {
         return xCoord;
     }
 
-    public int yCoord() {
+    public double yCoord() {
         return yCoord;
     }
 }

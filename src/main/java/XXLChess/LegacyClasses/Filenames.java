@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.LegacyClasses;
 
 // THIS IS CURRENTLY NOT USED AND CAN BE DELETED IF NOT REQUIRED.
 

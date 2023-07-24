@@ -2,9 +2,9 @@ package XXLChess.players;
 
 import java.util.List;
 
-import XXLChess.LogicObject;
-import XXLChess.Pieceset;
-import XXLChess.Tileset;
+import XXLChess.LegacyClasses.LogicObject;
+import XXLChess.LegacyClasses.Pieceset;
+import XXLChess.LegacyClasses.Tileset;
 import XXLChess.board.logic.Move;
 import XXLChess.enums.Colour;
 import processing.core.PApplet;

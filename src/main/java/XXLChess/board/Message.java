@@ -1,6 +1,6 @@
 package XXLChess.board;
 
-import XXLChess.DisplayObject;
+import XXLChess.LegacyClasses.DisplayObject;
 import XXLChess.enums.Colour;
 import processing.core.PApplet;
 

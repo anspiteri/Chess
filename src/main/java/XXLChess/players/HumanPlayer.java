@@ -1,9 +1,9 @@
 package XXLChess.players;
 
-import XXLChess.Pieceset;
-import XXLChess.Tileset;
-import XXLChess.UI;
-import XXLChess.board.Tile;
+import XXLChess.LegacyClasses.Pieceset;
+import XXLChess.LegacyClasses.Tile;
+import XXLChess.LegacyClasses.Tileset;
+import XXLChess.LegacyClasses.UI;
 import XXLChess.board.logic.Move;
 import XXLChess.enums.Colour;
 import XXLChess.enums.HighlightColour;

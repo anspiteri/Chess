@@ -1,9 +1,10 @@
-package XXLChess;
+package XXLChess.LegacyClasses;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import XXLChess.App;
 import XXLChess.board.Message;
 import XXLChess.board.Timer;
 import XXLChess.enums.Colour;

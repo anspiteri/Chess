@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.LegacyClasses;
 
 import processing.core.PApplet;
 

@@ -1,6 +1,6 @@
-package XXLChess;
+package XXLChess.LegacyClasses;
 
-import XXLChess.board.Tile;
+import XXLChess.App;
 import XXLChess.enums.Colour;
 import XXLChess.enums.HighlightColour;
 import processing.core.PApplet;
@@ -8,7 +8,6 @@ import processing.core.PApplet;
 public class Tileset extends SetObject {
 
     private Tile[][] tiles;
-    private Colour tileColour;
     private Tile selectedTile;
 
     public Tileset(PApplet parent) {
@@ -67,37 +66,6 @@ public class Tileset extends SetObject {
             }
         }
         return null;
-    }
-
-    @Override
-    public void setup() {
-        for (int i = 0; i < tiles.length; i++) {
-            // determine the starting colour per row
-            if (i % 2 == 0) {
-                tileColour = Colour.WHITE;
-            } else {
-                tileColour = Colour.BLACK;
-            }
-            
-            for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j] = new Tile(parent, j * App.CELLSIZE, i * App.CELLSIZE, tileColour, i, j);
-                // logic used to create alternating black and white tiles across rows
-                if (tileColour == Colour.WHITE) {
-                    tileColour = Colour.BLACK;
-                } else {
-                    tileColour = Colour.WHITE;
-                }
-            }
-        }
-    }
-
-    @Override
-    public void display() {
-        for (int i = 0; i < tiles.length; i++) {
-            for (int j = 0; j < tiles.length; j++) {
-                tiles[i][j].display();  
-            }
-        }
     }
 
     @Deprecated

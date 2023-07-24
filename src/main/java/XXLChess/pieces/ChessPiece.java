@@ -3,9 +3,9 @@ package XXLChess.pieces;
 import java.util.List;
 
 import XXLChess.App;
-import XXLChess.DisplayObject;
-import XXLChess.Pieceset;
-import XXLChess.Tileset;
+import XXLChess.LegacyClasses.DisplayObject;
+import XXLChess.LegacyClasses.Pieceset;
+import XXLChess.LegacyClasses.Tileset;
 import XXLChess.board.logic.Move;
 import XXLChess.enums.Colour;
 import processing.core.PApplet;
