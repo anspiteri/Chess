@@ -1,4 +1,4 @@
-package XXLChess.board;
+package XXLChess.LegacyClasses.board;
 
 import XXLChess.LegacyClasses.DisplayObject;
 import XXLChess.enums.Colour;

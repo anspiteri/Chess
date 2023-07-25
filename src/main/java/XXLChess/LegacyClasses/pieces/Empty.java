@@ -1,4 +1,4 @@
-package XXLChess.pieces;
+package XXLChess.LegacyClasses.pieces;
 
 import XXLChess.enums.Colour;
 import processing.core.PApplet;

@@ -1,4 +1,4 @@
-package XXLChess.pieces;
+package XXLChess.LegacyClasses.pieces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import XXLChess.App;
 import XXLChess.LegacyClasses.Pieceset;
 import XXLChess.LegacyClasses.Tileset;
-import XXLChess.board.logic.Move;
+import XXLChess.LegacyClasses.board.logic.Move;
 import XXLChess.enums.Colour;
 import processing.core.PApplet;
 

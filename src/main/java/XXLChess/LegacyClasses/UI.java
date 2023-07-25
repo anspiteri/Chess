@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import XXLChess.App;
-import XXLChess.board.Message;
-import XXLChess.board.Timer;
+import XXLChess.Timer;
+import XXLChess.LegacyClasses.board.Message;
 import XXLChess.enums.Colour;
 import XXLChess.enums.GameOver;
 import processing.core.PApplet;

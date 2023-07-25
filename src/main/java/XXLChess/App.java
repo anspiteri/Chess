@@ -172,7 +172,7 @@ public class App extends PApplet {
             // Want this to be running every draw call. 
             stroke(0);
             strokeWeight(1);
-            rect(Board.getCoordinate(i).xCoord(), Board.getCoordinate(i).yCoord(), App.CELLSIZE, App.CELLSIZE);
+            rect(CoordinateCalculator.getCoordinate(i).xCoord(), CoordinateCalculator.getCoordinate(i).yCoord(), App.CELLSIZE, App.CELLSIZE);
         }
     }
 

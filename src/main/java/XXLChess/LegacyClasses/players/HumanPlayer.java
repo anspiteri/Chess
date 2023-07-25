@@ -1,13 +1,13 @@
-package XXLChess.players;
+package XXLChess.LegacyClasses.players;
 
 import XXLChess.LegacyClasses.Pieceset;
 import XXLChess.LegacyClasses.Tile;
 import XXLChess.LegacyClasses.Tileset;
 import XXLChess.LegacyClasses.UI;
-import XXLChess.board.logic.Move;
+import XXLChess.LegacyClasses.board.logic.Move;
+import XXLChess.LegacyClasses.pieces.ChessPiece;
 import XXLChess.enums.Colour;
 import XXLChess.enums.HighlightColour;
-import XXLChess.pieces.ChessPiece;
 import processing.core.PApplet;
 
 public class HumanPlayer extends Player {

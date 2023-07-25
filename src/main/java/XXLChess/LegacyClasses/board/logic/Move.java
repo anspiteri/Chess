@@ -1,6 +1,6 @@
-package XXLChess.board.logic;
+package XXLChess.LegacyClasses.board.logic;
 
-import XXLChess.pieces.ChessPiece;
+import XXLChess.LegacyClasses.pieces.ChessPiece;
 
 public class Move {
     private int newRow;

@@ -1,16 +1,16 @@
-package XXLChess.pieces;
+package XXLChess.LegacyClasses.pieces;
 
 import XXLChess.enums.Colour;
 import processing.core.PApplet;
 
-public class King extends ChessPiece {
-    private String keyB = "K";
-    private String keyW = "k";
+public class Bishop extends ChessPiece {
+    private String keyB = "B";
+    private String keyW = "b";
 
-    public King(PApplet parent, int x, int y, Colour colour, int row, int col) {
+    public Bishop(PApplet parent, int x, int y, Colour colour, int row, int col) {
         super(parent, x, y, colour, row, col);
     }
-
+    
     @Override
     public String toString() {
         if (colour == Colour.BLACK) {

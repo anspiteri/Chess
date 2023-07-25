@@ -1,13 +1,13 @@
-package XXLChess.pieces;
+package XXLChess.LegacyClasses.pieces;
 
 import XXLChess.enums.Colour;
 import processing.core.PApplet;
 
-public class Knight extends ChessPiece {
-    private String keyB = "N";
-    private String keyW = "n";
+public class King extends ChessPiece {
+    private String keyB = "K";
+    private String keyW = "k";
 
-    public Knight(PApplet parent, int x, int y, Colour colour, int row, int col) {
+    public King(PApplet parent, int x, int y, Colour colour, int row, int col) {
         super(parent, x, y, colour, row, col);
     }
 

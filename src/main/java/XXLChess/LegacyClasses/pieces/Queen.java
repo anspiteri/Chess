@@ -1,13 +1,13 @@
-package XXLChess.pieces;
+package XXLChess.LegacyClasses.pieces;
 
 import XXLChess.enums.Colour;
 import processing.core.PApplet;
 
-public class Rook extends ChessPiece {
-    private String keyB = "R";
-    private String keyW = "r";
+public class Queen extends ChessPiece {
+    private String keyB = "Q";
+    private String keyW = "q";
 
-    public Rook(PApplet parent, int x, int y, Colour colour, int row, int col) {
+    public Queen(PApplet parent, int x, int y, Colour colour, int row, int col) {
         super(parent, x, y, colour, row, col);
     }
 
@@ -19,7 +19,7 @@ public class Rook extends ChessPiece {
             return keyW;
         }
     }
- 
+
     @Override
     public String getKey() {
         return this.key;

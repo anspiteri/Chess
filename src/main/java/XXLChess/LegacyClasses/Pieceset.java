@@ -3,9 +3,9 @@ package XXLChess.LegacyClasses;
 import java.util.ArrayList;
 
 import XXLChess.App;
+import XXLChess.LegacyClasses.pieces.*;
 import XXLChess.enums.Colour;
 import XXLChess.exceptions.PieceCreationException;
-import XXLChess.pieces.*;
 import processing.core.PApplet;
 
 public class Pieceset extends SetObject {

@@ -1,29 +1,21 @@
-package XXLChess.board;
+package XXLChess;
 
-import XXLChess.LegacyClasses.DisplayObject;
 import XXLChess.enums.Colour;
-import processing.core.PApplet;
 
-public class Timer extends DisplayObject {
-    private final int TEXT_SIZE = 32;
+public class Timer {
+    public static final int TEXT_SIZE = 32;
 
     private int seconds;
-    private int increment;
+    private int increment;  
 
-    public Timer(PApplet parent, int x, int y, Colour colour) {
-        super(parent, x, y, colour);
+    public Timer(Colour colour) {
         this.seconds = 0;
         this.increment = 0;
-        parent.textSize(TEXT_SIZE);
     }
 
     public void setTime(int seconds, int increment) {
         this.seconds = seconds;
         this.increment = increment;
-    }
-
-    public void display() {
-        parent.text(seconds, x, y);
     }
 
     public void addTime() {
