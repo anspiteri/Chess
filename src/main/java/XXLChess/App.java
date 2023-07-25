@@ -206,6 +206,14 @@ public class App extends PApplet {
 
     private void drawUI() {
         //TODO:
+        drawTimers();
+
+    }
+
+    private void drawTimers() {
+        textSize(Timer.TEXT_SIZE);
+        //text(seconds, x, y); timer top
+        //text(seconds, x, y); timer bottom
     }
 
     /**
