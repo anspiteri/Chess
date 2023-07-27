@@ -1,6 +1,6 @@
 package XXLChess.enums;
 
-public enum PieceType {
+public enum PieceTypeImg {
     BISHOP_B("b-bishop.png"),
     BISHOP_W("w-bishop.png"),
     KING_B("b-king.png"),
@@ -16,7 +16,7 @@ public enum PieceType {
     
     public final String imageFileName;
 
-    PieceType(String imageFileName) {
+    PieceTypeImg(String imageFileName) {
         this.imageFileName = imageFileName;
     }
 }

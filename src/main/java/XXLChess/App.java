@@ -2,9 +2,10 @@ package XXLChess;
 
 import XXLChess.LegacyClasses.DisplayObject;
 import XXLChess.LegacyClasses.Tile;
+import XXLChess.LegacyClasses.players.Player;
 import XXLChess.enums.Colour;
 import XXLChess.enums.HighlightColour;
-import XXLChess.enums.PieceType;
+import XXLChess.enums.PieceTypeImg;
 import XXLChess.exceptions.ValidationException;
 
 import java.util.HashMap;
@@ -25,12 +26,10 @@ public class App extends PApplet {
     public static int HEIGHT = BOARD_WIDTH*CELLSIZE;
 
     public static final int FPS = 60;
-    private int tickCounter = 0;
-    private int tickTime = 0;
-
+    
     public static final String PATH = "src/main/resources/XXLChess/";
     public static final String CONFIG = "config.json";
-
+    
     private final int WHITE = color(255, 255, 240);
     private final int BLACK = color(85, 63, 47);
     private final int BLUE = color(0, 0, 255);
@@ -40,8 +39,16 @@ public class App extends PApplet {
     private final int DARK_RED = color(153, 0, 0);
     private final float HIGHLIGHT_AMT = 0.5f;
 
-    private Map<PieceType, PImage> loadedImageMap;
+    private int tickCounter = 0;
+    private int tickTime = 0;
+
     private Tiles tiles; 
+    private Timer timerTop;
+    private Timer timerBottom;
+    private Map<PieceTypeImg, PImage> loadedImageMap;
+    private PlayerState playerWhite;
+    private PlayerState playerBlack;
+
 
     public App() {
     }
@@ -61,13 +68,17 @@ public class App extends PApplet {
         Config config = new Config();
         config.parseFile(App.CONFIG);
 
-        // Initialize board elements
+        // Initialize board elements, timers & players
         tiles = new Tiles(BOARD_WIDTH * BOARD_WIDTH);
+
+        timerTop = new Timer(config.getCpuColour(), config.getCpuClock(), config.getCpuIncrement());
+        timerBottom = new Timer(config.getPlayerColour(), config.getPlayerClock(), config.getPlayerIncrement());
+        
+        initializePlayers(config);
+        
        
         // Load images during setup
         loadedImageMap = loadImages();
-
-        // Starting turn. 
     }
 
     /**
@@ -125,6 +136,28 @@ public class App extends PApplet {
      */
 
     /**
+     * Sets up the players with their respective colours, starting turn, and whether the player is a cpu or human. 
+     * @param config - provides colour setting for cpu and human, as well as the play as cpu setting. 
+     */
+    private void initializePlayers(Config config) {
+        playerWhite = new PlayerState(true);
+        playerBlack = new PlayerState(false);
+        
+        if (config.getPlayAsCpu() == true) {
+            playerBlack.makeCpuPlayer();
+            playerWhite.makeCpuPlayer();
+        } else {
+            if (config.getPlayerColour() == Colour.BLACK) {
+                playerBlack.makeHumanPlayer();
+                playerWhite.makeCpuPlayer();
+            } else {
+                playerBlack.makeCpuPlayer();
+                playerWhite.makeHumanPlayer();
+            }
+        }
+    }
+
+    /**
      * Helper method within App.setup() which loads all chess piece images from file. 
      * @return: returns a HashMap with keys defined in PieceType enumerator, and values
      * as PImage objects. 
@@ -134,18 +167,18 @@ public class App extends PApplet {
      * <p/>
      *      // returns the black bishop png, loaded as a PImage.  
      */
-    private Map<PieceType, PImage> loadImages() {
-        Map<PieceType, PImage> imagesMap = new HashMap<>();
+    private Map<PieceTypeImg, PImage> loadImages() {
+        Map<PieceTypeImg, PImage> imagesMap = new HashMap<>();
 
         // Iterate through the enumerator PieceType. 
         // Each PieceType constructs with a fileName attribute which is used in the loadImage method. 
-        for (PieceType pieceType : PieceType.values()) {
+        for (PieceTypeImg pieceType : PieceTypeImg.values()) {
             imagesMap.put(pieceType, loadImage(App.PATH + pieceType.imageFileName));
         }
         
         // Validate that images have loaded correctly.
         try {
-            for (PieceType imageKey : imagesMap.keySet()) {
+            for (PieceTypeImg imageKey : imagesMap.keySet()) {
             if (imagesMap.get(imageKey) == null) { // if an image is not loaded correctly, the loadImage method returns null. 
                 throw new ValidationException("Error loading image: " + imageKey);
             }
@@ -211,9 +244,9 @@ public class App extends PApplet {
     }
 
     private void drawTimers() {
-        textSize(Timer.TEXT_SIZE);
-        //text(seconds, x, y); timer top
-        //text(seconds, x, y); timer bottom
+        textSize(UserInterfaceConfig.TIMER_TEXT_SIZE);
+        text(timerTop.getTime(), UserInterfaceConfig.TIMER_TOP_XY[0], UserInterfaceConfig.TIMER_TOP_XY[1]);
+        text(timerBottom.getTime(), UserInterfaceConfig.TIMER_BOTTOM_XY[0], UserInterfaceConfig.TIMER_BOTTOM_XY[1]);
     }
 
     /**
@@ -226,9 +259,4 @@ public class App extends PApplet {
     public static void main(String[] args) {
         PApplet.main("XXLChess.App");
     }
-
-    public DisplayObject getHumanPlayer() {
-        return null;
-    }
-
 }

@@ -3,19 +3,18 @@ package XXLChess;
 import XXLChess.enums.Colour;
 
 public class Timer {
-    public static final int TEXT_SIZE = 32;
-
+    private Colour teamColour;
     private int seconds;
     private int increment;  
 
-    public Timer(Colour colour) {
-        this.seconds = 0;
-        this.increment = 0;
-    }
-
-    public void setTime(int seconds, int increment) {
+    public Timer(Colour teamColour, int seconds, int increment) {
+        this.teamColour = teamColour;
         this.seconds = seconds;
         this.increment = increment;
+    }
+
+    public Colour getColour() {
+        return teamColour;
     }
 
     public void addTime() {
