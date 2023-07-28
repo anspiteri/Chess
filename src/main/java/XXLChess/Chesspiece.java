@@ -1,14 +1,14 @@
 package XXLChess;
 
 import XXLChess.enums.Colour;
-import XXLChess.enums.PieceTypeObj;
+import XXLChess.enums.PieceType;
 
 public class Chesspiece {
     private int positionalIndex;
     private final Colour teamColour;
-    private final PieceTypeObj pieceType; 
+    private final PieceType pieceType; 
 
-    public Chesspiece(int positionalIndex, Colour teamColour, PieceTypeObj pieceType) {
+    public Chesspiece(int positionalIndex, Colour teamColour, PieceType pieceType) {
         this.positionalIndex = positionalIndex;
         this.teamColour = teamColour;
         this.pieceType = pieceType;
@@ -26,7 +26,7 @@ public class Chesspiece {
         return teamColour;
     }
 
-    public PieceTypeObj getPieceType() {
+    public PieceType getPieceType() {
         return pieceType;
     }
 }

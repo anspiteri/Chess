@@ -1,11 +1,11 @@
 package XXLChess;
 
-import XXLChess.enums.PieceTypeObj;
+import XXLChess.enums.PieceType;
 
 public class MovesetLogic {
-
-    public static void getAvailableMoves(PieceTypeObj pieceType) {
-        if (pieceType == PieceTypeObj.PAWN) {
+    //TODO: Fix the rest of these... 
+    public static void getAvailableMoves(PieceType pieceType) {
+        if (pieceType == PieceType.PAWN_B | pieceType == PieceType.PAWN_W) {
             getPawnMoves();
         } else if (pieceType == PieceTypeObj.ROOK) {
             getRookMoves();

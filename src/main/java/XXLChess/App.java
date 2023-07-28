@@ -5,7 +5,7 @@ import XXLChess.LegacyClasses.Tile;
 import XXLChess.LegacyClasses.players.Player;
 import XXLChess.enums.Colour;
 import XXLChess.enums.HighlightColour;
-import XXLChess.enums.PieceTypeImg;
+import XXLChess.enums.PieceType;
 import XXLChess.exceptions.ValidationException;
 
 import java.util.HashMap;
@@ -45,7 +45,7 @@ public class App extends PApplet {
     private Tiles tiles; 
     private Timer timerTop;
     private Timer timerBottom;
-    private Map<PieceTypeImg, PImage> loadedImageMap;
+    private Map<PieceType, PImage> loadedImageMap;
     private PlayerState playerWhite;
     private PlayerState playerBlack;
 
@@ -167,18 +167,18 @@ public class App extends PApplet {
      * <p/>
      *      // returns the black bishop png, loaded as a PImage.  
      */
-    private Map<PieceTypeImg, PImage> loadImages() {
-        Map<PieceTypeImg, PImage> imagesMap = new HashMap<>();
+    private Map<PieceType, PImage> loadImages() {
+        Map<PieceType, PImage> imagesMap = new HashMap<>();
 
         // Iterate through the enumerator PieceType. 
         // Each PieceType constructs with a fileName attribute which is used in the loadImage method. 
-        for (PieceTypeImg pieceType : PieceTypeImg.values()) {
+        for (PieceType pieceType : PieceType.values()) {
             imagesMap.put(pieceType, loadImage(App.PATH + pieceType.imageFileName));
         }
         
         // Validate that images have loaded correctly.
         try {
-            for (PieceTypeImg imageKey : imagesMap.keySet()) {
+            for (PieceType imageKey : imagesMap.keySet()) {
             if (imagesMap.get(imageKey) == null) { // if an image is not loaded correctly, the loadImage method returns null. 
                 throw new ValidationException("Error loading image: " + imageKey);
             }
