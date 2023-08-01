@@ -18,7 +18,8 @@ public class BoardInitializationTest {
         Map<Integer, PieceType> correctBoardPositions = Collections.unmodifiableMap(generatePositionsWhite(whiteTopMap));
 
         // Initialize the board pieces to be tested. 
-        BoardPieces testBoardPieces = new BoardPieces(true);
+        boolean whiteAtTop = true;
+        BoardPieces testBoardPieces = new BoardPieces(whiteAtTop);
 
         // Test positions 0 -> 15:
         testEachPosition(0, 15, testBoardPieces, correctBoardPositions);
@@ -74,7 +75,8 @@ public class BoardInitializationTest {
         Map<Integer, PieceType> correctBoardPositions = Collections.unmodifiableMap(generatePositionsBlack(blackMap));
 
         // Initialize the board pieces to be tested. 
-        BoardPieces testBoardPieces = new BoardPieces(false);
+        boolean whiteAtTop = false;
+        BoardPieces testBoardPieces = new BoardPieces(whiteAtTop);
 
         // Test positions 0 -> 15:
         testEachPosition(0, 15, testBoardPieces, correctBoardPositions);

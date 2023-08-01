@@ -133,7 +133,7 @@ public class App extends PApplet {
 	/*
      *                                              HELPER METHODS
      * -----------------------------------------------------------------------------------------------------
-     */
+     */ 
 
     /**
      * Sets up the players with their respective colours, starting turn, and whether the player is a cpu or human. 

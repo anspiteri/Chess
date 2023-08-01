@@ -21,4 +21,19 @@ public class PlayerState {
         isHuman = false;
     }
 
+    public boolean isHuman() {
+        return isHuman;
+    }
+
+    public boolean currentTurn() {
+        return isPlayersTurn;
+    }
+
+    public boolean inCheck() {
+        return inCheck;
+    }
+
+    public boolean inCheckMate() {
+        return inCheckMate;
+    }
 }
