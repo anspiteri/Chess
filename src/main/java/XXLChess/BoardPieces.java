@@ -3,32 +3,32 @@ package XXLChess;
 import java.util.HashMap;
 import java.util.Map;
 
-import XXLChess.enums.Colour;
 import XXLChess.enums.PieceType;
 
 public class BoardPieces {
     private Map<Integer, Chesspiece> boardChesspieces;
 
     public BoardPieces(boolean whiteIsTop) {
+        Map<Character, int[]> startingPositions;
+
+        // Instantiate pieces. 
         boardChesspieces = new HashMap<>(32);
         
-        //TODO: Instantiate all pieces.
-        instantiateTeamPieces(Colour.BLACK, whiteIsTop);
-        instantiateTeamPieces(Colour.WHITE, whiteIsTop);
-    }
+        if (whiteIsTop) {
+            startingPositions = StartingPositions.startingPositionsWhite;
+        } else {
+            startingPositions = StartingPositions.startingPositionsBlack;
+        }
 
-    private void instantiateTeamPieces(Colour team, boolean whiteIsTop) {        
+        // For each piece get the starting positions on the board. 
         for (PieceType pieceType : PieceType.values()) {
-            // 1: Create an instance of a new chess piece. 
-            Chesspiece nextChesspiece = new Chesspiece(pieceType.startingPosition, team, pieceType);
-            
-            // 2: Determine the starting position of the piece. 
-            if (whiteIsTop == false) {
-                nextChesspiece.getPositionalIndex();
+            int[] piecePositions = startingPositions.get(pieceType.key);
+
+            // For each individual position create a new chess piece and add it 
+            // to the map of chess pieces. 
+            for (int positionalIndex : piecePositions) {
+                boardChesspieces.put(positionalIndex, new Chesspiece(positionalIndex, pieceType));
             }
-            
-            // 3: Add the piece's index and the object itself to the map. 
-            boardChesspieces.put(nextChesspiece.getPositionalIndex(), nextChesspiece);
         }
     }
 

@@ -1,59 +1,70 @@
 package XXLChess;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 public class StartingPositions {
-    
-    // For the issue of black and white pieces differing in starting positions, this is solved 
-    // in the BoardPieces class implementation. 
-    public static final StartingPosition[] startingPositions = {
-        new StartingPosition(0, 'r'),
-        new StartingPosition(1, 'n'),
-        new StartingPosition(2, 'b'),
-        new StartingPosition(3, 'q'),
-        new StartingPosition(4, 'k'),
-        new StartingPosition(5, 'b'),
-        new StartingPosition(6, 'n'),
-        new StartingPosition(7, 'r'),
-        new StartingPosition(8, 'p'),
-        new StartingPosition(9, 'p'),
-        new StartingPosition(10, 'p'),
-        new StartingPosition(11, 'p'),
-        new StartingPosition(12, 'p'),
-        new StartingPosition(13, 'p'),
-        new StartingPosition(14, 'p'),
-        new StartingPosition(15, 'p'),
-        new StartingPosition(48, 'P'),
-        new StartingPosition(49, 'P'),
-        new StartingPosition(50, 'P'),
-        new StartingPosition(51, 'P'),
-        new StartingPosition(52, 'P'),
-        new StartingPosition(53, 'P'),
-        new StartingPosition(54, 'P'),
-        new StartingPosition(55, 'P'),
-        new StartingPosition(56, 'R'),
-        new StartingPosition(57, 'N'),
-        new StartingPosition(58, 'B'),
-        new StartingPosition(59, 'Q'),
-        new StartingPosition(60, 'K'),
-        new StartingPosition(61, 'B'),
-        new StartingPosition(62, 'N'),
-        new StartingPosition(63, 'R')
-    };
+    public static final Map<Character, int[]> startingPositionsWhite;
+    public static final Map<Character, int[]> startingPositionsBlack;
 
-    public class StartingPosition {
-        private int positionalIndex; 
-        private char pieceTypeKey;
+    /*
+     * LOWERCASE denotes WHITE pieces. 
+     */
 
-        public StartingPosition(int positionalIndex, char pieceTypeKey) {
-            this.positionalIndex = positionalIndex;
-            this.pieceTypeKey = pieceTypeKey;
-        }
+    // white on top starting positions. 
+    static {
+        Map<Character, int[]> map = new HashMap<>();
+        map.put('r', new int[] {0, 7});
+        map.put('R', new int[] {56, 63});
 
-        public int getStartingPosition() {
-            return positionalIndex;
-        }
+        map.put('n', new int[] {1, 6});
+        map.put('N', new int[] {57, 62});
 
-        public char getPieceTypeKey() {
-            return pieceTypeKey;
-        }
+        map.put('b', new int[] {2, 5});
+        map.put('B', new int[] {58, 61});
+
+        map.put('q', new int[] {3});
+        map.put('Q', new int[] {59});
+
+        map.put('k', new int[] {4});
+        map.put('K', new int[] {60});
+
+        map.put('p', new int[] {
+            8, 9, 10, 11, 12, 13, 14, 15
+        });
+        map.put('P', new int[] {
+            48, 49, 50, 51, 52, 53, 54, 55
+        });
+
+        startingPositionsWhite = Collections.unmodifiableMap(map);
+    }
+
+    // black on top starting positions.
+    static {
+        Map<Character, int[]> map = new HashMap<>();
+        map.put('R', new int[] {0, 7});
+        map.put('r', new int[] {56, 63});
+
+        map.put('N', new int[] {1, 6});
+        map.put('n', new int[] {57, 62});
+
+        map.put('B', new int[] {2, 5});
+        map.put('b', new int[] {58, 61});
+
+        map.put('Q', new int[] {3});
+        map.put('q', new int[] {59});
+
+        map.put('K', new int[] {4});
+        map.put('k', new int[] {60});
+
+        map.put('P', new int[] {
+            8, 9, 10, 11, 12, 13, 14, 15
+        });
+        map.put('p', new int[] {
+            48, 49, 50, 51, 52, 53, 54, 55
+        });
+
+        startingPositionsBlack = Collections.unmodifiableMap(map);
     }
 }

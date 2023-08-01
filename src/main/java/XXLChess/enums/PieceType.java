@@ -1,6 +1,7 @@
 package XXLChess.enums;
 
 public enum PieceType {
+    NONE(' ', " "),
     BISHOP_B('B', "b-bishop.png"),
     BISHOP_W('b', "w-bishop.png"),
     KING_B('K', "b-king.png"),
