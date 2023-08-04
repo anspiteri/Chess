@@ -3,6 +3,8 @@ package XXLChess;
 import XXLChess.enums.Colour;
 import XXLChess.enums.PieceType;
 
+//TODO: Determine whether teamColour is redundant or not. 
+
 public class Chesspiece {
     private int positionalIndex;
     // private final Colour teamColour; This may be redundant. 

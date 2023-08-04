@@ -1,31 +1,29 @@
-package XXLChess.LegacyClasses.board.logic;
-
-import XXLChess.LegacyClasses.pieces.ChessPiece;
+package XXLChess.LegacyClasses;
 
 public class Move {
     private int newRow;
     private int newCol;
 
     private boolean captureMove;
-    private ChessPiece movingPiece;
+    //private ChessPiece movingPiece;
     private boolean check;
 
-    public Move(int newRow, int newCol, ChessPiece movingPiece) {
+    public Move(int newRow, int newCol /*ChessPiece movingPiece*/) {
 
         this.newRow = newRow;
         this.newCol = newCol;
 
         this.captureMove = false;
-        this.movingPiece = movingPiece;
+        //this.movingPiece = movingPiece;
         this.check = false;
     }
 
-    public Move(int newRow, int newCol, ChessPiece movingPiece, boolean isCaptureMove) {
+    public Move(int newRow, int newCol, /*ChessPiece movingPiece*/ boolean isCaptureMove) {
         this.newRow = newRow;
         this.newCol = newCol;
 
         this.captureMove = true;
-        this.movingPiece = movingPiece;
+        //this.movingPiece = movingPiece;
     }
 
     public int getNewRow() {
@@ -40,9 +38,9 @@ public class Move {
         return captureMove;
     }
 
-    public ChessPiece getMovingPiece() {
-        return movingPiece;
-    }
+    //public ChessPiece getMovingPiece() {
+        //return movingPiece;
+    //}
 
     public void setCheck() {
         this.check = true;

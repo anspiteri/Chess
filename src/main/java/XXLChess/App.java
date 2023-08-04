@@ -1,10 +1,6 @@
 package XXLChess;
 
-import XXLChess.LegacyClasses.DisplayObject;
-import XXLChess.LegacyClasses.Tile;
-import XXLChess.LegacyClasses.players.Player;
 import XXLChess.enums.Colour;
-import XXLChess.enums.HighlightColour;
 import XXLChess.enums.PieceType;
 import XXLChess.exceptions.ValidationException;
 
@@ -32,12 +28,12 @@ public class App extends PApplet {
     
     private final int WHITE = color(255, 255, 240);
     private final int BLACK = color(85, 63, 47);
-    private final int BLUE = color(0, 0, 255);
-    private final int LIGHT_RED = color(255, 153, 153);
-    private final int GREEN = color(0, 255, 0);
-    private final int YELLOW = color(255, 255, 0);
-    private final int DARK_RED = color(153, 0, 0);
-    private final float HIGHLIGHT_AMT = 0.5f;
+    //private final int BLUE = color(0, 0, 255);
+    //private final int LIGHT_RED = color(255, 153, 153);
+    //private final int GREEN = color(0, 255, 0);
+    //private final int YELLOW = color(255, 255, 0);
+    //private final int DARK_RED = color(153, 0, 0);
+    //private final float HIGHLIGHT_AMT = 0.5f;
 
     private int tickCounter = 0;
     private int tickTime = 0;
@@ -205,26 +201,26 @@ public class App extends PApplet {
             // Want this to be running every draw call. 
             stroke(0);
             strokeWeight(1);
-            rect(CoordinateCalculator.getCoordinate(i).xCoord(), CoordinateCalculator.getCoordinate(i).yCoord(), App.CELLSIZE, App.CELLSIZE);
+            //rect(CoordinateCalculator.getCoordinate(i).xCoord(), CoordinateCalculator.getCoordinate(i).yCoord(), App.CELLSIZE, App.CELLSIZE);
         }
     }
 
     private void highlightTile(Colour highlightColour) {
         switch (highlightColour) {
             case BLUE:
-                fill(lerpColor(colorDict.get(this.colour), BLUE, HIGHLIGHT_AMT));
+                //fill(lerpColor(colorDict.get(this.colour), BLUE, HIGHLIGHT_AMT));
                 break;
             case LIGHT_RED:
-                fill(lerpColor(colorDict.get(this.colour), LIGHT_RED, HIGHLIGHT_AMT));
+                //fill(lerpColor(colorDict.get(this.colour), LIGHT_RED, HIGHLIGHT_AMT));
                 break;
             case GREEN:
-                fill(lerpColor(colorDict.get(this.colour), GREEN, HIGHLIGHT_AMT));
+                //fill(lerpColor(colorDict.get(this.colour), GREEN, HIGHLIGHT_AMT));
                 break;
             case YELLOW:
-                fill(lerpColor(colorDict.get(this.colour), YELLOW, HIGHLIGHT_AMT));
+                //fill(lerpColor(colorDict.get(this.colour), YELLOW, HIGHLIGHT_AMT));
                 break;
             case DARK_RED:
-                fill(lerpColor(colorDict.get(this.colour), DARK_RED, HIGHLIGHT_AMT));
+                //fill(lerpColor(colorDict.get(this.colour), DARK_RED, HIGHLIGHT_AMT));
                 break;
             default:
                 stroke(0);
