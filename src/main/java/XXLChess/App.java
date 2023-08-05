@@ -71,7 +71,6 @@ public class App extends PApplet {
         timerBottom = new Timer(config.getPlayerColour(), config.getPlayerClock(), config.getPlayerIncrement());
         
         initializePlayers(config);
-        
        
         // Load images during setup
         loadedImageMap = loadImages();
@@ -169,7 +168,9 @@ public class App extends PApplet {
         // Iterate through the enumerator PieceType. 
         // Each PieceType constructs with a fileName attribute which is used in the loadImage method. 
         for (PieceType pieceType : PieceType.values()) {
-            imagesMap.put(pieceType, loadImage(App.PATH + pieceType.imageFileName));
+            if (pieceType != PieceType.NONE) {
+                imagesMap.put(pieceType, loadImage(App.PATH + pieceType.imageFileName));
+            }
         }
         
         // Validate that images have loaded correctly.

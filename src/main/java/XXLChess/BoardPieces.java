@@ -22,12 +22,14 @@ public class BoardPieces {
 
         // For each piece get the starting positions on the board. 
         for (PieceType pieceType : PieceType.values()) {
-            int[] piecePositions = startingPositions.get(pieceType.key);
+            if (pieceType != PieceType.NONE) {
+                int[] piecePositions = startingPositions.get(pieceType.key);
 
-            // For each individual position create a new chess piece and add it 
-            // to the map of chess pieces. 
-            for (int positionalIndex : piecePositions) {
-                boardChesspieces.put(positionalIndex, new Chesspiece(positionalIndex, pieceType));
+                // For each individual position create a new chess piece and add it 
+                // to the map of chess pieces. 
+                for (int positionalIndex : piecePositions) {
+                    boardChesspieces.put(positionalIndex, new Chesspiece(positionalIndex, pieceType));
+                }
             }
         }
     }
