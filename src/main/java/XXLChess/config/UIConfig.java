@@ -1,6 +1,8 @@
-package XXLChess;
+package XXLChess.config;
 
-public class UserInterfaceConfig {
+import XXLChess.App;
+
+public class UIConfig {
     
     // Text sizes
     public static final int TIMER_TEXT_SIZE = 32;

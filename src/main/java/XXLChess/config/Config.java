@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.config;
 
 import java.io.File;
 import java.util.HashMap;

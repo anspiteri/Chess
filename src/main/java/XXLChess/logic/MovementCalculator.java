@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.logic;
 
 public class MovementCalculator {
 

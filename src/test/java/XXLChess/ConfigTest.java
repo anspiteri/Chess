@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import XXLChess.config.Config;
 import XXLChess.enums.Colour;
 
 class ConfigTest {

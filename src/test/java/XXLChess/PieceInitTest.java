@@ -7,9 +7,11 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
+import XXLChess.board.ChessPiece;
+import XXLChess.board.Pieces;
 import XXLChess.enums.PieceType;
 
-public class BoardInitializationTest {
+public class PieceInitTest {
 
     @Test
     void BoardPositionsWhiteAtTop() {
@@ -19,7 +21,7 @@ public class BoardInitializationTest {
 
         // Initialize the board pieces to be tested. 
         boolean whiteAtTop = true;
-        BoardPieces testBoardPieces = new BoardPieces(whiteAtTop);
+        Pieces testBoardPieces = new Pieces(whiteAtTop);
 
         // Test positions 0 -> 15:
         testEachPosition(0, 15, testBoardPieces, correctBoardPositions);
@@ -76,7 +78,7 @@ public class BoardInitializationTest {
 
         // Initialize the board pieces to be tested. 
         boolean whiteAtTop = false;
-        BoardPieces testBoardPieces = new BoardPieces(whiteAtTop);
+        Pieces testBoardPieces = new Pieces(whiteAtTop);
 
         // Test positions 0 -> 15:
         testEachPosition(0, 15, testBoardPieces, correctBoardPositions);
@@ -125,9 +127,9 @@ public class BoardInitializationTest {
         return map;
     }
 
-    private void testEachPosition(int start, int end, BoardPieces testBoard, Map<Integer, PieceType> correctPositions) {
+    private void testEachPosition(int start, int end, Pieces testBoard, Map<Integer, PieceType> correctPositions) {
         for (int i = start; i <= end; i++) {
-            Chesspiece testPiece = testBoard.getChesspiece(i);
+            ChessPiece testPiece = testBoard.getChesspiece(i);
             assertEquals(correctPositions.get(i), testPiece.getPieceType());
         }
     }

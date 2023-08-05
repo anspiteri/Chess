@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.logic;
 
 public class PlayerState {
     private boolean inCheck;

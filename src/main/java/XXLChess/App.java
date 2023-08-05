@@ -1,8 +1,13 @@
 package XXLChess;
 
+import XXLChess.board.Tiles;
+import XXLChess.board.Timer;
+import XXLChess.config.Config;
+import XXLChess.config.UIConfig;
 import XXLChess.enums.Colour;
 import XXLChess.enums.PieceType;
 import XXLChess.exceptions.ValidationException;
+import XXLChess.logic.PlayerState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +44,9 @@ public class App extends PApplet {
     private int tickTime = 0;
 
     private Tiles tiles; 
-    private Timer timerTop;
-    private Timer timerBottom;
+    private Timer timerTop, timerBottom;
+    private PlayerState playerWhite, playerBlack;
     private Map<PieceType, PImage> loadedImageMap;
-    private PlayerState playerWhite;
-    private PlayerState playerBlack;
 
 
     public App() {
@@ -241,9 +244,9 @@ public class App extends PApplet {
     }
 
     private void drawTimers() {
-        textSize(UserInterfaceConfig.TIMER_TEXT_SIZE);
-        text(timerTop.getTime(), UserInterfaceConfig.TIMER_TOP_XY[0], UserInterfaceConfig.TIMER_TOP_XY[1]);
-        text(timerBottom.getTime(), UserInterfaceConfig.TIMER_BOTTOM_XY[0], UserInterfaceConfig.TIMER_BOTTOM_XY[1]);
+        textSize(UIConfig.TIMER_TEXT_SIZE);
+        text(timerTop.getTime(), UIConfig.TIMER_TOP_XY[0], UIConfig.TIMER_TOP_XY[1]);
+        text(timerBottom.getTime(), UIConfig.TIMER_BOTTOM_XY[0], UIConfig.TIMER_BOTTOM_XY[1]);
     }
 
     /**

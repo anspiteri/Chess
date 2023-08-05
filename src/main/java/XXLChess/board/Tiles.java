@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.board;
 
 import XXLChess.enums.Colour;
 
@@ -30,5 +30,9 @@ public class Tiles {
 
     public Colour[] getTileList() {
         return tileList;
+    }
+
+    public Colour getTile(int i) {
+        return tileList[i];
     }
 }

@@ -1,14 +1,15 @@
-package XXLChess;
+package XXLChess.board;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import XXLChess.config.StartingPositions;
 import XXLChess.enums.PieceType;
 
-public class BoardPieces {
-    private Map<Integer, Chesspiece> boardChesspieces;
+public class Pieces {
+    private Map<Integer, ChessPiece> boardChesspieces;
 
-    public BoardPieces(boolean whiteIsTop) {
+    public Pieces(boolean whiteIsTop) {
         Map<Character, int[]> startingPositions;
 
         // Instantiate pieces. 
@@ -28,13 +29,13 @@ public class BoardPieces {
                 // For each individual position create a new chess piece and add it 
                 // to the map of chess pieces. 
                 for (int positionalIndex : piecePositions) {
-                    boardChesspieces.put(positionalIndex, new Chesspiece(positionalIndex, pieceType));
+                    boardChesspieces.put(positionalIndex, new ChessPiece(positionalIndex, pieceType));
                 }
             }
         }
     }
 
-    public Chesspiece getChesspiece(int positionalIndex) {
+    public ChessPiece getChesspiece(int positionalIndex) {
         return boardChesspieces.get(positionalIndex);
     }
 }

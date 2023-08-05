@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.logic;
 
 import XXLChess.enums.PieceType;
 import XXLChess.exceptions.MoveCalculationException;

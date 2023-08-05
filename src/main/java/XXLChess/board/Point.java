@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.board;
 
 public class Point {
     private final double xCoord;

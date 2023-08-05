@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.board;
 
 public class Message {
     private String message;

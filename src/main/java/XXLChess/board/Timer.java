@@ -1,4 +1,4 @@
-package XXLChess;
+package XXLChess.board;
 
 import XXLChess.enums.Colour;
 

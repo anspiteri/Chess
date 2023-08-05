@@ -1,4 +1,6 @@
-package XXLChess;
+package XXLChess.logic;
+
+import XXLChess.board.Point;
 
 public class CoordinateCalculator {
     
