@@ -30,15 +30,6 @@ public class App extends PApplet {
     
     public static final String PATH = "src/main/resources/XXLChess/";
     public static final String CONFIG = "config.json";
-    
-    private final int WHITE = color(255, 255, 240);
-    private final int BLACK = color(85, 63, 47);
-    //private final int BLUE = color(0, 0, 255);
-    //private final int LIGHT_RED = color(255, 153, 153);
-    //private final int GREEN = color(0, 255, 0);
-    //private final int YELLOW = color(255, 255, 0);
-    //private final int DARK_RED = color(153, 0, 0);
-    //private final float HIGHLIGHT_AMT = 0.5f;
 
     private int tickCounter = 0;
     private int tickTime = 0;
@@ -196,9 +187,9 @@ public class App extends PApplet {
         Colour[] tilesList = tiles.getTileList();
         for (int i = 0; i < tilesList.length; i++) {
             if (tilesList[i] == Colour.WHITE) {
-                fill(WHITE);
+                fill(color(0, 0, 0, 0));
             } else if (tilesList[i] == Colour.BLACK) {
-                fill(BLACK);
+                fill(color(0, 0, 0, 0));
             } else {
                 highlightTile(tilesList[i]);
             }
