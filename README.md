@@ -12,8 +12,8 @@ specified for an assignment but is now being worked on for my own personal learn
 
 ### Prerequisites
 
-- **Java Development Kit (JDK)**: Make sure you have JDK 8 or higher installed. You can download it from [AdoptOpenJDK](https://adoptopenjdk.net/).
-- **Gradle**: This project uses the Gradle Wrapper, so you don't need to install Gradle manually. However, if you prefer, you can download Gradle from [gradle.org](https://gradle.org/).
+- **Java Development Kit (JDK)**: Make sure you have JDK 8 or higher installed.
+- **Gradle**: This project uses the Gradle Wrapper, so you don't need to install Gradle manually.
 
 ### Clone the Repository
 
@@ -21,7 +21,8 @@ Clone the repository using the following command:
 
 ```sh
 git clone 
-cd 
+cd
+```
 
 ## Usage
 
