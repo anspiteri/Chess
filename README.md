@@ -15,19 +15,24 @@ specified for an assignment but is now being worked on for my own personal learn
 - **Java Development Kit (JDK)**: Make sure you have JDK 8 or higher installed.
 - **Gradle**: This project uses the Gradle Wrapper, so you don't need to install Gradle manually.
 
-### Clone the Repository
-
-Clone the repository using the following command:
-
-```sh
-git clone https://github.com/anspiteri/Chess.git
-cd Chess
-```
-
 ## Usage
-
-- To build the project use "./gradlew build" for unix-based systems or "gradlew.bat" build for windows. 
-- To run the project "./gradlew run" for unix or "gradlew.bat run" for windows. 
+- To build and run the project use the following commands in the project root directory. 
+Unix based systems:
+```sh
+./gradlew build
+```
+and 
+```sh
+./gradlew run
+```
+Windows:
+```sh
+gradlew.bat
+```
+and 
+```sh
+gradlew.bat run
+```
 
 ## License
 
