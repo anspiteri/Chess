@@ -1,6 +1,6 @@
 # Chess
 
-This is a chess game made within the processing library in java 8. It was orignally
+This is a chess game made within the processing library in Java 8. It was orignally
 specified for an assignment but is now being worked on for my own personal learning.
 
 ## Features
@@ -16,23 +16,10 @@ specified for an assignment but is now being worked on for my own personal learn
 - **Gradle**: This project uses the Gradle Wrapper, so you don't need to install Gradle manually.
 
 ## Usage
-- To build and run the project use the following commands in the project root directory. 
-Unix based systems:
-```sh
-./gradlew build
-```
-and 
-```sh
-./gradlew run
-```
-Windows:
-```sh
-gradlew.bat
-```
-and 
-```sh
-gradlew.bat run
-```
+The root directory holds both the Windows and Unix gradle wrapper files. To build and run the 
+project use the following commands in the project root directory. 
+- Unix based systems: `./gradlew build` and  `./gradlew run`.
+- Windows: `gradlew.bat` and `gradlew.bat run`.
 
 ## License
 
