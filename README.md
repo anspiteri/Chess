@@ -1,7 +1,7 @@
 # Chess
 
-This is a chess game made within the processing library in Java 8. It was orignally
-specified for an assignment but is now being worked on for my own personal learning.
+This is a chess game made within the processing library (specifically processing.core and processing.data) in Java 8. 
+It was orignally specified for an assignment but is now being worked on for my own personal learning.
 
 ## Features
 
