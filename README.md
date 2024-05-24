@@ -20,8 +20,8 @@ specified for an assignment but is now being worked on for my own personal learn
 Clone the repository using the following command:
 
 ```sh
-git clone 
-cd
+git clone https://github.com/anspiteri/Chess.git
+cd Chess
 ```
 
 ## Usage
