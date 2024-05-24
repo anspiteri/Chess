@@ -21,6 +21,11 @@ project use the following commands in the project root directory.
 - Unix based systems: `./gradlew build` and  `./gradlew run`.
 - Windows: `gradlew.bat` and `gradlew.bat run`.
 
+## Testing 
+- This project uses jacoco.
+- To generate the testing code coverage report with gradle using jacoco, run
+`gradle test jacocoTestReport`.
+
 ## License
 
 - Specify the license under which your project is distributed.
