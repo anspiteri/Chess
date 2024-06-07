@@ -1,7 +1,12 @@
 # Chess
 
-This is my first ever Java project. It's a chess game made within the processing library (specifically processing.core and processing.data) in Java 8. 
+This is my first ever Java project. It's a chess game made within the processing library (specifically processing.core) in Java 8. 
 I'm unsure how complete it will become but for now I'm just tinkering for my own learning. 
+
+# Reference
+- Processing Library 3.3.7: https://javadoc.io/doc/org.processing/core/latest/index.html
+- Java 1.8: https://docs.oracle.com/javase/8/docs/api/
+- Gradle 5.6.3: https://docs.gradle.org/5.6.3/userguide/userguide.html
 
 ## Features
 
@@ -14,7 +19,7 @@ I'm unsure how complete it will become but for now I'm just tinkering for my own
 
 ### Prerequisites
 
-- **Java Development Kit (JDK)**: Make sure you have JDK 8 or higher installed.
+- **Java Development Kit (JDK)**: Make sure you have JDK 8 installed.
   - Windows you can install from Oracle's website. (https://www.oracle.com/java/technologies/downloads/archive/).
   - Unix: You can use SDKMAN! (https://sdkman.io/).
 - **Gradle**: This project uses the Gradle Wrapper, so you don't need to install Gradle manually.
