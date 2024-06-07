@@ -32,6 +32,4 @@ project use the following commands in the project root directory.
 
 ## License
 
-- Specify the license under which your project is distributed.
-- Include a link to the license file (e.g., `LICENSE`) in your repository.
-
+- This project is licensed under the [MIT License](LICENSE).
