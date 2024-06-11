@@ -182,7 +182,10 @@ public class App extends PApplet {
         return imagesMap;
     }
 
-    // TODO: Work out how to implement tile highlighting into this logic as well as how the colour system works in Processing. 
+    /*
+     * TODO: Work out how to implement tile highlighting into this logic as well as how the colour system works
+     * in Processing. 
+     */
     private void drawTiles() {
         Colour[] tilesList = tiles.getTileList();
         for (int i = 0; i < tilesList.length; i++) {
