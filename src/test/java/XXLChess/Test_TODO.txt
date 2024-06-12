@@ -1,0 +1,4 @@
+List of components to implement test with: 
+
+APP.JAVA 
+- Test scaling factor works on scale factor medium and large, and that the scaling is an appropriate size. 
