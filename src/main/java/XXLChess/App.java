@@ -76,7 +76,7 @@ public class App extends PApplet {
         TeamColour playerColour = TeamColour.BLACK;
         chessBoard = new ChessBoard(playerColour);
        
-        boardSprite = loadImage(path + "board.png");   
+        boardSprite = loadBoardImage(path);   
         chessSprites = loadImages(path);
     }
 
@@ -117,7 +117,20 @@ public class App extends PApplet {
         drawPieces();
     }
     
-     /**
+    private PImage loadBoardImage(String path) {
+        PImage boardSprite = loadImage(path + "board.png");
+        try {
+            if (boardSprite == null) {
+                throw new ValidationException("Error loading board sprite.");
+            }
+        } catch (Exception ve) {
+            System.err.println(ve.getMessage());
+            System.exit(0);
+        }
+        return boardSprite;
+    }
+    
+    /**
      * Loads all chess piece images from file. 
      * @return: returns a HashMap with keys defined in PieceType enumerator, and values
      * as PImage objects. 
