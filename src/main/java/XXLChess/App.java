@@ -1,8 +1,13 @@
 package XXLChess;
 
+import XXLChess.board.ChessBoard;
+import XXLChess.board.ChessPiece;
+import XXLChess.config.StartingPositions;
 import XXLChess.enums.PieceType;
+import XXLChess.enums.TeamColour;
 import XXLChess.exceptions.ValidationException;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,18 +36,16 @@ public class App extends PApplet {
     public static final String PATH = "src/main/resources/XXLChess/";
     public static final String CONFIG = "config.json";
 
-    private int tickCounter = 0;
-    private int tickTime = 0;
-
-    private Map<PieceType, PImage> loadedImageMap;
-    PImage boardSprite;
-
     private double headerSize;
     private double headerOffset; 
     private double sidebarSize;
     private double sidebarOffset;
     private double boardDim;
     private double pieceDim;
+
+    private ChessBoard chessBoard; 
+
+    PImage boardSprite;
 
     public App() {
     }
@@ -72,10 +75,11 @@ public class App extends PApplet {
     */
     public void setup() {
         frameRate(FPS);
+        
+        TeamColour playerColour = TeamColour.BLACK;
        
-        // Load images during setup
-        boardSprite = loadImage("src/main/resources/XXLChess/board.png");
-        loadedImageMap = loadImages();
+        boardSprite = loadImage("src/main/resources/XXLChess/board.png");        
+        chessBoard = new ChessBoard(loadImages(), playerColour);
     }
 
     /**
@@ -108,36 +112,25 @@ public class App extends PApplet {
      * Draw all elements in the game by current frame. 
     */
     public void draw() {
-        tickCounter++;
-
-        if (tickCounter == 60) {
-            tickTime++;
-            tick();
-            tickCounter = 0;
-            
-            if (tickTime == 5) {
-                tickTime = 0;
-            }
-        }
 
         background(128, 128, 128);
 
         image(boardSprite, (int) sidebarOffset, (int) headerOffset, (int) boardDim, (int) boardDim);
-        //drawPieces();
+        drawPieces();
     }
 	
 	/*
      *                                              HELPER METHODS
      * -----------------------------------------------------------------------------------------------------
      */ 
-
-    /**
+    
+     /**
      * Helper method within App.setup() which loads all chess piece images from file. 
      * @return: returns a HashMap with keys defined in PieceType enumerator, and values
      * as PImage objects. 
      * <p/>
      * e.g. 
-     *      imageHashMap.get(PieceType.BISHOP_B); 
+     *      PImageMap.get(PieceType.BISHOP_B); 
      * <p/>
      *      // returns the black bishop png, loaded as a PImage.  
      */
@@ -167,17 +160,8 @@ public class App extends PApplet {
         return imagesMap;
     }
 
-
     private void drawPieces() {
-        // use loaded images here. 
-        loadedImageMap.values();
-    }
-
-    /**
-     * tick():
-     * Updates every second (60 frames)
-     */
-    private void tick() {
+        
     }
 
     public static void main(String[] args) {

@@ -1,45 +1,66 @@
 package XXLChess.board;
 
-import XXLChess.enums.Colour;
 import XXLChess.enums.PieceType;
-
-//TODO: Determine whether teamColour is redundant or not. 
+import XXLChess.enums.TeamColour;
+import processing.core.PImage;
 
 public class ChessPiece {
-    private int positionalIndex;
-    // private final Colour teamColour; This may be redundant. 
-    private final PieceType pieceType; 
+    private final PieceType type; 
+    private final TeamColour colour;
+    private int position;
+    private int x, y;
+    private final PImage pImage;
 
-    public ChessPiece(int positionalIndex) {
-        this.positionalIndex = positionalIndex;
-        //this.teamColour = Colour.NULL;
-        this.pieceType = PieceType.NONE;
+    public ChessPiece(PieceType type, TeamColour colour, int position, int x, int y, PImage pImage) {
+        this.type = type;
+        this.colour = colour;
+        this.position = position;
+        this.x = x;
+        this.y = y;
+        this.pImage = pImage;
     }
 
-    public ChessPiece(int positionalIndex, PieceType pieceType) {
-        this.positionalIndex = positionalIndex;
-        this.pieceType = pieceType;
+    // Setters 
+
+    public void changePosition(int newPosition, int newX, int newY) {
+        position = newPosition;
+        x = newX;
+        y = newY;
     }
 
-    public ChessPiece(int positionalIndex, Colour teamColour, PieceType pieceType) {
-        this.positionalIndex = positionalIndex;
-        //this.teamColour = teamColour;
-        this.pieceType = pieceType;
+    public void changeCoordinates(int newX, int newY) {
+        x = newX;
+        y = newY;
     }
 
-    public void setPositionalIndex(int newIndex) {
-        positionalIndex = newIndex;
+    // Getters
+
+    public int getPosition(){
+        return position;
     }
 
-    public int getPositionalIndex(){
-        return positionalIndex;
+    public int getX() {
+        return x;
     }
 
-    //public Colour getTeamColour() {
-        //return teamColour;
-    //}
+    public int getY() {
+        return y;
+    }
+
+    public int[] getXY() {
+        int[] xy = {x, y};
+        return xy;
+    }
+
+    public TeamColour getColour() {
+        return colour;
+    }
 
     public PieceType getPieceType() {
-        return pieceType;
+        return type;
+    }
+
+    public PImage getPImage() {
+        return pImage;
     }
 }

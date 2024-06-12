@@ -6,7 +6,7 @@ package XXLChess.enums;
  *  Black - default black
  */
 
-public enum Colour {
+public enum TeamColour {
     NULL, 
     WHITE,
     BLACK
