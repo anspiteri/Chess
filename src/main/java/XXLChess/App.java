@@ -1,13 +1,10 @@
 package XXLChess;
 
 import XXLChess.board.ChessBoard;
-import XXLChess.board.ChessPiece;
-import XXLChess.config.StartingPositions;
 import XXLChess.enums.PieceType;
 import XXLChess.enums.TeamColour;
 import XXLChess.exceptions.ValidationException;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +24,6 @@ public class App extends PApplet {
     public static final double SCALE_FACTOR_M = 0.4;
     public static final double SCALE_FACTOR_S = 0.24;
     public static final double SCALE_FACTOR_MICRO = 0.20;
-
-    //public static final int BOARD_WIDTH = 8;
-    //public static final int CELLSIZE = 50;
 
     public static final int FPS = 60;
     
