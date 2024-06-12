@@ -2,18 +2,18 @@ package XXLChess.enums;
 
 public enum PieceType {
     NONE(' ', " "),
-    BISHOP_B('B', "b-bishop.png"),
-    BISHOP_W('b', "w-bishop.png"),
-    KING_B('K', "b-king.png"),
-    KING_W('k', "w-king.png"),
-    KNIGHT_B('N', "b-knight.png"),
-    KNIGHT_W('n', "w-knight.png"),
-    PAWN_B('P', "b-pawn.png"),
-    PAWN_W('p', "w-pawn.png"),
-    QUEEN_B('Q', "b-queen.png"),
-    QUEEN_W('q', "w-queen.png"),
-    ROOK_B('R', "b-rook.png"),
-    ROOK_W('r', "w-rook.png");
+    BISHOP_B('B', "chess-bishop-black.png"),
+    BISHOP_W('b', "chess-bishop-white.png"),
+    KING_B('K', "chess-king-black.png"),
+    KING_W('k', "chess-king-white.png"),
+    KNIGHT_B('N', "chess-knight-black.png"),
+    KNIGHT_W('n', "chess-knight-white.png"),
+    PAWN_B('P', "chess-pawn-black.png"),
+    PAWN_W('p', "chess-pawn-white.png"),
+    QUEEN_B('Q', "chess-queen-black.png"),
+    QUEEN_W('q', "chess-queen-white.png"),
+    ROOK_B('R', "chess-rook-black.png"),
+    ROOK_W('r', "chess-rook-white.png");
     
     public final char key;
     public final String imageFileName;

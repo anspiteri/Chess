@@ -38,7 +38,6 @@ public class App extends PApplet {
     private int tickCounter = 0;
     private int tickTime = 0;
 
-    //private Tiles tiles; 
     private Timer timerTop, timerBottom;
     private PlayerState playerWhite, playerBlack;
     private Map<PieceType, PImage> loadedImageMap;
@@ -96,7 +95,7 @@ public class App extends PApplet {
        
         // Load images during setup
         boardSprite = loadImage("src/main/resources/XXLChess/board.png");
-        //loadedImageMap = loadImages();
+        loadedImageMap = loadImages();
     }
 
     /**
