@@ -38,3 +38,7 @@ project use the following commands in the project root directory.
 ## License
 
 - This project is licensed under the [MIT License](LICENSE).
+
+## Credits
+The art of this game was created by [Joszs](https://joszs.itch.io/). 
+- The asset pack can be found here: https://joszs.itch.io/chess-pack 
