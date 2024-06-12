@@ -18,13 +18,18 @@ import processing.event.MouseEvent;
 
 public class App extends PApplet {
 
-    public static final int SPRITESIZE = 500;
+    public static final int CHESS_SPRITE_PX = 500;
+    public static final int BOARD_SPRITE_PX = 2050;
+    
     public static final int CELLSIZE = 50;
-    public static final int SIDEBAR = 0;
+    public static final int SIDEBAR = 1000;
+    public static final int HEADER = 300;
     public static final int BOARD_WIDTH = 8;
 
-    public static int WIDTH = 615;
-    public static int HEIGHT = 615;
+    public static final double SCALE_FACTOR_L = 1;
+    public static final double SCALE_FACTOR_M = 0.4;
+    public static final double SCALE_FACTOR_S = 0.24;
+    public static final double SCALE_FACTOR_MICRO = 0.20;
 
     public static final int FPS = 60;
     
@@ -40,6 +45,16 @@ public class App extends PApplet {
     private Map<PieceType, PImage> loadedImageMap;
     PImage boardSprite;
 
+    private double headerSize;
+    private double headerOffset; 
+    private double sidebarSize;
+    private double sidebarOffset;
+    private double boardDim;
+    private double pieceDim;
+
+    // To delete: 
+    public static final int WIDTH = 0;
+    public static final int HEIGHT = 0;
 
     public App() {
     }
@@ -48,7 +63,21 @@ public class App extends PApplet {
      * Initialise the setting of the window size.
     */
     public void settings() {
-        size(WIDTH, HEIGHT);
+        double scaleFactor = SCALE_FACTOR_S;
+
+        boardDim = (BOARD_SPRITE_PX * scaleFactor); 
+        pieceDim = (CHESS_SPRITE_PX * scaleFactor);
+        
+        headerSize = (HEADER * scaleFactor);
+        headerOffset = headerSize;
+        
+        sidebarSize = (SIDEBAR * scaleFactor);
+        sidebarOffset = (sidebarSize - (0 * scaleFactor));
+
+        int width = (int) (boardDim + 2*sidebarSize);
+        int height = (int) (boardDim + headerOffset);
+        
+        size(width, height);
     }
     /**
      * Load all resources such as images. Initialise the elements such as the player, enemies and map elements.
@@ -116,7 +145,7 @@ public class App extends PApplet {
 
         background(128, 128, 128);
 
-        image(boardSprite, 0, 0, 615, 615);
+        image(boardSprite, (int) sidebarOffset, (int) headerOffset, (int) boardDim, (int) boardDim);
         //drawPieces();
         //drawUI();
     }
