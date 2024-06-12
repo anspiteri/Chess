@@ -1,12 +1,7 @@
 package XXLChess;
 
-import XXLChess.board.Timer;
-import XXLChess.config.Config;
-import XXLChess.config.UIConfig;
-import XXLChess.enums.Colour;
 import XXLChess.enums.PieceType;
 import XXLChess.exceptions.ValidationException;
-import XXLChess.logic.PlayerState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,15 +15,16 @@ public class App extends PApplet {
     public static final int CHESS_SPRITE_PX = 500;
     public static final int BOARD_SPRITE_PX = 2050;
     
-    public static final int CELLSIZE = 50;
     public static final int SIDEBAR = 1000;
     public static final int HEADER = 300;
-    public static final int BOARD_WIDTH = 8;
 
     public static final double SCALE_FACTOR_L = 1;
     public static final double SCALE_FACTOR_M = 0.4;
     public static final double SCALE_FACTOR_S = 0.24;
     public static final double SCALE_FACTOR_MICRO = 0.20;
+
+    //public static final int BOARD_WIDTH = 8;
+    //public static final int CELLSIZE = 50;
 
     public static final int FPS = 60;
     
@@ -38,8 +34,6 @@ public class App extends PApplet {
     private int tickCounter = 0;
     private int tickTime = 0;
 
-    private Timer timerTop, timerBottom;
-    private PlayerState playerWhite, playerBlack;
     private Map<PieceType, PImage> loadedImageMap;
     PImage boardSprite;
 
@@ -49,10 +43,6 @@ public class App extends PApplet {
     private double sidebarOffset;
     private double boardDim;
     private double pieceDim;
-
-    // To delete: 
-    public static final int WIDTH = 0;
-    public static final int HEIGHT = 0;
 
     public App() {
     }
@@ -82,16 +72,6 @@ public class App extends PApplet {
     */
     public void setup() {
         frameRate(FPS);
-        
-        //Config config = new Config();
-        //config.parseFile(App.CONFIG);
-
-        // Initialize board elements, timers & players
-
-        //timerTop = new Timer(config.getCpuColour(), config.getCpuClock(), config.getCpuIncrement());
-        //timerBottom = new Timer(config.getPlayerColour(), config.getPlayerClock(), config.getPlayerIncrement());
-        
-        //initializePlayers(config);
        
         // Load images during setup
         boardSprite = loadImage("src/main/resources/XXLChess/board.png");
@@ -144,35 +124,12 @@ public class App extends PApplet {
 
         image(boardSprite, (int) sidebarOffset, (int) headerOffset, (int) boardDim, (int) boardDim);
         //drawPieces();
-        //drawUI();
     }
 	
 	/*
      *                                              HELPER METHODS
      * -----------------------------------------------------------------------------------------------------
      */ 
-
-    /**
-     * Sets up the players with their respective colours, starting turn, and whether the player is a cpu or human. 
-     * @param config - provides colour setting for cpu and human, as well as the play as cpu setting. 
-     */
-    private void initializePlayers(Config config) {
-        playerWhite = new PlayerState(true);
-        playerBlack = new PlayerState(false);
-        
-        if (config.getPlayAsCpu() == true) {
-            playerBlack.makeCpuPlayer();
-            playerWhite.makeCpuPlayer();
-        } else {
-            if (config.getPlayerColour() == Colour.BLACK) {
-                playerBlack.makeHumanPlayer();
-                playerWhite.makeCpuPlayer();
-            } else {
-                playerBlack.makeCpuPlayer();
-                playerWhite.makeHumanPlayer();
-            }
-        }
-    }
 
     /**
      * Helper method within App.setup() which loads all chess piece images from file. 
@@ -214,18 +171,6 @@ public class App extends PApplet {
     private void drawPieces() {
         // use loaded images here. 
         loadedImageMap.values();
-    }
-
-    private void drawUI() {
-        //TODO:
-        drawTimers();
-
-    }
-
-    private void drawTimers() {
-        textSize(UIConfig.TIMER_TEXT_SIZE);
-        text(timerTop.getTime(), UIConfig.TIMER_TOP_XY[0], UIConfig.TIMER_TOP_XY[1]);
-        text(timerBottom.getTime(), UIConfig.TIMER_BOTTOM_XY[0], UIConfig.TIMER_BOTTOM_XY[1]);
     }
 
     /**
