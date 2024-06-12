@@ -1,6 +1,5 @@
 package XXLChess;
 
-import XXLChess.board.Tiles;
 import XXLChess.board.Timer;
 import XXLChess.config.Config;
 import XXLChess.config.UIConfig;
@@ -89,7 +88,6 @@ public class App extends PApplet {
         //config.parseFile(App.CONFIG);
 
         // Initialize board elements, timers & players
-        //tiles = new Tiles(BOARD_WIDTH * BOARD_WIDTH);
 
         //timerTop = new Timer(config.getCpuColour(), config.getCpuClock(), config.getCpuIncrement());
         //timerBottom = new Timer(config.getPlayerColour(), config.getPlayerClock(), config.getPlayerIncrement());
