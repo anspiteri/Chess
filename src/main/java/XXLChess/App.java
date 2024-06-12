@@ -18,13 +18,13 @@ import processing.event.MouseEvent;
 
 public class App extends PApplet {
 
-    public static final int SPRITESIZE = 480;
-    public static final int CELLSIZE = 48;
-    public static final int SIDEBAR = 120;
+    public static final int SPRITESIZE = 500;
+    public static final int CELLSIZE = 50;
+    public static final int SIDEBAR = 0;
     public static final int BOARD_WIDTH = 8;
 
-    public static int WIDTH = CELLSIZE*BOARD_WIDTH+SIDEBAR;
-    public static int HEIGHT = BOARD_WIDTH*CELLSIZE;
+    public static int WIDTH = 615;
+    public static int HEIGHT = 615;
 
     public static final int FPS = 60;
     
@@ -34,10 +34,11 @@ public class App extends PApplet {
     private int tickCounter = 0;
     private int tickTime = 0;
 
-    private Tiles tiles; 
+    //private Tiles tiles; 
     private Timer timerTop, timerBottom;
     private PlayerState playerWhite, playerBlack;
     private Map<PieceType, PImage> loadedImageMap;
+    PImage boardSprite;
 
 
     public App() {
@@ -55,19 +56,20 @@ public class App extends PApplet {
     public void setup() {
         frameRate(FPS);
         
-        Config config = new Config();
-        config.parseFile(App.CONFIG);
+        //Config config = new Config();
+        //config.parseFile(App.CONFIG);
 
         // Initialize board elements, timers & players
-        tiles = new Tiles(BOARD_WIDTH * BOARD_WIDTH);
+        //tiles = new Tiles(BOARD_WIDTH * BOARD_WIDTH);
 
-        timerTop = new Timer(config.getCpuColour(), config.getCpuClock(), config.getCpuIncrement());
-        timerBottom = new Timer(config.getPlayerColour(), config.getPlayerClock(), config.getPlayerIncrement());
+        //timerTop = new Timer(config.getCpuColour(), config.getCpuClock(), config.getCpuIncrement());
+        //timerBottom = new Timer(config.getPlayerColour(), config.getPlayerClock(), config.getPlayerIncrement());
         
-        initializePlayers(config);
+        //initializePlayers(config);
        
         // Load images during setup
-        loadedImageMap = loadImages();
+        boardSprite = loadImage("src/main/resources/XXLChess/board.png");
+        //loadedImageMap = loadImages();
     }
 
     /**
@@ -114,9 +116,9 @@ public class App extends PApplet {
 
         background(128, 128, 128);
 
-        drawTiles();
-        drawPieces();
-        drawUI();
+        image(boardSprite, 0, 0, 615, 615);
+        //drawPieces();
+        //drawUI();
     }
 	
 	/*
@@ -182,49 +184,6 @@ public class App extends PApplet {
         return imagesMap;
     }
 
-    /*
-     * TODO: Work out how to implement tile highlighting into this logic as well as how the colour system works
-     * in Processing. 
-     */
-    private void drawTiles() {
-        Colour[] tilesList = tiles.getTileList();
-        for (int i = 0; i < tilesList.length; i++) {
-            if (tilesList[i] == Colour.WHITE) {
-                fill(color(0, 0, 0, 0));
-            } else if (tilesList[i] == Colour.BLACK) {
-                fill(color(0, 0, 0, 0));
-            } else {
-                highlightTile(tilesList[i]);
-            }
-            // Want this to be running every draw call. 
-            stroke(0);
-            strokeWeight(1);
-            //rect(CoordinateCalculator.getCoordinate(i).xCoord(), CoordinateCalculator.getCoordinate(i).yCoord(), App.CELLSIZE, App.CELLSIZE);
-        }
-    }
-
-    private void highlightTile(Colour highlightColour) {
-        switch (highlightColour) {
-            case BLUE:
-                //fill(lerpColor(colorDict.get(this.colour), BLUE, HIGHLIGHT_AMT));
-                break;
-            case LIGHT_RED:
-                //fill(lerpColor(colorDict.get(this.colour), LIGHT_RED, HIGHLIGHT_AMT));
-                break;
-            case GREEN:
-                //fill(lerpColor(colorDict.get(this.colour), GREEN, HIGHLIGHT_AMT));
-                break;
-            case YELLOW:
-                //fill(lerpColor(colorDict.get(this.colour), YELLOW, HIGHLIGHT_AMT));
-                break;
-            case DARK_RED:
-                //fill(lerpColor(colorDict.get(this.colour), DARK_RED, HIGHLIGHT_AMT));
-                break;
-            default:
-                stroke(0);
-                break;
-        }
-    }
 
     private void drawPieces() {
         // use loaded images here. 
