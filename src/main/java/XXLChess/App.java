@@ -1,6 +1,7 @@
 package XXLChess;
 
 import XXLChess.board.ChessBoard;
+import XXLChess.board.ChessPiece;
 import XXLChess.enums.PieceType;
 import XXLChess.enums.TeamColour;
 import XXLChess.exceptions.ValidationException;
@@ -26,20 +27,20 @@ public class App extends PApplet {
     public static final double SCALE_FACTOR_MICRO = 0.20;
 
     public static final int FPS = 60;
-    
-    public static final String PATH = "src/main/resources/XXLChess/";
-    public static final String CONFIG = "config.json";
-
-    private double headerSize;
-    private double headerOffset; 
-    private double sidebarSize;
-    private double sidebarOffset;
-    private double boardDim;
-    private double pieceDim;
 
     private ChessBoard chessBoard; 
 
-    PImage boardSprite;
+    private PImage boardSprite;
+    private Map<PieceType, PImage> chessSprites;
+
+    private double headerSize;
+    private double headerOffset; 
+
+    private double sidebarSize;
+    private double sidebarOffset;
+
+    private double boardDim;
+    private double pieceDim;
 
     public App() {
     }
@@ -68,12 +69,15 @@ public class App extends PApplet {
      * Load all resources such as images. Initialise the elements such as the player, enemies and map elements.
     */
     public void setup() {
+        final String path = "src/main/resources/XXLChess/";
+
         frameRate(FPS);
         
         TeamColour playerColour = TeamColour.BLACK;
+        chessBoard = new ChessBoard(playerColour);
        
-        boardSprite = loadImage("src/main/resources/XXLChess/board.png");        
-        chessBoard = new ChessBoard(loadImages(), playerColour);
+        boardSprite = loadImage(path + "board.png");   
+        chessSprites = loadImages(path);
     }
 
     /**
@@ -109,17 +113,12 @@ public class App extends PApplet {
 
         background(128, 128, 128);
 
-        image(boardSprite, (int) sidebarOffset, (int) headerOffset, (int) boardDim, (int) boardDim);
+        drawBoard();
         drawPieces();
     }
-	
-	/*
-     *                                              HELPER METHODS
-     * -----------------------------------------------------------------------------------------------------
-     */ 
     
      /**
-     * Helper method within App.setup() which loads all chess piece images from file. 
+     * Loads all chess piece images from file. 
      * @return: returns a HashMap with keys defined in PieceType enumerator, and values
      * as PImage objects. 
      * <p/>
@@ -128,21 +127,19 @@ public class App extends PApplet {
      * <p/>
      *      // returns the black bishop png, loaded as a PImage.  
      */
-    private Map<PieceType, PImage> loadImages() {
+    private Map<PieceType, PImage> loadImages(String path) {
         Map<PieceType, PImage> imagesMap = new HashMap<>();
 
-        // Iterate through the enumerator PieceType. 
-        // Each PieceType constructs with a fileName attribute which is used in the loadImage method. 
         for (PieceType pieceType : PieceType.values()) {
             if (pieceType != PieceType.NONE) {
-                imagesMap.put(pieceType, loadImage(App.PATH + pieceType.imageFileName));
+                imagesMap.put(pieceType, loadImage(path + pieceType.imageFileName));
             }
         }
         
         // Validate that images have loaded correctly.
         try {
             for (PieceType imageKey : imagesMap.keySet()) {
-            if (imagesMap.get(imageKey) == null) { // if an image is not loaded correctly, the loadImage method returns null. 
+            if (imagesMap.get(imageKey) == null) {
                 throw new ValidationException("Error loading image: " + imageKey);
             }
         }
@@ -154,8 +151,18 @@ public class App extends PApplet {
         return imagesMap;
     }
 
+    private void drawBoard() {
+        image(boardSprite, (int) sidebarOffset, (int) headerOffset, (int) boardDim, (int) boardDim);
+    }
+    
     private void drawPieces() {
-        
+        for (int i = 0; i < 64; i++) {
+            ChessPiece piece = chessBoard.getChessPiece(i);
+            if (piece != null) {
+                image(chessSprites.get(piece.getPieceType()), piece.getX(), piece.getY(), 
+                (int) pieceDim, (int) pieceDim);
+            }
+        }
     }
 
     public static void main(String[] args) {

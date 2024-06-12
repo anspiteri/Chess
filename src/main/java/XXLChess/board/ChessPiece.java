@@ -2,22 +2,19 @@ package XXLChess.board;
 
 import XXLChess.enums.PieceType;
 import XXLChess.enums.TeamColour;
-import processing.core.PImage;
 
 public class ChessPiece {
     private final PieceType type; 
     private final TeamColour colour;
     private int position;
     private int x, y;
-    private final PImage pImage;
 
-    public ChessPiece(PieceType type, TeamColour colour, int position, int x, int y, PImage pImage) {
+    public ChessPiece(PieceType type, TeamColour colour, int position, int x, int y) {
         this.type = type;
         this.colour = colour;
         this.position = position;
         this.x = x;
         this.y = y;
-        this.pImage = pImage;
     }
 
     // Setters 
@@ -58,9 +55,5 @@ public class ChessPiece {
 
     public PieceType getPieceType() {
         return type;
-    }
-
-    public PImage getPImage() {
-        return pImage;
     }
 }

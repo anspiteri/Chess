@@ -7,12 +7,13 @@ import XXLChess.config.StartingPositions;
 import XXLChess.enums.PieceType;
 import XXLChess.enums.TeamColour;
 import XXLChess.exceptions.PieceCreationException;
-import processing.core.PImage;
 
 public class ChessBoard {
     private ChessPiece[] boardPositions; 
 
-    public ChessBoard(Map<PieceType, PImage> PImageMap, TeamColour playerColour) {
+    public ChessBoard(TeamColour playerColour) {
+        boardPositions = new ChessPiece[64];
+        
         Map<Character, int[]> startingPositions = new HashMap<>();
         try {
             startingPositions = getStartingPositions(playerColour);
@@ -21,7 +22,7 @@ public class ChessBoard {
             System.exit(0);
         }
 
-        initChessPiecesOnBoard(PImageMap, startingPositions);
+        initChessPiecesOnBoard(startingPositions);
         
     }
 
@@ -37,18 +38,17 @@ public class ChessBoard {
         }
     }
 
-    private void initChessPiecesOnBoard(Map<PieceType, PImage> PImageMap, Map<Character, int[]> startingPositions) {
+    private void initChessPiecesOnBoard(Map<Character, int[]> startingPositions) {
         // LOOP#1 Iterates through every possible TYPE of piece. 
         for (PieceType pieceType : PieceType.values()) {
             if (pieceType != PieceType.NONE) {
                 int[] piecePositions = startingPositions.get(pieceType.key);
-                PImage image = PImageMap.get(pieceType);
                 TeamColour colour = pieceType.colour;
 
                 // LOOP#2 Uses TYPE as a key to access all starting positions for that type. 
                 for (int position : piecePositions) {
                     //TODO: Starting coordinates and fix null pointer exception. 
-                    //boardPositions[position] = new ChessPiece(pieceType, colour, position, 0, 0, image);
+                    boardPositions[position] = new ChessPiece(pieceType, colour, position, 0, 0);
                 }
             }
         }
