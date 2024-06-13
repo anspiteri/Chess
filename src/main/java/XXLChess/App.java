@@ -1,7 +1,7 @@
 package XXLChess;
 
-import XXLChess.board.ChessBoard;
 import XXLChess.board.ChessPiece;
+import XXLChess.config.StartingPositions;
 import XXLChess.enums.PieceType;
 import XXLChess.enums.TeamColour;
 import XXLChess.exceptions.ValidationException;
@@ -28,7 +28,8 @@ public class App extends PApplet {
 
     public static final int FPS = 60;
 
-    private ChessBoard chessBoard; 
+    //private ChessBoard chessBoard; 
+    private ChessPiece[] chessPieces;
 
     private PImage boardSprite;
     private Map<PieceType, PImage> chessSprites;
@@ -86,8 +87,11 @@ public class App extends PApplet {
         coordinateData = initCoordinateArray();
         
         TeamColour playerColour = TeamColour.WHITE;
-        if (playerColour != TeamColour.NULL) {
-            chessBoard = new ChessBoard(playerColour);
+        
+        if (playerColour == TeamColour.BLACK) {
+            initChessPiecesOnBoard(StartingPositions.startingPositionsBlack);
+        } else if (playerColour == TeamColour.WHITE) {
+            initChessPiecesOnBoard(StartingPositions.startingPositionsWhite);
         } else {
             System.err.println("Player colour not properly set.");
             System.exit(0);
@@ -99,98 +103,6 @@ public class App extends PApplet {
         currentSelection = false;
         selectedPiece = null;
         noLoop();
-    }
-
-    /**
-     * Receive key pressed signal from the keyboard.
-    */
-    public void keyPressed(){
-        if (keyCode == ESC) {
-            System.exit(0);
-        }
-
-    }
-    
-    /**
-     * Receive key released signal from the keyboard.
-    */
-    public void keyReleased(){
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        int xClick = e.getX();
-        int yClick = e.getY();
-        
-        if (currentSelection == false) {
-            if (isValid(xClick, yClick)) {
-                selectedPiece = getPiece(xClick, yClick);
-                if (selectedPiece != null) {
-                    loop();
-                    currentSelection = true; 
-                }
-            }
-        } else {
-            if (isValid(xClick, yClick)) {
-                // drop piece in new location and update chessboard.
-                //chessBoard.moveChessPiece(selectedPiece.getPosition(), ...); 
-                //selectedPiece.changePosition();
-            }
-            currentSelection = false;
-            selectedPiece = null;
-            redraw();
-            noLoop();
-        }
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-    }
-
-    /**
-     * Draw all elements in the game by current frame. 
-    */
-    public void draw() {
-
-        background(128, 128, 128);
-
-        drawBoard();
-        drawPieces();
-    }
-
-    /**
-     * isValid function for mouse events.
-     * Add conditions here as scope increases. 
-     * @return a boolean which indicates that the click corresponds to an event. 
-     */
-    private boolean isValid(int x, int y) {
-        // Is not a left click
-        if (mouseButton != LEFT) {
-            return false;
-        }
-        // Is outside of chess board. 
-        if (x <= sidebarOffset || x >= sidebarOffset + boardDim || y > boardDim) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * getPiece() 
-     * An algorithm which finds the tile that the mouse has clicked.
-     * @param x X input from mouse, assumes within board.
-     * @param y Y input from mouse, assumes within board. 
-     * @return Either chesspiece on tile or null.
-     */
-    private ChessPiece getPiece(int x, int y) {
-        for (int i = 0; i < 64; i++) {
-            if (x > coordinateData[i][0] && x < (coordinateData[i][0] + boardDim / 8)
-                && y > coordinateData[i][1] && y < (coordinateData[i][1] + boardDim / 8)) {
-                    return chessBoard.getChessPiece(i);
-            }
-        }
-        return null;
     }
 
     private int[][] initCoordinateArray() {
@@ -212,7 +124,30 @@ public class App extends PApplet {
         }
         return array;
     }
-    
+
+    private void initChessPiecesOnBoard(Map<Character, int[]> startingPositions) {
+        chessPieces = new ChessPiece[32];
+        int i = 0;
+
+        // LOOP#1 Iterates through every possible TYPE of piece. 
+        for (PieceType pieceType : PieceType.values()) {
+            if (pieceType != PieceType.NONE) {
+                int[] piecePositions = startingPositions.get(pieceType.key);
+                TeamColour colour = pieceType.colour;
+
+                // LOOP#2 Uses TYPE as a key to access all starting positions for that type. 
+                for (int position : piecePositions) {
+                    chessPieces[i] = new ChessPiece(pieceType, colour, position);
+                    i++;
+                }
+            }
+        }
+        if (i != 32) {
+            System.err.println("Error: There should be 32 chess pieces in Chessboard ADT.");
+            System.exit(0);
+        }
+    }
+
     private PImage loadBoardImage(String path) {
         PImage boardSprite = loadImage(path + "board.png");
         try {
@@ -225,7 +160,7 @@ public class App extends PApplet {
         }
         return boardSprite;
     }
-    
+
     /**
      * Loads all chess piece images from file. 
      * @return: returns a HashMap with keys defined in PieceType enumerator, and values
@@ -256,8 +191,92 @@ public class App extends PApplet {
             System.err.println(ve.getMessage());
             System.exit(0);
         }
-
         return imagesMap;
+    }
+
+    /**
+     * Receive key pressed signal from the keyboard.
+    */
+    public void keyPressed(){
+        if (keyCode == ESC) {
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int xClick = e.getX();
+        int yClick = e.getY();
+        
+        if (currentSelection == false) {
+            if (isValid(xClick, yClick)) {
+                selectedPiece = getPiece(xClick, yClick);
+                if (selectedPiece != null) {
+                    loop();
+                    currentSelection = true; 
+                }
+            }
+        } else {
+            if (isValid(xClick, yClick)) {
+                // drop piece in new location and update chessboard.
+                //chessBoard.moveChessPiece(selectedPiece.getPosition(), ...); 
+                //selectedPiece.changePosition();
+            }
+            currentSelection = false;
+            selectedPiece = null;
+            redraw();
+            noLoop();
+        }
+    }
+
+    /**
+     * isValid function for mouse events.
+     * Add conditions here as scope increases. 
+     * @return a boolean which indicates that the click corresponds to an event. 
+     */
+    private boolean isValid(int x, int y) {
+        // Is not a left click
+        if (mouseButton != LEFT) {
+            return false;
+        }
+        // Is outside of chess board. 
+        if (x <= sidebarOffset || x >= sidebarOffset + boardDim || y > boardDim) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * getPiece() 
+     * An algorithm which finds the tile that the mouse has clicked.
+     * @param x X input from mouse, assumes within board.
+     * @param y Y input from mouse, assumes within board. 
+     * @return Either chesspiece on tile or null.
+     */
+    private ChessPiece getPiece(int x, int y) {
+        for (int i = 0; i < 64; i++) {
+            if (x > coordinateData[i][0] && x < (coordinateData[i][0] + boardDim / 8)
+            && y > coordinateData[i][1] && y < (coordinateData[i][1] + boardDim / 8)) {
+                for (int j = 0; j < 32; j++) {
+                    if (chessPieces[j].getPosition() == i) {
+                        return chessPieces[j];
+                    }
+                }
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Draw all elements in the game by current frame. 
+    */
+    public void draw() {
+
+        background(128, 128, 128);
+
+        drawBoard();
+        drawPieces();
     }
 
     private void drawBoard() {
@@ -266,20 +285,18 @@ public class App extends PApplet {
     
     private void drawPieces() {
         int i, j, x, y;
-        for (i = 0; i < 64; i++) {
-            ChessPiece piece = chessBoard.getChessPiece(i);
-            if (piece != null) {
-                if (piece == selectedPiece) {
-                    x = mouseX;
-                    y = mouseY;
-                } else {
-                    j = piece.getPosition();
-                    x = coordinateData[j][0];
-                    y = coordinateData[j][1];
-                }
-                PImage img = chessSprites.get(piece.getPieceType());
-                image(img, x, y, (int) pieceDim, (int) pieceDim);
+        for (i = 0; i < 32; i++) {
+            ChessPiece piece = chessPieces[i];
+            if (piece == selectedPiece) {
+                x = mouseX;
+                y = mouseY;
+            } else {
+                j = piece.getPosition();
+                x = coordinateData[j][0];
+                y = coordinateData[j][1];
             }
+            PImage img = chessSprites.get(piece.getPieceType());
+            image(img, x, y, (int) pieceDim, (int) pieceDim);
         }
     }
 
