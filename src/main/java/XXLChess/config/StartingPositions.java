@@ -12,7 +12,7 @@ public class StartingPositions {
      * LOWERCASE denotes WHITE pieces. 
      */
 
-    // white on top starting positions. 
+    // Player == Black. 
     static {
         Map<Character, int[]> map = new HashMap<>();
         map.put('r', new int[] {0, 7});
@@ -37,10 +37,10 @@ public class StartingPositions {
             48, 49, 50, 51, 52, 53, 54, 55
         });
 
-        startingPositionsWhite = Collections.unmodifiableMap(map);
+        startingPositionsBlack = Collections.unmodifiableMap(map);
     }
 
-    // black on top starting positions.
+    // Player == White.
     static {
         Map<Character, int[]> map = new HashMap<>();
         map.put('R', new int[] {0, 7});
@@ -65,6 +65,6 @@ public class StartingPositions {
             48, 49, 50, 51, 52, 53, 54, 55
         });
 
-        startingPositionsBlack = Collections.unmodifiableMap(map);
+        startingPositionsWhite = Collections.unmodifiableMap(map);
     }
 }

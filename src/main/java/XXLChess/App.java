@@ -19,7 +19,7 @@ public class App extends PApplet {
     public static final int BOARD_SPRITE_PX = 2050;
     
     public static final int SIDEBAR = 1000;
-    public static final int HEADER = 300;
+    public static final int HEADER = 500;
 
     public static final double SCALE_FACTOR_L = 1;
     public static final double SCALE_FACTOR_M = 0.4;
@@ -33,14 +33,14 @@ public class App extends PApplet {
     private PImage boardSprite;
     private Map<PieceType, PImage> chessSprites;
 
-    private double headerSize;
-    private double headerOffset; 
+    private int[][] coordinateData;
 
-    private double sidebarSize;
-    private double sidebarOffset;
-
-    private double boardDim;
-    private double pieceDim;
+    private double headerSize, headerOffset; 
+    private double sidebarSize, sidebarOffset;
+    private double boardDim, pieceDim;
+    private double spriteOffsetHorTop, spriteOffsetVerTop;
+    private double spriteOffsetHorBottom, spriteOffsetVerBottom;
+    private int width, height;
 
     public App() {
     }
@@ -52,7 +52,7 @@ public class App extends PApplet {
         double scaleFactor = SCALE_FACTOR_S;
 
         boardDim = (BOARD_SPRITE_PX * scaleFactor); 
-        pieceDim = (CHESS_SPRITE_PX * scaleFactor);
+        pieceDim = (CHESS_SPRITE_PX * (scaleFactor - 0.01));
         
         headerSize = (HEADER * scaleFactor);
         headerOffset = headerSize;
@@ -60,10 +60,17 @@ public class App extends PApplet {
         sidebarSize = (SIDEBAR * scaleFactor);
         sidebarOffset = (sidebarSize - (0 * scaleFactor));
 
-        int width = (int) (boardDim + 2*sidebarSize);
-        int height = (int) (boardDim + headerOffset);
+        spriteOffsetHorTop = pieceDim / 4.8;
+        spriteOffsetVerTop = pieceDim / 2.5;
+
+        spriteOffsetHorBottom = pieceDim / 4;
+        spriteOffsetVerBottom = pieceDim / 2.2;
+
+        width = (int) (boardDim + 2*sidebarSize);
+        height = (int) (boardDim + headerOffset);
         
         size(width, height);
+        //surface.setResizable(true);
     }
     /**
      * Load all resources such as images. Initialise the elements such as the player, enemies and map elements.
@@ -72,9 +79,16 @@ public class App extends PApplet {
         final String path = "src/main/resources/XXLChess/";
 
         frameRate(FPS);
+
+        coordinateData = initCoordinateArray();
         
-        TeamColour playerColour = TeamColour.BLACK;
-        chessBoard = new ChessBoard(playerColour);
+        TeamColour playerColour = TeamColour.WHITE;
+        if (playerColour != TeamColour.NULL) {
+            chessBoard = new ChessBoard(playerColour);
+        } else {
+            System.err.println("Player colour not properly set.");
+            System.exit(0);
+        }
        
         boardSprite = loadBoardImage(path);   
         chessSprites = loadImages(path);
@@ -115,6 +129,26 @@ public class App extends PApplet {
 
         drawBoard();
         drawPieces();
+    }
+
+    private int[][] initCoordinateArray() {
+        int[][] array = new int[64][2];
+        
+        for (int i = 0; i < 64; i++) {
+            double x, y, offsetH, offsetV;
+            if (i < 32) {
+                offsetH = spriteOffsetHorTop;
+                offsetV = spriteOffsetVerTop;
+            } else {
+                offsetH = spriteOffsetHorBottom;
+                offsetV = spriteOffsetVerBottom;
+            }
+            x = (sidebarOffset - offsetH) + ((i%8) * (boardDim/8));
+            y = (headerOffset - offsetV) + ((i/8) * (boardDim/8));
+            array[i][0] = (int) x;
+            array[i][1] = (int) y; 
+        }
+        return array;
     }
     
     private PImage loadBoardImage(String path) {
@@ -172,8 +206,12 @@ public class App extends PApplet {
         for (int i = 0; i < 64; i++) {
             ChessPiece piece = chessBoard.getChessPiece(i);
             if (piece != null) {
-                image(chessSprites.get(piece.getPieceType()), piece.getX(), piece.getY(), 
-                (int) pieceDim, (int) pieceDim);
+                int j = piece.getPosition();
+                int x = coordinateData[j][0];
+                int y = coordinateData[j][1];
+                PImage img = chessSprites.get(piece.getPieceType());
+
+                image(img, x, y, (int) pieceDim, (int) pieceDim);
             }
         }
     }

@@ -1,44 +1,25 @@
 package XXLChess.board;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import XXLChess.config.StartingPositions;
 import XXLChess.enums.PieceType;
 import XXLChess.enums.TeamColour;
-import XXLChess.exceptions.PieceCreationException;
 
 public class ChessBoard {
     private ChessPiece[] boardPositions; 
 
     public ChessBoard(TeamColour playerColour) {
-        boardPositions = new ChessPiece[64];
-        
-        Map<Character, int[]> startingPositions = new HashMap<>();
-        try {
-            startingPositions = getStartingPositions(playerColour);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            System.exit(0);
-        }
-
-        initChessPiecesOnBoard(startingPositions);
-        
-    }
-
-    private Map<Character, int[]> getStartingPositions(TeamColour playerColour) throws PieceCreationException {
-        if (playerColour == TeamColour.NULL) {
-            throw new PieceCreationException("Error: player colour is not correctly formatted.");
-        }
-
         if (playerColour == TeamColour.BLACK) {
-            return StartingPositions.startingPositionsBlack;
+            initChessPiecesOnBoard(StartingPositions.startingPositionsBlack);
         } else {
-            return StartingPositions.startingPositionsWhite;
+            initChessPiecesOnBoard(StartingPositions.startingPositionsWhite);
         }
     }
 
     private void initChessPiecesOnBoard(Map<Character, int[]> startingPositions) {
+        boardPositions = new ChessPiece[64];
+
         // LOOP#1 Iterates through every possible TYPE of piece. 
         for (PieceType pieceType : PieceType.values()) {
             if (pieceType != PieceType.NONE) {
@@ -47,8 +28,7 @@ public class ChessBoard {
 
                 // LOOP#2 Uses TYPE as a key to access all starting positions for that type. 
                 for (int position : piecePositions) {
-                    //TODO: Starting coordinates and fix null pointer exception. 
-                    boardPositions[position] = new ChessPiece(pieceType, colour, position, 0, 0);
+                    boardPositions[position] = new ChessPiece(pieceType, colour, position);
                 }
             }
         }
@@ -60,7 +40,7 @@ public class ChessBoard {
         boardPositions[oldPosition] = null;
 
         boardPositions[newPosition] = piece;
-        piece.changePosition(newPosition, 0, 0);
+        piece.changePosition(newPosition);
     }
 
     // Getters
