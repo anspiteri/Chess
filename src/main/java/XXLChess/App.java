@@ -1,7 +1,5 @@
 package XXLChess;
 
-import XXLChess.board.ChessPiece;
-import XXLChess.config.StartingPositions;
 import XXLChess.enums.PieceType;
 import XXLChess.enums.TeamColour;
 import XXLChess.exceptions.ValidationException;
