@@ -35,6 +35,9 @@ public class App extends PApplet {
 
     private int[][] coordinateData;
 
+    private boolean currentSelection;
+    private ChessPiece selectedPiece;
+
     private double headerSize, headerOffset; 
     private double sidebarSize, sidebarOffset;
     private double boardDim, pieceDim;
@@ -92,6 +95,10 @@ public class App extends PApplet {
        
         boardSprite = loadBoardImage(path);   
         chessSprites = loadImages(path);
+
+        currentSelection = false;
+        selectedPiece = null;
+        noLoop();
     }
 
     /**
@@ -113,7 +120,28 @@ public class App extends PApplet {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        int xClick = e.getX();
+        int yClick = e.getY();
         
+        if (currentSelection == false) {
+            if (isValid(xClick, yClick)) {
+                selectedPiece = getPiece(xClick, yClick);
+                if (selectedPiece != null) {
+                    loop();
+                    currentSelection = true; 
+                }
+            }
+        } else {
+            if (isValid(xClick, yClick)) {
+                // drop piece in new location and update chessboard.
+                //chessBoard.moveChessPiece(selectedPiece.getPosition(), ...); 
+                //selectedPiece.changePosition();
+            }
+            currentSelection = false;
+            selectedPiece = null;
+            redraw();
+            noLoop();
+        }
     }
 
     @Override
@@ -131,6 +159,40 @@ public class App extends PApplet {
         drawPieces();
     }
 
+    /**
+     * isValid function for mouse events.
+     * Add conditions here as scope increases. 
+     * @return a boolean which indicates that the click corresponds to an event. 
+     */
+    private boolean isValid(int x, int y) {
+        // Is not a left click
+        if (mouseButton != LEFT) {
+            return false;
+        }
+        // Is outside of chess board. 
+        if (x <= sidebarOffset || x >= sidebarOffset + boardDim || y > boardDim) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * getPiece() 
+     * An algorithm which finds the tile that the mouse has clicked.
+     * @param x X input from mouse, assumes within board.
+     * @param y Y input from mouse, assumes within board. 
+     * @return Either chesspiece on tile or null.
+     */
+    private ChessPiece getPiece(int x, int y) {
+        for (int i = 0; i < 64; i++) {
+            if (x > coordinateData[i][0] && x < (coordinateData[i][0] + boardDim / 8)
+                && y > coordinateData[i][1] && y < (coordinateData[i][1] + boardDim / 8)) {
+                    return chessBoard.getChessPiece(i);
+            }
+        }
+        return null;
+    }
+
     private int[][] initCoordinateArray() {
         int[][] array = new int[64][2];
         
@@ -143,8 +205,8 @@ public class App extends PApplet {
                 offsetH = spriteOffsetHorBottom;
                 offsetV = spriteOffsetVerBottom;
             }
-            x = (sidebarOffset - offsetH) + ((i%8) * (boardDim/8));
-            y = (headerOffset - offsetV) + ((i/8) * (boardDim/8));
+            x = (sidebarOffset - offsetH) + ((i % 8) * (boardDim / 8));
+            y = (headerOffset - offsetV) + ((i / 8) * (boardDim / 8));
             array[i][0] = (int) x;
             array[i][1] = (int) y; 
         }
@@ -203,14 +265,19 @@ public class App extends PApplet {
     }
     
     private void drawPieces() {
-        for (int i = 0; i < 64; i++) {
+        int i, j, x, y;
+        for (i = 0; i < 64; i++) {
             ChessPiece piece = chessBoard.getChessPiece(i);
             if (piece != null) {
-                int j = piece.getPosition();
-                int x = coordinateData[j][0];
-                int y = coordinateData[j][1];
+                if (piece == selectedPiece) {
+                    x = mouseX;
+                    y = mouseY;
+                } else {
+                    j = piece.getPosition();
+                    x = coordinateData[j][0];
+                    y = coordinateData[j][1];
+                }
                 PImage img = chessSprites.get(piece.getPieceType());
-
                 image(img, x, y, (int) pieceDim, (int) pieceDim);
             }
         }
