@@ -26,8 +26,9 @@ public class App extends PApplet {
 
     public static final int FPS = 60;
 
-    //private ChessBoard chessBoard; 
     private ChessPiece[] chessPieces;
+
+    private TeamColour playerColour;
 
     private PImage boardSprite;
     private Map<PieceType, PImage> chessSprites;
@@ -84,7 +85,7 @@ public class App extends PApplet {
 
         coordinateData = initCoordinateArray();
         
-        TeamColour playerColour = TeamColour.WHITE;
+        playerColour = TeamColour.WHITE;
         
         if (playerColour == TeamColour.BLACK) {
             initChessPiecesOnBoard(StartingPositions.startingPositionsBlack);
@@ -208,7 +209,7 @@ public class App extends PApplet {
         
         if (currentSelection == false) {
             if (isValid(xClick, yClick)) {
-                selectedPiece = getPiece(xClick, yClick);
+                selectedPiece = getPiece(getBoardPosition(xClick, yClick));
                 if (selectedPiece != null) {
                     loop();
                     currentSelection = true; 
@@ -217,8 +218,7 @@ public class App extends PApplet {
         } else {
             if (isValid(xClick, yClick)) {
                 // drop piece in new location and update chessboard.
-                //chessBoard.moveChessPiece(selectedPiece.getPosition(), ...); 
-                //selectedPiece.changePosition();
+                selectedPiece.changePosition(getBoardPosition(xClick, yClick));
             }
             currentSelection = false;
             selectedPiece = null;
@@ -245,22 +245,31 @@ public class App extends PApplet {
     }
 
     /**
-     * getPiece() 
-     * An algorithm which finds the tile that the mouse has clicked.
-     * @param x X input from mouse, assumes within board.
-     * @param y Y input from mouse, assumes within board. 
-     * @return Either chesspiece on tile or null.
+     * getBoardPosition, for a valid click within the board, this algorithm finds the chess tile.
+     * @param x The x point where mouse clicked.
+     * @param y The y point where mouse clicked.
+     * @return Assumes within board but for some reason it can't find it, will return -1. 
      */
-    private ChessPiece getPiece(int x, int y) {
+    private int getBoardPosition(int x, int y) {
         for (int i = 0; i < 64; i++) {
-            if (x > coordinateData[i][0] && x < (coordinateData[i][0] + boardDim / 8)
-            && y > coordinateData[i][1] && y < (coordinateData[i][1] + boardDim / 8)) {
-                for (int j = 0; j < 32; j++) {
-                    if (chessPieces[j].getPosition() == i) {
-                        return chessPieces[j];
-                    }
-                }
-                return null;
+            if (x > coordinateData[i][0] && x < (coordinateData[i][0] + boardDim / 8) && 
+            y > coordinateData[i][1] && y < (coordinateData[i][1] + boardDim / 8)) 
+                return i;
+            }
+        return -1;
+    }
+
+    /**
+     * getPiece: For the board position index, this algorithm finds the piece that is on that 
+     * position, if any, and also checks that it is a player's chesspiece.
+     * @param boardPosition: integer from 0-63 inclusive. 
+     * @return ChessPiece object or null if no piece, or piece is an enemy piece.
+     */
+    private ChessPiece getPiece(int boardPosition) {
+        for (int i = 0; i < 32; i++) {
+            ChessPiece piece = chessPieces[i];
+            if (piece.getPosition() == boardPosition && piece.getColour() == playerColour) {
+                return piece;
             }
         }
         return null;
