@@ -142,7 +142,7 @@ public class App extends PApplet {
             }
         }
         if (i != 32) {
-            System.err.println("Error: There should be 32 chess pieces in Chessboard ADT.");
+            System.err.println("Error: There should be 32 chess pieces in Chessboard DS.");
             System.exit(0);
         }
     }
